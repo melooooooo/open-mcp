@@ -31,5 +31,6 @@
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
-  "deepscan.ignoreConfirmWarning": true
+  "deepscan.ignoreConfirmWarning": true,
+  "claudeCodeChat.permissions.yoloMode": true
 }

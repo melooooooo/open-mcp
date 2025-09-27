@@ -1,0 +1,180 @@
+/* 秋招求职平台主题配置 */
+
+:root {
+  /* 品牌色彩系统 */
+  --career-primary: 216 87% 54%;        /* 专业蓝 - 主色调 */
+  --career-secondary: 165 67% 48%;      /* 活力绿 - 成长/成功 */
+  --career-accent: 25 95% 53%;          /* 温暖橙 - 内推/重点 */
+  --career-info: 217 91% 60%;           /* 信息蓝 */
+  --career-success: 142 76% 36%;        /* 成功绿 */
+  --career-warning: 38 92% 50%;         /* 警告黄 */
+  --career-error: 0 84% 60%;            /* 错误红 */
+  --career-purple: 271 81% 56%;         /* 智慧紫 - 经验分享 */
+
+  /* 职位相关颜色 */
+  --job-tech: 217 91% 60%;              /* 技术岗 */
+  --job-product: 271 81% 56%;           /* 产品岗 */
+  --job-design: 339 90% 51%;            /* 设计岗 */
+  --job-operation: 25 95% 53%;          /* 运营岗 */
+  --job-market: 45 93% 47%;             /* 市场岗 */
+  --job-finance: 142 76% 36%;           /* 金融岗 */
+
+  /* 公司规模颜色 */
+  --company-large: 217 91% 60%;         /* 大厂 */
+  --company-unicorn: 271 81% 56%;       /* 独角兽 */
+  --company-growth: 165 67% 48%;        /* 成长期 */
+  --company-startup: 25 95% 53%;        /* 初创 */
+
+  /* 难度等级颜色 */
+  --difficulty-1: 142 76% 36%;          /* 简单 */
+  --difficulty-2: 165 67% 48%;          /* 较易 */
+  --difficulty-3: 45 93% 47%;           /* 中等 */
+  --difficulty-4: 25 95% 53%;           /* 较难 */
+  --difficulty-5: 0 84% 60%;            /* 困难 */
+
+  /* 渐变色 */
+  --gradient-primary: linear-gradient(135deg, hsl(var(--career-primary)), hsl(var(--career-secondary)));
+  --gradient-warm: linear-gradient(135deg, hsl(var(--career-accent)), hsl(var(--career-warning)));
+  --gradient-cool: linear-gradient(135deg, hsl(var(--career-info)), hsl(var(--career-purple)));
+  --gradient-success: linear-gradient(135deg, hsl(var(--career-secondary)), hsl(var(--career-success)));
+
+  /* 阴影 */
+  --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-card-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-button: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-button-hover: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* 暗黑模式调整 */
+.dark {
+  --career-primary: 217 91% 70%;
+  --career-secondary: 165 67% 65%;
+  --career-accent: 25 95% 65%;
+  --career-info: 217 91% 75%;
+  --career-success: 142 76% 55%;
+  --career-warning: 38 92% 65%;
+  --career-error: 0 84% 70%;
+  --career-purple: 271 81% 70%;
+
+  /* 渐变色在暗黑模式下的调整 */
+  --gradient-primary: linear-gradient(135deg, hsl(var(--career-primary) / 0.9), hsl(var(--career-secondary) / 0.9));
+  --gradient-warm: linear-gradient(135deg, hsl(var(--career-accent) / 0.9), hsl(var(--career-warning) / 0.9));
+  --gradient-cool: linear-gradient(135deg, hsl(var(--career-info) / 0.9), hsl(var(--career-purple) / 0.9));
+  --gradient-success: linear-gradient(135deg, hsl(var(--career-secondary) / 0.9), hsl(var(--career-success) / 0.9));
+}
+
+/* 实用类 */
+.bg-gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.bg-gradient-warm {
+  background: var(--gradient-warm);
+}
+
+.bg-gradient-cool {
+  background: var(--gradient-cool);
+}
+
+.bg-gradient-success {
+  background: var(--gradient-success);
+}
+
+/* 玻璃态效果 */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 卡片悬浮效果 */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* 标签样式 */
+.tag-job-type {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.tag-company-size {
+  @apply inline-flex items-center px-3 py-1 rounded-md text-sm font-medium;
+}
+
+.tag-skill {
+  @apply inline-flex items-center px-2 py-1 rounded-md text-xs font-medium border;
+}
+
+/* 数字滚动动画 */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.count-up {
+  animation: countUp 0.5s ease-out;
+}
+
+/* 脉冲动画（用于新消息提示） */
+@keyframes pulse-dot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2s infinite;
+}
+
+/* 骨架屏动画 */
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.05) 25%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+.dark .skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+}

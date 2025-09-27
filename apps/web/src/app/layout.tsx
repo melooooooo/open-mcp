@@ -1,5 +1,6 @@
 import "@repo/ui/globals.css"
 import "@/styles/custom.css"
+import "@/styles/career-theme.css"
 
 import { UmamiProvider } from "@repo/track";
 import type { Metadata, Viewport } from "next"
@@ -9,8 +10,8 @@ import { geistMono, geistSans } from "./fonts";
 import { Providers } from "./providers"
 
 export const metadata: Metadata = {
-  title: "OpenMCP",
-  description: "探索 MCP 客户端、服务器和开源应用的综合导航平台"
+  title: "职启航 - 秋招应届生求职平台",
+  description: "汇聚名企职位、内推机会、面试经验，助力应届生成功斩获心仪offer"
 };
 
 export const viewport: Viewport = {
