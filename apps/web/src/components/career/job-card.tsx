@@ -51,6 +51,12 @@ const companySizeMap = {
 }
 
 export function JobCard({ job, variant = "default", className, onBookmark, onClick }: JobCardProps) {
+  const companyName = job.company?.name ?? "未知公司"
+  const companySizeKey = job.company?.size as keyof typeof companySizeMap | undefined
+  const jobTypeMeta = jobTypeMap[job.jobType] ?? {
+    label: "职位",
+    color: "bg-muted text-muted-foreground",
+  }
   const formatSalary = (min?: number, max?: number) => {
     if (!min && !max) return "薪资面议"
     if (!max) return `${min}k起`
@@ -81,9 +87,9 @@ export function JobCard({ job, variant = "default", className, onBookmark, onCli
         <CardContent className="p-4">
           <div className="flex items-start gap-3">
             <Avatar className="h-10 w-10 shrink-0">
-              <AvatarImage src={job.company.logo} alt={job.company.name} />
+              <AvatarImage src={job.company?.logo} alt={companyName} />
               <AvatarFallback className="text-xs">
-                {job.company.name.slice(0, 2)}
+                {companyName.slice(0, 2)}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
@@ -92,7 +98,7 @@ export function JobCard({ job, variant = "default", className, onBookmark, onCli
                   <h3 className="font-semibold text-sm truncate group-hover:text-blue-600 dark:group-hover:text-blue-400">
                     {job.title}
                   </h3>
-                  <p className="text-xs text-muted-foreground mt-0.5">{job.company.name}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{companyName}</p>
                 </div>
                 <span className="text-sm font-medium text-orange-600 dark:text-orange-400 shrink-0">
                   {formatSalary(job.salaryMin, job.salaryMax)}
@@ -101,7 +107,7 @@ export function JobCard({ job, variant = "default", className, onBookmark, onCli
               <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
                 <span className="flex items-center gap-1">
                   <MapPin className="h-3 w-3" />
-                  {job.location[0]}
+                  {job.location?.[0] ?? "城市不限"}
                 </span>
                 {job.educationRequirement && (
                   <span>{job.educationRequirement}</span>
@@ -141,9 +147,9 @@ export function JobCard({ job, variant = "default", className, onBookmark, onCli
       <CardHeader className="pb-3">
         <div className="flex items-start gap-4">
           <Avatar className="h-12 w-12 shrink-0 ring-2 ring-gray-100 dark:ring-gray-800">
-            <AvatarImage src={job.company.logo} alt={job.company.name} />
+            <AvatarImage src={job.company?.logo} alt={companyName} />
             <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white">
-              {job.company.name.slice(0, 2)}
+              {companyName.slice(0, 2)}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
@@ -153,12 +159,12 @@ export function JobCard({ job, variant = "default", className, onBookmark, onCli
                   {job.title}
                 </h3>
                 <div className="flex items-center gap-2 mt-1">
-                  <p className="text-sm font-medium text-muted-foreground">{job.company.name}</p>
-                  {job.company.size && (
+                  <p className="text-sm font-medium text-muted-foreground">{companyName}</p>
+                  {companySizeKey && (
                     <>
                       <span className="text-muted-foreground">·</span>
                       <Badge variant="secondary" className="text-xs">
-                        {companySizeMap[job.company.size] || job.company.size}
+                        {companySizeMap[companySizeKey] || job.company?.size}
                       </Badge>
                     </>
                   )}
@@ -197,8 +203,8 @@ export function JobCard({ job, variant = "default", className, onBookmark, onCli
               <span className="text-xs text-muted-foreground">·月薪</span>
             )}
           </div>
-          <Badge className={cn("text-xs", jobTypeMap[job.jobType].color)}>
-            {jobTypeMap[job.jobType].label}
+          <Badge className={cn("text-xs", jobTypeMeta.color)}>
+            {jobTypeMeta.label}
           </Badge>
         </div>
 

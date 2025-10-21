@@ -8,18 +8,28 @@ import { CompanySection } from "@/components/career/company-section"
 import { Container } from "@/components/web/container"
 import { Section } from "@/components/web/section"
 import { Button } from "@repo/ui/components/ui/button"
-import { Badge } from "@repo/ui/components/ui/badge"
-import { ChartBar, Trophy, Users, Target } from "lucide-react"
-import { mockStats } from "@/data/mock-data"
+import { ChartBar, Trophy, Users as UsersIcon, Target, Sparkles } from "lucide-react"
+
+type StatValue = {
+  value: number
+  isEstimate?: boolean
+}
 
 interface HomeClientProps {
   jobs: any[]
   referrals: any[]
   experiences: any[]
   companies: any[]
+  stats: {
+    totalJobs: StatValue
+    totalReferrals: StatValue
+    totalCompanies: StatValue
+    totalUsers: StatValue
+    successRate: StatValue
+  }
 }
 
-export function HomeClient({ jobs, referrals, experiences, companies }: HomeClientProps) {
+export function HomeClient({ jobs, referrals, experiences, companies, stats }: HomeClientProps) {
   // 筛选热门和最新职位
   const hotJobs = jobs.filter(job => job.isHot).slice(0, 3)
   const newJobs = jobs.filter(job => job.isNew).slice(0, 3)
@@ -30,11 +40,47 @@ export function HomeClient({ jobs, referrals, experiences, companies }: HomeClie
   // 获取热门公司
   const popularCompanies = companies.filter(company => company.isPopular).slice(0, 3)
 
+  const formatCount = ({ value, isEstimate }: StatValue) => {
+    if (value === undefined || value === null) return "-"
+    const formatted = value.toLocaleString()
+    return isEstimate ? `${formatted}+` : formatted
+  }
+
+  const formatRate = ({ value, isEstimate }: StatValue) => {
+    if (value === undefined || value === null) return "-"
+    const base = `${value}%`
+    return isEstimate ? `≈${base}` : base
+  }
+
+  const heroStats = [
+    { label: "在招职位", value: formatCount(stats.totalJobs), icon: ChartBar, color: "text-blue-600 dark:text-blue-400" },
+    { label: "内推机会", value: formatCount(stats.totalReferrals), icon: Target, color: "text-orange-600 dark:text-orange-400" },
+    { label: "合作企业", value: formatCount(stats.totalCompanies), icon: UsersIcon, color: "text-green-600 dark:text-green-400" },
+    { label: "求职成功率", value: formatRate(stats.successRate), icon: Trophy, color: "text-purple-600 dark:text-purple-400" },
+  ]
+
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
         {/* Hero Section */}
-        <CareerHeroSection />
+        <CareerHeroSection
+          stats={heroStats}
+          ctas={[
+            {
+              label: "查看内推机会",
+              href: "/referrals",
+              icon: UsersIcon,
+              variant: "outline",
+            },
+            {
+              label: "浏览面试经验",
+              href: "/experiences",
+              icon: Sparkles,
+              variant: "default",
+              className: "bg-gradient-to-r from-purple-600 to-pink-600 border-0 text-white hover:from-purple-700 hover:to-pink-700",
+            },
+          ]}
+        />
 
         {/* Job Section */}
         <Section>
@@ -42,6 +88,7 @@ export function HomeClient({ jobs, referrals, experiences, companies }: HomeClie
             <JobSection 
               hotJobs={hotJobs.length > 0 ? hotJobs : jobs.slice(0, 3)} 
               newJobs={newJobs.length > 0 ? newJobs : jobs.slice(3, 6)} 
+              referralJobs={referralJobs}
             />
           </Container>
         </Section>
@@ -77,22 +124,22 @@ export function HomeClient({ jobs, referrals, experiences, companies }: HomeClie
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="bg-card border rounded-lg p-6 text-center">
                 <ChartBar className="h-8 w-8 text-blue-500 mx-auto mb-3" />
-                <div className="text-3xl font-bold mb-1">{jobs?.length || 0}+</div>
+                <div className="text-3xl font-bold mb-1">{formatCount(stats.totalJobs)}</div>
                 <div className="text-sm text-muted-foreground">在招职位</div>
               </div>
               <div className="bg-card border rounded-lg p-6 text-center">
                 <Trophy className="h-8 w-8 text-green-500 mx-auto mb-3" />
-                <div className="text-3xl font-bold mb-1">{mockStats.successRate}%</div>
+                <div className="text-3xl font-bold mb-1">{formatRate(stats.successRate)}</div>
                 <div className="text-sm text-muted-foreground">求职成功率</div>
               </div>
               <div className="bg-card border rounded-lg p-6 text-center">
-                <Users className="h-8 w-8 text-orange-500 mx-auto mb-3" />
-                <div className="text-3xl font-bold mb-1">{mockStats.totalUsers}</div>
+                <UsersIcon className="h-8 w-8 text-orange-500 mx-auto mb-3" />
+                <div className="text-3xl font-bold mb-1">{formatCount(stats.totalUsers)}</div>
                 <div className="text-sm text-muted-foreground">活跃用户</div>
               </div>
               <div className="bg-card border rounded-lg p-6 text-center">
                 <Target className="h-8 w-8 text-purple-500 mx-auto mb-3" />
-                <div className="text-3xl font-bold mb-1">{referrals?.length || 0}+</div>
+                <div className="text-3xl font-bold mb-1">{formatCount(stats.totalReferrals)}</div>
                 <div className="text-sm text-muted-foreground">内推机会</div>
               </div>
             </div>

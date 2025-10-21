@@ -20,34 +20,34 @@ export function Header() {
       active: pathname === "/",
     },
     {
-      href: "/ranking",
-      label: "排行",
-      active: pathname === "/ranking",
+      href: "/jobs",
+      label: "职位",
+      active: pathname?.startsWith("/jobs"),
     },
     {
-      href: "/category/client",
-      label: "客户端",
-      active: pathname === "/category/client",
+      href: "/referrals",
+      label: "内推",
+      active: pathname?.startsWith("/referrals"),
     },
     {
-      href: "/category/server",
-      label: "服务器",
-      active: pathname === "/category/server",
+      href: "/experiences",
+      label: "经验",
+      active: pathname?.startsWith("/experiences"),
     },
     {
-      href: "/category/application",
-      label: "应用",
-      active: pathname === "/category/application",
+      href: "/companies",
+      label: "公司",
+      active: pathname?.startsWith("/companies"),
     },
     {
-      href: "/advertise",
-      label: "推广",
-      active: pathname === "/advertise",
+      href: "/salary",
+      label: "薪酬",
+      active: pathname?.startsWith("/salary"),
     },
     {
-      href: "/submit",
-      label: "提交应用",
-      active: pathname === "/submit",
+      href: "/help",
+      label: "帮助中心",
+      active: pathname?.startsWith("/help"),
     },
   ]
 
@@ -56,9 +56,9 @@ export function Header() {
       <Container>
         <div className="flex h-16 items-center">
           <div className="mr-4 flex">
-            <Link href="/" className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2" aria-label="返回首页">
               <LogoIcon type="openmcp" />
-              <span className="font-bold hidden sm:inline-block">OpenMCP</span>
+              <span className="font-bold hidden sm:inline-block">职启航</span>
             </Link>
           </div>
           <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
@@ -96,4 +96,3 @@ export function Header() {
     </header>
   )
 }
-

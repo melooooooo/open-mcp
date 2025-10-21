@@ -49,16 +49,22 @@ export function ReferralSection({
         </div>
 
         {/* 内推卡片网格 */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {referrals.map((referral) => (
-            <ReferralCard
-              key={referral.id}
-              referral={referral}
-              onApply={() => console.log(`Apply for referral ${referral.id}`)}
-              onClick={() => console.log(`Navigate to referral ${referral.id}`)}
-            />
-          ))}
-        </div>
+        {referrals.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {referrals.map((referral) => (
+              <ReferralCard
+                key={referral.id}
+                referral={referral}
+                onApply={() => console.log(`Apply for referral ${referral.id}`)}
+                onClick={() => console.log(`Navigate to referral ${referral.id}`)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-xl border border-dashed bg-background/60 p-8 text-center text-sm text-muted-foreground">
+            当前暂无开放的内推机会，关注职位广场或先完善个人资料，系统会在有新名额时第一时间通知你。
+          </div>
+        )}
 
         {/* 底部提示 */}
         <div className="mt-8 rounded-lg bg-orange-100 dark:bg-orange-950/30 p-4 text-center">

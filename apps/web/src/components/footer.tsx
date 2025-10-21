@@ -19,48 +19,55 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <LogoIcon type="openmcp" />
-              <span className="font-bold">OpenMCP</span>
+              <span className="font-bold">职启航</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              OpenMCP 是一个一站式 AI 全聚合平台，专注于 MCP 生态的构建和发展，推动AI技术创新和应用落地。
+              职启航专注服务秋招应届生与在校生，整合职位、内推、面经与薪酬情报，帮助你自信踏出职场第一步。
             </p>
           </div>
 
           <div className="space-y-4">
-            <h3 className="font-medium">快速链接</h3>
+            <h3 className="font-medium">求职导航</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/category/client" className="text-muted-foreground hover:text-foreground transition-colors">
-                  MCP 客户端
+                <Link href="/jobs" className="text-muted-foreground hover:text-foreground transition-colors">
+                  职位广场
                 </Link>
               </li>
               <li>
-                <Link href="/category/server" className="text-muted-foreground hover:text-foreground transition-colors">
-                  MCP 服务器
+                <Link href="/referrals" className="text-muted-foreground hover:text-foreground transition-colors">
+                  内推机会
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/category/application"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  MCP 应用
+                <Link href="/experiences" className="text-muted-foreground hover:text-foreground transition-colors">
+                  面经与攻略
                 </Link>
               </li>
               <li>
-                <Link href="/submit" className="text-muted-foreground hover:text-foreground transition-colors">
-                  提交应用
+                <Link href="/companies" className="text-muted-foreground hover:text-foreground transition-colors">
+                  企业库
+                </Link>
+              </li>
+              <li>
+                <Link href="/salary" className="text-muted-foreground hover:text-foreground transition-colors">
+                  薪酬洞察
                 </Link>
               </li>
             </ul>
           </div>
 
           <div className="space-y-4">
-            <h3 className="font-medium">关于我们</h3>
+            <h3 className="font-medium">服务支持</h3>
             <ul className="space-y-2 text-sm">
               <li>
+                <Link href="/help" className="text-muted-foreground hover:text-foreground transition-colors">
+                  帮助中心
+                </Link>
+              </li>
+              <li>
                 <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
-                  关于 OpenMCP
+                  关于我们
                 </Link>
               </li>
               <li>
@@ -78,15 +85,15 @@ export function Footer() {
                   onClick={() => setIsContactDialogOpen(true)}
                   className="text-muted-foreground hover:text-foreground transition-colors w-full text-left"
                 >
-                  联系我们
+                  企业合作
                 </button>
               </li>
             </ul>
           </div>
 
           <div className="space-y-4">
-            <h3 className="font-medium">订阅更新</h3>
-            <p className="text-sm text-muted-foreground">订阅我们的邮件列表，获取 MCP 生态系统的最新动态和更新。</p>
+            <h3 className="font-medium">订阅求职情报</h3>
+            <p className="text-sm text-muted-foreground">获取最新职位投递窗口、内推开放提醒和校招攻略，领先一步拿到 Offer。</p>
             <EmailSubscribe />
           </div>
         </div>

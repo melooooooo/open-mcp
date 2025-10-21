@@ -1,23 +1,27 @@
 "use client"
 
 import { useState } from "react"
-import { Search, Filter, MapPin, Building2, DollarSign, SlidersHorizontal } from "lucide-react"
+import { Search, Filter, MapPin, Building2, DollarSign, SlidersHorizontal, AlertCircle } from "lucide-react"
 import { Button } from "@repo/ui/components/ui/button"
 import { Input } from "@repo/ui/components/ui/input"
 import { Badge } from "@repo/ui/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/ui/select"
 import { Separator } from "@repo/ui/components/ui/separator"
 import { JobCard } from "@/components/career/job-card"
+import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/ui/alert"
+import { useRouter } from "next/navigation"
 
 interface JobsClientProps {
   jobs: any[]
+  isFallback?: boolean
 }
 
-export function JobsClient({ jobs }: JobsClientProps) {
+export function JobsClient({ jobs, isFallback = false }: JobsClientProps) {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
-  const [selectedLocation, setSelectedLocation] = useState<string>("")
-  const [selectedJobType, setSelectedJobType] = useState<string>("")
-  const [selectedSalaryRange, setSelectedSalaryRange] = useState<string>("")
+  const [selectedLocation, setSelectedLocation] = useState<string>("all")
+  const [selectedJobType, setSelectedJobType] = useState<string>("all")
+  const [selectedSalaryRange, setSelectedSalaryRange] = useState<string>("all")
   const [showFilters, setShowFilters] = useState(false)
 
   const locations = ["北京", "上海", "深圳", "杭州", "广州", "成都", "南京", "武汉"]
@@ -26,17 +30,18 @@ export function JobsClient({ jobs }: JobsClientProps) {
   const popularTags = ["前端开发", "后端开发", "算法工程师", "产品经理", "UI设计", "数据分析", "运营", "测试"]
 
   const filteredJobs = jobs.filter(job => {
-    const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         job.company.name.toLowerCase().includes(searchQuery.toLowerCase())
+    const title = job.title?.toString().toLowerCase() ?? ""
+    const companyName = job.company?.name?.toString().toLowerCase() ?? ""
+    const matchesSearch = title.includes(searchQuery.toLowerCase()) || companyName.includes(searchQuery.toLowerCase())
     
-    const matchesLocation = !selectedLocation || job.location.some((loc: string) => loc.includes(selectedLocation))
+    const matchesLocation = selectedLocation === "all" || job.location.some((loc: string) => loc.includes(selectedLocation))
     
-    const matchesJobType = !selectedJobType || 
+    const matchesJobType = selectedJobType === "all" || 
       (selectedJobType === "全职" && job.jobType === "fulltime") ||
       (selectedJobType === "实习" && job.jobType === "intern") ||
       (selectedJobType === "兼职" && job.jobType === "parttime")
     
-    const matchesSalary = !selectedSalaryRange || checkSalaryRange(job, selectedSalaryRange)
+    const matchesSalary = selectedSalaryRange === "all" || checkSalaryRange(job, selectedSalaryRange)
     
     return matchesSearch && matchesLocation && matchesJobType && matchesSalary
   })
@@ -63,6 +68,15 @@ export function JobsClient({ jobs }: JobsClientProps) {
         <div className="container py-8">
           <h1 className="text-3xl font-bold">职位搜索</h1>
           <p className="text-muted-foreground mt-2">发现 {filteredJobs.length} 个优质职位机会</p>
+          {isFallback && (
+            <Alert className="mt-4 border-dashed">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>当前展示演示数据</AlertTitle>
+              <AlertDescription>
+                尚未连接 Supabase 实时职位数据，我们将展示精选示例岗位，便于你预览产品体验。
+              </AlertDescription>
+            </Alert>
+          )}
         </div>
       </div>
 
@@ -103,7 +117,7 @@ export function JobsClient({ jobs }: JobsClientProps) {
                       <SelectValue placeholder="选择城市" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">全部城市</SelectItem>
+                      <SelectItem value="all">全部城市</SelectItem>
                       {locations.map(location => (
                         <SelectItem key={location} value={location}>{location}</SelectItem>
                       ))}
@@ -122,7 +136,7 @@ export function JobsClient({ jobs }: JobsClientProps) {
                       <SelectValue placeholder="选择类型" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">全部类型</SelectItem>
+                      <SelectItem value="all">全部类型</SelectItem>
                       {jobTypes.map(type => (
                         <SelectItem key={type} value={type}>{type}</SelectItem>
                       ))}
@@ -141,7 +155,7 @@ export function JobsClient({ jobs }: JobsClientProps) {
                       <SelectValue placeholder="选择薪资" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">不限薪资</SelectItem>
+                      <SelectItem value="all">不限薪资</SelectItem>
                       {salaryRanges.map(range => (
                         <SelectItem key={range} value={range}>{range}</SelectItem>
                       ))}
@@ -157,9 +171,9 @@ export function JobsClient({ jobs }: JobsClientProps) {
                   className="w-full"
                   onClick={() => {
                     setSearchQuery("")
-                    setSelectedLocation("")
-                    setSelectedJobType("")
-                    setSelectedSalaryRange("")
+                    setSelectedLocation("all")
+                    setSelectedJobType("all")
+                    setSelectedSalaryRange("all")
                   }}
                 >
                   重置筛选
@@ -229,7 +243,7 @@ export function JobsClient({ jobs }: JobsClientProps) {
                   <JobCard 
                     key={job.id} 
                     job={job}
-                    onClick={() => window.open(`/jobs/${job.id}`, '_blank')}
+                    onClick={() => router.push(`/jobs/${job.id}`)}
                     onBookmark={() => console.log('Bookmark job:', job.id)}
                   />
                 ))

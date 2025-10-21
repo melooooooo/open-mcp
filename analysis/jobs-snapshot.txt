@@ -1,58 +1,393 @@
-### New console messages
-- Error: A <Select.Item /> must have a value prop that is not an empty string. This is because the Sel...
-
 ### Page state
 - Page URL: http://127.0.0.1:3100/jobs
-- Page Title: 
+- Page Title: 职启航 - 秋招应届生求职平台
 - Page Snapshot:
 ```yaml
-- generic [ref=e1]:
-  - generic [ref=e147]:
-    - generic [ref=e148]:
-      - generic [ref=e149]:
-        - navigation [ref=e150]:
-          - button "previous" [disabled] [ref=e151]:
-            - img "previous" [ref=e152]
-          - generic [ref=e154]:
-            - generic [ref=e155]: 1/
-            - text: "2"
-          - button "next" [ref=e156] [cursor=pointer]:
-            - img "next" [ref=e157]
-        - img
-      - generic [ref=e159]:
-        - generic [ref=e160]:
-          - img [ref=e161]
-          - generic "No Next.js version data was found." [ref=e163]: Next.js 0.0.0 (unknown)
-          - generic [ref=e164]: Turbopack
-        - img
-    - generic [ref=e165]:
-      - dialog "Console Error" [ref=e166]:
-        - generic [ref=e168]:
-          - generic [ref=e170]:
-            - generic [ref=e171]:
-              - generic [ref=e172]:
-                - generic [ref=e173]: Console Error
-                - generic [ref=e174]: Server
-              - generic [ref=e175]:
-                - button "Copy Stack Trace" [ref=e176] [cursor=pointer]:
-                  - img [ref=e177]
-                - button "No related documentation found" [disabled] [ref=e179]:
-                  - img [ref=e180]
-                - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools" [ref=e182] [cursor=pointer]:
-                  - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
-                  - img [ref=e183]
-            - paragraph [ref=e192]: "Error fetching jobs: {}"
-          - generic [ref=e194]:
-            - generic [ref=e195]: "1"
-            - generic [ref=e196]: "2"
-      - contentinfo [ref=e197]:
-        - region "Error feedback" [ref=e198]:
-          - paragraph [ref=e199]:
-            - link "Was this helpful?" [ref=e200] [cursor=pointer]:
-              - /url: https://nextjs.org/telemetry#error-feedback
-          - button "Mark as helpful" [ref=e201] [cursor=pointer]:
-            - img [ref=e202]
-          - button "Mark as not helpful" [ref=e205] [cursor=pointer]:
-            - img [ref=e206]
-  - 'heading "Application error: a client-side exception has occurred while loading 127.0.0.1 (see the browser console for more information)." [level=2] [ref=e210]'
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - banner [ref=e5]:
+        - generic [ref=e7]:
+          - link "返回首页" [ref=e9] [cursor=pointer]:
+            - /url: /
+            - img [ref=e10]
+            - generic [ref=e17]: 职启航
+          - generic [ref=e18]:
+            - navigation [ref=e19]:
+              - link "首页" [ref=e20] [cursor=pointer]:
+                - /url: /
+              - link "职位" [ref=e21] [cursor=pointer]:
+                - /url: /jobs
+              - link "内推" [ref=e22] [cursor=pointer]:
+                - /url: /referrals
+              - link "经验" [ref=e23] [cursor=pointer]:
+                - /url: /experiences
+              - link "公司" [ref=e24] [cursor=pointer]:
+                - /url: /companies
+              - link "薪酬" [ref=e25] [cursor=pointer]:
+                - /url: /salary
+              - link "帮助中心" [ref=e26] [cursor=pointer]:
+                - /url: /help
+            - generic [ref=e27]:
+              - link "登录" [ref=e28] [cursor=pointer]:
+                - /url: /auth/sign-in
+                - img
+                - text: 登录
+              - button "切换主题" [ref=e29]:
+                - img
+                - img
+                - generic [ref=e30]: 切换主题
+      - main [ref=e31]:
+        - generic [ref=e33]:
+          - generic [ref=e35]:
+            - heading "职位搜索" [level=1] [ref=e36]
+            - paragraph [ref=e37]: 发现 6 个优质职位机会
+            - alert [ref=e38]:
+              - img [ref=e39]
+              - generic [ref=e41]: 当前展示演示数据
+              - generic [ref=e42]: 尚未连接 Supabase 实时职位数据，我们将展示精选示例岗位，便于你预览产品体验。
+          - generic [ref=e44]:
+            - generic [ref=e46]:
+              - generic [ref=e48]:
+                - img [ref=e49]
+                - textbox "搜索职位或公司..." [ref=e52]
+              - generic [ref=e53]:
+                - heading "筛选条件" [level=3] [ref=e54]:
+                  - img [ref=e55]
+                  - text: 筛选条件
+                - generic [ref=e57]:
+                  - heading "工作地点" [level=4] [ref=e58]:
+                    - img [ref=e59]
+                    - text: 工作地点
+                  - combobox [ref=e62]:
+                    - generic: 全部城市
+                    - img
+                - generic [ref=e64]:
+                  - heading "工作类型" [level=4] [ref=e65]:
+                    - img [ref=e66]
+                    - text: 工作类型
+                  - combobox [ref=e70]:
+                    - generic: 全部类型
+                    - img
+                - generic [ref=e72]:
+                  - heading "薪资范围" [level=4] [ref=e73]:
+                    - img [ref=e74]
+                    - text: 薪资范围
+                  - combobox [ref=e76]:
+                    - generic: 不限薪资
+                    - img
+                - button "重置筛选" [ref=e78]
+              - generic [ref=e79]:
+                - heading "热门标签" [level=3] [ref=e80]
+                - generic [ref=e81]:
+                  - generic [ref=e82] [cursor=pointer]: 前端开发
+                  - generic [ref=e83] [cursor=pointer]: 后端开发
+                  - generic [ref=e84] [cursor=pointer]: 算法工程师
+                  - generic [ref=e85] [cursor=pointer]: 产品经理
+                  - generic [ref=e86] [cursor=pointer]: UI设计
+                  - generic [ref=e87] [cursor=pointer]: 数据分析
+                  - generic [ref=e88] [cursor=pointer]: 运营
+                  - generic [ref=e89] [cursor=pointer]: 测试
+            - generic [ref=e90]:
+              - generic [ref=e91]:
+                - heading "共 6 个职位" [level=2] [ref=e92]
+                - combobox [ref=e93]:
+                  - generic: 最新发布
+                  - img
+              - generic [ref=e95]:
+                - generic [ref=e96] [cursor=pointer]:
+                  - generic [ref=e98]: 🔥 热门
+                  - generic [ref=e100]:
+                    - generic [ref=e102]: 字节
+                    - generic [ref=e104]:
+                      - generic [ref=e105]:
+                        - heading "前端开发工程师" [level=3] [ref=e106]
+                        - generic [ref=e107]:
+                          - paragraph [ref=e108]: 字节跳动
+                          - generic [ref=e109]: ·
+                          - generic [ref=e110]: 大厂
+                          - generic [ref=e111]: 内推
+                      - button [ref=e112]:
+                        - img
+                  - generic [ref=e113]:
+                    - generic [ref=e114]:
+                      - generic [ref=e115]:
+                        - img [ref=e116]
+                        - generic [ref=e118]: 25-45k
+                        - generic [ref=e119]: ·月薪
+                      - generic [ref=e120]: 全职
+                    - generic [ref=e121]:
+                      - generic [ref=e122]:
+                        - img [ref=e123]
+                        - text: 北京、上海
+                      - generic [ref=e126]:
+                        - img [ref=e127]
+                        - text: 本科及以上
+                      - generic [ref=e132]:
+                        - img [ref=e133]
+                        - text: 抖音电商
+                    - generic [ref=e137]:
+                      - generic [ref=e138]: React
+                      - generic [ref=e139]: TypeScript
+                      - generic [ref=e140]: Node.js
+                      - generic [ref=e141]: 微前端
+                  - generic [ref=e144]:
+                    - generic [ref=e145]: 2834 浏览
+                    - generic [ref=e146]: 89 已投递
+                - generic [ref=e147] [cursor=pointer]:
+                  - generic [ref=e149]: 🔥 热门
+                  - generic [ref=e151]:
+                    - generic [ref=e153]: 腾讯
+                    - generic [ref=e155]:
+                      - generic [ref=e156]:
+                        - heading "产品经理（应届生）" [level=3] [ref=e157]
+                        - generic [ref=e158]:
+                          - paragraph [ref=e159]: 腾讯
+                          - generic [ref=e160]: ·
+                          - generic [ref=e161]: 大厂
+                          - generic [ref=e162]: 内推
+                      - button [ref=e163]:
+                        - img
+                  - generic [ref=e164]:
+                    - generic [ref=e165]:
+                      - generic [ref=e166]:
+                        - img [ref=e167]
+                        - generic [ref=e169]: 20-35k
+                        - generic [ref=e170]: ·月薪
+                      - generic [ref=e171]: 全职
+                    - generic [ref=e172]:
+                      - generic [ref=e173]:
+                        - img [ref=e174]
+                        - text: 深圳、广州
+                      - generic [ref=e177]:
+                        - img [ref=e178]
+                        - text: 本科及以上
+                      - generic [ref=e183]:
+                        - img [ref=e184]
+                        - text: 微信事业群
+                    - generic [ref=e188]:
+                      - generic [ref=e189]: 产品设计
+                      - generic [ref=e190]: 数据分析
+                      - generic [ref=e191]: 用户研究
+                  - generic [ref=e194]:
+                    - generic [ref=e195]: 1523 浏览
+                    - generic [ref=e196]: 67 已投递
+                - generic [ref=e197] [cursor=pointer]:
+                  - generic [ref=e199]: 🔥 热门
+                  - generic [ref=e201]:
+                    - generic [ref=e203]: 阿里
+                    - generic [ref=e205]:
+                      - generic [ref=e206]:
+                        - heading "算法工程师（NLP方向）" [level=3] [ref=e207]
+                        - generic [ref=e208]:
+                          - paragraph [ref=e209]: 阿里巴巴
+                          - generic [ref=e210]: ·
+                          - generic [ref=e211]: 大厂
+                      - button [ref=e212]:
+                        - img
+                  - generic [ref=e213]:
+                    - generic [ref=e214]:
+                      - generic [ref=e215]:
+                        - img [ref=e216]
+                        - generic [ref=e218]: 30-50k
+                        - generic [ref=e219]: ·月薪
+                      - generic [ref=e220]: 全职
+                    - generic [ref=e221]:
+                      - generic [ref=e222]:
+                        - img [ref=e223]
+                        - text: 杭州、北京
+                      - generic [ref=e226]:
+                        - img [ref=e227]
+                        - text: 硕士及以上
+                      - generic [ref=e232]:
+                        - img [ref=e233]
+                        - text: 达摩院
+                    - generic [ref=e237]:
+                      - generic [ref=e238]: 深度学习
+                      - generic [ref=e239]: NLP
+                      - generic [ref=e240]: Python
+                      - generic [ref=e241]: TensorFlow
+                  - generic [ref=e244]:
+                    - generic [ref=e245]: 985 浏览
+                    - generic [ref=e246]: 45 已投递
+                - generic [ref=e247] [cursor=pointer]:
+                  - generic [ref=e249]: ✨ 新发布
+                  - generic [ref=e251]:
+                    - generic [ref=e253]: 美团
+                    - generic [ref=e255]:
+                      - generic [ref=e256]:
+                        - heading "Java开发实习生" [level=3] [ref=e257]
+                        - generic [ref=e258]:
+                          - paragraph [ref=e259]: 美团
+                          - generic [ref=e260]: ·
+                          - generic [ref=e261]: 大厂
+                      - button [ref=e262]:
+                        - img
+                  - generic [ref=e263]:
+                    - generic [ref=e264]:
+                      - generic [ref=e265]:
+                        - img [ref=e266]
+                        - generic [ref=e268]: 150-250k
+                        - generic [ref=e269]: ·月薪
+                      - generic [ref=e270]: 实习
+                    - generic [ref=e271]:
+                      - generic [ref=e272]:
+                        - img [ref=e273]
+                        - text: 北京、上海
+                      - generic [ref=e276]:
+                        - img [ref=e277]
+                        - text: 本科及以上
+                      - generic [ref=e282]:
+                        - img [ref=e283]
+                        - text: 到店事业群
+                    - generic [ref=e287]:
+                      - generic [ref=e288]: Java
+                      - generic [ref=e289]: Spring Boot
+                      - generic [ref=e290]: MySQL
+                      - generic [ref=e291]: Redis
+                  - generic [ref=e294]:
+                    - generic [ref=e295]: 654 浏览
+                    - generic [ref=e296]: 23 已投递
+                - generic [ref=e297] [cursor=pointer]:
+                  - generic [ref=e299]: 🔥 热门
+                  - generic [ref=e301]:
+                    - generic [ref=e303]: 小红
+                    - generic [ref=e305]:
+                      - generic [ref=e306]:
+                        - heading "UI/UX设计师" [level=3] [ref=e307]
+                        - generic [ref=e308]:
+                          - paragraph [ref=e309]: 小红书
+                          - generic [ref=e310]: ·
+                          - generic [ref=e311]: 独角兽
+                          - generic [ref=e312]: 内推
+                      - button [ref=e313]:
+                        - img
+                  - generic [ref=e314]:
+                    - generic [ref=e315]:
+                      - generic [ref=e316]:
+                        - img [ref=e317]
+                        - generic [ref=e319]: 18-30k
+                        - generic [ref=e320]: ·月薪
+                      - generic [ref=e321]: 全职
+                    - generic [ref=e322]:
+                      - generic [ref=e323]:
+                        - img [ref=e324]
+                        - text: 上海
+                      - generic [ref=e327]:
+                        - img [ref=e328]
+                        - text: 本科及以上
+                      - generic [ref=e333]:
+                        - img [ref=e334]
+                        - text: 用户体验设计部
+                    - generic [ref=e338]:
+                      - generic [ref=e339]: Figma
+                      - generic [ref=e340]: Sketch
+                      - generic [ref=e341]: 交互设计
+                      - generic [ref=e342]: 视觉设计
+                  - generic [ref=e345]:
+                    - generic [ref=e346]: 1234 浏览
+                    - generic [ref=e347]: 56 已投递
+                - generic [ref=e348] [cursor=pointer]:
+                  - generic [ref=e350]: 🔥 热门
+                  - generic [ref=e352]:
+                    - generic [ref=e354]: 拼多
+                    - generic [ref=e356]:
+                      - generic [ref=e357]:
+                        - heading "数据分析师" [level=3] [ref=e358]
+                        - generic [ref=e359]:
+                          - paragraph [ref=e360]: 拼多多
+                          - generic [ref=e361]: ·
+                          - generic [ref=e362]: 大厂
+                      - button [ref=e363]:
+                        - img
+                  - generic [ref=e364]:
+                    - generic [ref=e365]:
+                      - generic [ref=e366]:
+                        - img [ref=e367]
+                        - generic [ref=e369]: 25-40k
+                        - generic [ref=e370]: ·月薪
+                      - generic [ref=e371]: 全职
+                    - generic [ref=e372]:
+                      - generic [ref=e373]:
+                        - img [ref=e374]
+                        - text: 上海
+                      - generic [ref=e377]:
+                        - img [ref=e378]
+                        - text: 本科及以上
+                      - generic [ref=e383]:
+                        - img [ref=e384]
+                        - text: 战略分析部
+                    - generic [ref=e388]:
+                      - generic [ref=e389]: SQL
+                      - generic [ref=e390]: Python
+                      - generic [ref=e391]: 数据分析
+                      - generic [ref=e392]: 商业分析
+                  - generic [ref=e395]:
+                    - generic [ref=e396]: 876 浏览
+                    - generic [ref=e397]: 34 已投递
+              - button "加载更多职位" [ref=e399]
+      - contentinfo [ref=e400]:
+        - generic [ref=e401]:
+          - generic [ref=e402]:
+            - generic [ref=e403]:
+              - generic [ref=e404]:
+                - img [ref=e405]
+                - generic [ref=e412]: 职启航
+              - paragraph [ref=e413]: 职启航专注服务秋招应届生与在校生，整合职位、内推、面经与薪酬情报，帮助你自信踏出职场第一步。
+            - generic [ref=e414]:
+              - heading "求职导航" [level=3] [ref=e415]
+              - list [ref=e416]:
+                - listitem [ref=e417]:
+                  - link "职位广场" [ref=e418] [cursor=pointer]:
+                    - /url: /jobs
+                - listitem [ref=e419]:
+                  - link "内推机会" [ref=e420] [cursor=pointer]:
+                    - /url: /referrals
+                - listitem [ref=e421]:
+                  - link "面经与攻略" [ref=e422] [cursor=pointer]:
+                    - /url: /experiences
+                - listitem [ref=e423]:
+                  - link "企业库" [ref=e424] [cursor=pointer]:
+                    - /url: /companies
+                - listitem [ref=e425]:
+                  - link "薪酬洞察" [ref=e426] [cursor=pointer]:
+                    - /url: /salary
+            - generic [ref=e427]:
+              - heading "服务支持" [level=3] [ref=e428]
+              - list [ref=e429]:
+                - listitem [ref=e430]:
+                  - link "帮助中心" [ref=e431] [cursor=pointer]:
+                    - /url: /help
+                - listitem [ref=e432]:
+                  - link "关于我们" [ref=e433] [cursor=pointer]:
+                    - /url: /about
+                - listitem [ref=e434]:
+                  - link "隐私政策" [ref=e435] [cursor=pointer]:
+                    - /url: /about/terms
+                - listitem [ref=e436]:
+                  - link "服务条款" [ref=e437] [cursor=pointer]:
+                    - /url: /about/service
+                - listitem [ref=e438]:
+                  - button "企业合作" [ref=e439]
+            - generic [ref=e440]:
+              - heading "订阅求职情报" [level=3] [ref=e441]
+              - paragraph [ref=e442]: 获取最新职位投递窗口、内推开放提醒和校招攻略，领先一步拿到 Offer。
+              - generic [ref=e443]:
+                - textbox "输入您的邮箱..." [ref=e444]
+                - button "订阅" [ref=e445]:
+                  - img
+                  - text: 订阅
+          - generic [ref=e447]:
+            - paragraph [ref=e448]: Copyright ©2025-2027 天津聚链科技有限公司版权所有
+            - generic [ref=e449]:
+              - link "津ICP备2023007973号-1" [ref=e450] [cursor=pointer]:
+                - /url: https://beian.miit.gov.cn/
+              - text: "|"
+              - link "津公网安备12011402001495号 津公网安备12011402001495号" [ref=e451] [cursor=pointer]:
+                - /url: http://www.beian.gov.cn/portal/registerSystemInfo
+                - img "津公网安备12011402001495号" [ref=e453]
+                - text: 津公网安备12011402001495号
+    - region "Notifications alt+T"
+  - region "Notifications alt+T"
+  - alert [ref=e454]
 ```

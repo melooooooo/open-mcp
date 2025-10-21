@@ -8,26 +8,26 @@
     - generic [ref=e4]:
       - banner [ref=e5]:
         - generic [ref=e7]:
-          - link "OpenMCP" [ref=e9] [cursor=pointer]:
+          - link "返回首页" [ref=e9] [cursor=pointer]:
             - /url: /
             - img [ref=e10]
-            - generic [ref=e17]: OpenMCP
+            - generic [ref=e17]: 职启航
           - generic [ref=e18]:
             - navigation [ref=e19]:
               - link "首页" [ref=e20] [cursor=pointer]:
                 - /url: /
-              - link "排行" [ref=e21] [cursor=pointer]:
-                - /url: /ranking
-              - link "客户端" [ref=e22] [cursor=pointer]:
-                - /url: /category/client
-              - link "服务器" [ref=e23] [cursor=pointer]:
-                - /url: /category/server
-              - link "应用" [ref=e24] [cursor=pointer]:
-                - /url: /category/application
-              - link "推广" [ref=e25] [cursor=pointer]:
-                - /url: /advertise
-              - link "提交应用" [ref=e26] [cursor=pointer]:
-                - /url: /submit
+              - link "职位" [ref=e21] [cursor=pointer]:
+                - /url: /jobs
+              - link "内推" [ref=e22] [cursor=pointer]:
+                - /url: /referrals
+              - link "经验" [ref=e23] [cursor=pointer]:
+                - /url: /experiences
+              - link "公司" [ref=e24] [cursor=pointer]:
+                - /url: /companies
+              - link "薪酬" [ref=e25] [cursor=pointer]:
+                - /url: /salary
+              - link "帮助中心" [ref=e26] [cursor=pointer]:
+                - /url: /help
             - generic [ref=e27]:
               - link "登录" [ref=e28] [cursor=pointer]:
                 - /url: /auth/sign-in
@@ -63,435 +63,750 @@
             - generic [ref=e61]:
               - generic [ref=e62]:
                 - img [ref=e63]
-                - generic [ref=e66]: 12,580+
-                - generic [ref=e67]: 在招职位
-              - generic [ref=e68]:
-                - img [ref=e69]
-                - generic [ref=e74]: 2,456
-                - generic [ref=e75]: 合作企业
-              - generic [ref=e76]:
-                - img [ref=e77]
-                - generic [ref=e80]: "856"
-                - generic [ref=e81]: 内推机会
+                - generic [ref=e65]: 12,580+
+                - generic [ref=e66]: 在招职位
+              - generic [ref=e67]:
+                - img [ref=e68]
+                - generic [ref=e72]: 856+
+                - generic [ref=e73]: 内推机会
+              - generic [ref=e74]:
+                - img [ref=e75]
+                - generic [ref=e80]: 2,456+
+                - generic [ref=e81]: 合作企业
               - generic [ref=e82]:
                 - img [ref=e83]
-                - generic [ref=e85]: 68%
-                - generic [ref=e86]: 求职成功率
-            - generic [ref=e87]:
-              - button "查看内推机会" [ref=e88]:
+                - generic [ref=e89]: ≈68%
+                - generic [ref=e90]: 求职成功率
+            - generic [ref=e91]:
+              - link "查看内推机会" [ref=e92] [cursor=pointer]:
+                - /url: /referrals
                 - img
                 - text: 查看内推机会
-              - button "浏览面试经验" [ref=e89]:
+              - link "浏览面试经验" [ref=e93] [cursor=pointer]:
+                - /url: /experiences
                 - img
                 - text: 浏览面试经验
-          - generic [ref=e94]:
-            - generic:
-              - heading [level=2]
-            - link "查看全部" [ref=e95] [cursor=pointer]:
-              - /url: /jobs
-              - text: 查看全部
-              - img
-          - generic [ref=e99]:
-            - generic [ref=e100]:
-              - generic [ref=e101]:
-                - generic [ref=e102]:
-                  - heading "内推机会" [level=2] [ref=e103]
-                  - generic [ref=e104]:
+          - generic [ref=e97]:
+            - generic [ref=e98]:
+              - generic [ref=e99]:
+                - paragraph [ref=e100]: Job Highlights
+                - heading "精选职位" [level=2] [ref=e101]
+                - paragraph [ref=e102]: 根据平台热度和最新上架同步更新，帮你快速锁定热门与新鲜机会。
+              - link "浏览全部职位" [ref=e103] [cursor=pointer]:
+                - /url: /jobs
+                - text: 浏览全部职位
+                - img
+            - generic [ref=e104]:
+              - generic [ref=e105]:
+                - generic [ref=e106]:
+                  - generic [ref=e107]:
+                    - img [ref=e108]
+                    - heading "热门职位" [level=3] [ref=e110]
+                  - generic [ref=e111]: 高关注度
+                - generic [ref=e112]:
+                  - generic [ref=e115] [cursor=pointer]:
+                    - generic [ref=e117]: 字节
+                    - generic [ref=e118]:
+                      - generic [ref=e119]:
+                        - generic [ref=e120]:
+                          - heading "前端开发工程师" [level=3] [ref=e121]
+                          - paragraph [ref=e122]: 字节跳动
+                        - generic [ref=e123]: 25-45k
+                      - generic [ref=e124]:
+                        - generic [ref=e125]:
+                          - img [ref=e126]
+                          - text: 北京
+                        - generic [ref=e129]: 本科及以上
+                  - generic [ref=e132] [cursor=pointer]:
+                    - generic [ref=e134]: 腾讯
+                    - generic [ref=e135]:
+                      - generic [ref=e136]:
+                        - generic [ref=e137]:
+                          - heading "产品经理（应届生）" [level=3] [ref=e138]
+                          - paragraph [ref=e139]: 腾讯
+                        - generic [ref=e140]: 20-35k
+                      - generic [ref=e141]:
+                        - generic [ref=e142]:
+                          - img [ref=e143]
+                          - text: 深圳
+                        - generic [ref=e146]: 本科及以上
+                  - generic [ref=e149] [cursor=pointer]:
+                    - generic [ref=e151]: 阿里
+                    - generic [ref=e152]:
+                      - generic [ref=e153]:
+                        - generic [ref=e154]:
+                          - heading "算法工程师（NLP方向）" [level=3] [ref=e155]
+                          - paragraph [ref=e156]: 阿里巴巴
+                        - generic [ref=e157]: 30-50k
+                      - generic [ref=e158]:
+                        - generic [ref=e159]:
+                          - img [ref=e160]
+                          - text: 杭州
+                        - generic [ref=e163]: 硕士及以上
+              - generic [ref=e164]:
+                - generic [ref=e165]:
+                  - generic [ref=e166]:
+                    - img [ref=e167]
+                    - heading "最新上架" [level=3] [ref=e169]
+                  - generic [ref=e170]: 刚刚更新
+                - generic [ref=e171]:
+                  - generic [ref=e174] [cursor=pointer]:
+                    - generic [ref=e176]: 腾讯
+                    - generic [ref=e177]:
+                      - generic [ref=e178]:
+                        - generic [ref=e179]:
+                          - heading "产品经理（应届生）" [level=3] [ref=e180]
+                          - paragraph [ref=e181]: 腾讯
+                        - generic [ref=e182]: 20-35k
+                      - generic [ref=e183]:
+                        - generic [ref=e184]:
+                          - img [ref=e185]
+                          - text: 深圳
+                        - generic [ref=e188]: 本科及以上
+                  - generic [ref=e191] [cursor=pointer]:
+                    - generic [ref=e193]: 美团
+                    - generic [ref=e194]:
+                      - generic [ref=e195]:
+                        - generic [ref=e196]:
+                          - heading "Java开发实习生" [level=3] [ref=e197]
+                          - paragraph [ref=e198]: 美团
+                        - generic [ref=e199]: 150-250k
+                      - generic [ref=e200]:
+                        - generic [ref=e201]:
+                          - img [ref=e202]
+                          - text: 北京
+                        - generic [ref=e205]: 本科及以上
+            - generic [ref=e206]:
+              - generic [ref=e207]:
+                - generic [ref=e208]:
+                  - img [ref=e209]
+                  - heading "开放内推的岗位" [level=3] [ref=e213]
+                - link "查看全部内推" [ref=e214] [cursor=pointer]:
+                  - /url: /referrals
+                  - text: 查看全部内推
+                  - img
+              - generic [ref=e215]:
+                - generic [ref=e218] [cursor=pointer]:
+                  - generic [ref=e220]: 字节
+                  - generic [ref=e221]:
+                    - generic [ref=e222]:
+                      - generic [ref=e223]:
+                        - heading "前端开发工程师" [level=3] [ref=e224]
+                        - paragraph [ref=e225]: 字节跳动
+                      - generic [ref=e226]: 25-45k
+                    - generic [ref=e227]:
+                      - generic [ref=e228]:
+                        - img [ref=e229]
+                        - text: 北京
+                      - generic [ref=e232]: 本科及以上
+                - generic [ref=e235] [cursor=pointer]:
+                  - generic [ref=e237]: 腾讯
+                  - generic [ref=e238]:
+                    - generic [ref=e239]:
+                      - generic [ref=e240]:
+                        - heading "产品经理（应届生）" [level=3] [ref=e241]
+                        - paragraph [ref=e242]: 腾讯
+                      - generic [ref=e243]: 20-35k
+                    - generic [ref=e244]:
+                      - generic [ref=e245]:
+                        - img [ref=e246]
+                        - text: 深圳
+                      - generic [ref=e249]: 本科及以上
+                - generic [ref=e252] [cursor=pointer]:
+                  - generic [ref=e254]: 小红
+                  - generic [ref=e255]:
+                    - generic [ref=e256]:
+                      - generic [ref=e257]:
+                        - heading "UI/UX设计师" [level=3] [ref=e258]
+                        - paragraph [ref=e259]: 小红书
+                      - generic [ref=e260]: 18-30k
+                    - generic [ref=e261]:
+                      - generic [ref=e262]:
+                        - img [ref=e263]
+                        - text: 上海
+                      - generic [ref=e266]: 本科及以上
+          - generic [ref=e270]:
+            - generic [ref=e271]:
+              - generic [ref=e272]:
+                - generic [ref=e273]:
+                  - heading "内推机会" [level=2] [ref=e274]
+                  - generic [ref=e275]:
                     - img
                     - text: 快速通道
-                - paragraph [ref=e105]: 来自大厂在职员工的真实内推，提高简历通过率
-              - link "查看全部" [ref=e106] [cursor=pointer]:
+                - paragraph [ref=e276]: 来自大厂在职员工的真实内推，提高简历通过率
+              - link "查看全部" [ref=e277] [cursor=pointer]:
                 - /url: /referrals
                 - text: 查看全部
                 - img
-            - paragraph [ref=e108]: 💡 内推名额有限，建议尽早申请。成功获得内推后，请认真准备简历和面试。
-          - generic [ref=e112]:
-            - generic [ref=e113]:
-              - generic [ref=e114]:
+            - generic [ref=e278]:
+              - generic [ref=e279] [cursor=pointer]:
+                - generic [ref=e281]:
+                  - img
+                  - text: 已认证
+                - generic [ref=e282]:
+                  - generic [ref=e283]:
+                    - generic [ref=e285]: 张三
+                    - generic [ref=e286]:
+                      - generic [ref=e288]:
+                        - heading "张三 金牌内推官" [level=3] [ref=e289]:
+                          - text: 张三
+                          - generic [ref=e290]:
+                            - img
+                            - text: 金牌内推官
+                        - paragraph [ref=e291]: 高级前端工程师 @ 字节跳动 · 抖音电商
+                      - generic [ref=e292]:
+                        - generic [ref=e293]:
+                          - img [ref=e294]
+                          - generic [ref=e297]: 85% 成功率
+                        - generic [ref=e298]:
+                          - img [ref=e299]
+                          - generic [ref=e301]: "4.8"
+                          - generic [ref=e302]: (12)
+                        - generic [ref=e303]:
+                          - img [ref=e304]
+                          - text: 已帮助 23 人
+                  - generic [ref=e309]:
+                    - heading "前端开发工程师" [level=4] [ref=e310]
+                    - generic [ref=e311]:
+                      - generic [ref=e312]: 抖音电商
+                      - generic [ref=e313]: 北京、上海
+                      - generic [ref=e314]: 25-45k
+                - generic [ref=e315]:
+                  - paragraph [ref=e316]: 团队氛围好，技术栈新，成长空间大。直接内推到组内，可以跳过简历筛选。
+                  - generic [ref=e317]:
+                    - paragraph [ref=e318]: 基本要求：
+                    - generic [ref=e319]:
+                      - generic [ref=e320]: React熟练
+                      - generic [ref=e321]: 本科学历
+                      - generic [ref=e322]: 实习经验
+                  - generic [ref=e323]:
+                    - generic [ref=e324]:
+                      - generic [ref=e325]: 内推名额
+                      - generic [ref=e326]: 3/5 已使用
+                    - progressbar [ref=e327]
+                    - paragraph [ref=e329]: ⚡ 仅剩 2 个名额，抓紧申请！
+                - generic [ref=e331]:
+                  - generic [ref=e332]:
+                    - generic [ref=e333]:
+                      - img
+                      - text: 剩7天
+                    - button "咨询" [ref=e334]:
+                      - img [ref=e335]
+                      - generic [ref=e337]: 咨询
+                  - button "申请内推" [ref=e338]
+              - generic [ref=e339] [cursor=pointer]:
+                - generic [ref=e341]:
+                  - img
+                  - text: 已认证
+                - generic [ref=e342]:
+                  - generic [ref=e343]:
+                    - generic [ref=e345]: 李四
+                    - generic [ref=e346]:
+                      - generic [ref=e348]:
+                        - heading "李四 金牌内推官" [level=3] [ref=e349]:
+                          - text: 李四
+                          - generic [ref=e350]:
+                            - img
+                            - text: 金牌内推官
+                        - paragraph [ref=e351]: 产品总监 @ 腾讯 · 微信支付
+                      - generic [ref=e352]:
+                        - generic [ref=e353]:
+                          - img [ref=e354]
+                          - generic [ref=e357]: 92% 成功率
+                        - generic [ref=e358]:
+                          - img [ref=e359]
+                          - generic [ref=e361]: "4.9"
+                          - generic [ref=e362]: (28)
+                        - generic [ref=e363]:
+                          - img [ref=e364]
+                          - text: 已帮助 45 人
+                  - generic [ref=e369]:
+                    - heading "产品经理" [level=4] [ref=e370]
+                    - generic [ref=e371]:
+                      - generic [ref=e372]: 微信事业群
+                      - generic [ref=e373]: 深圳
+                      - generic [ref=e374]: 20-35k
+                - generic [ref=e375]:
+                  - paragraph [ref=e376]: 微信核心产品团队，参与亿级用户产品设计。团队大牛多，成长快。
+                  - generic [ref=e377]:
+                    - paragraph [ref=e378]: 基本要求：
+                    - generic [ref=e379]:
+                      - generic [ref=e380]: 产品思维
+                      - generic [ref=e381]: 数据分析能力
+                      - generic [ref=e382]: 沟通能力强
+                  - generic [ref=e383]:
+                    - generic [ref=e384]:
+                      - generic [ref=e385]: 内推名额
+                      - generic [ref=e386]: 1/3 已使用
+                    - progressbar [ref=e387]
+                    - paragraph [ref=e389]: ⚡ 仅剩 2 个名额，抓紧申请！
+                - generic [ref=e391]:
+                  - button "咨询" [ref=e393]:
+                    - img [ref=e394]
+                    - generic [ref=e396]: 咨询
+                  - button "申请内推" [ref=e397]
+              - generic [ref=e398] [cursor=pointer]:
+                - generic [ref=e400]:
+                  - img
+                  - text: 已认证
+                - generic [ref=e401]:
+                  - generic [ref=e402]:
+                    - generic [ref=e404]: 王五
+                    - generic [ref=e405]:
+                      - generic [ref=e407]:
+                        - heading "王五 金牌内推官" [level=3] [ref=e408]:
+                          - text: 王五
+                          - generic [ref=e409]:
+                            - img
+                            - text: 金牌内推官
+                        - paragraph [ref=e410]: 算法专家 @ 阿里巴巴 · 达摩院
+                      - generic [ref=e411]:
+                        - generic [ref=e412]:
+                          - img [ref=e413]
+                          - generic [ref=e416]: 78% 成功率
+                        - generic [ref=e417]:
+                          - img [ref=e418]
+                          - generic [ref=e420]: "4.7"
+                          - generic [ref=e421]: (8)
+                        - generic [ref=e422]:
+                          - img [ref=e423]
+                          - text: 已帮助 15 人
+                  - generic [ref=e428]:
+                    - heading "算法工程师" [level=4] [ref=e429]
+                    - generic [ref=e430]:
+                      - generic [ref=e431]: 达摩院
+                      - generic [ref=e432]: 杭州
+                      - generic [ref=e433]: 30-50k
+                - generic [ref=e434]:
+                  - paragraph [ref=e435]: 达摩院核心算法团队，研究前沿技术，有机会参与顶会论文。
+                  - generic [ref=e436]:
+                    - paragraph [ref=e437]: 基本要求：
+                    - generic [ref=e438]:
+                      - generic [ref=e439]: 深度学习
+                      - generic [ref=e440]: 论文发表
+                      - generic [ref=e441]: 编程能力强
+                  - generic [ref=e442]:
+                    - generic [ref=e443]:
+                      - generic [ref=e444]: 内推名额
+                      - generic [ref=e445]: 2/2 已使用
+                    - progressbar [ref=e446]
+                - generic [ref=e449]:
+                  - generic [ref=e450]:
+                    - generic [ref=e451]:
+                      - img
+                      - text: 剩5天
+                    - button "咨询" [ref=e452]:
+                      - img [ref=e453]
+                      - generic [ref=e455]: 咨询
+                  - button "名额已满" [disabled]
+            - paragraph [ref=e457]: 💡 内推名额有限，建议尽早申请。成功获得内推后，请认真准备简历和面试。
+          - generic [ref=e461]:
+            - generic [ref=e462]:
+              - generic [ref=e463]:
                 - img
                 - text: 经验分享
-              - heading "前辈经验，助你少走弯路" [level=2] [ref=e115]
-              - paragraph [ref=e116]: 真实的面试经历、求职攻略和职场心得，帮你提升求职成功率
-            - generic [ref=e117]:
-              - tablist [ref=e118]:
-                - tab "全部" [selected] [ref=e119]
-                - tab "面经" [ref=e120]
-                - tab "攻略" [ref=e121]
-                - tab "点评" [ref=e122]
-              - tabpanel "全部" [ref=e123]:
-                - generic [ref=e124]:
-                  - generic [ref=e125] [cursor=pointer]:
-                    - generic [ref=e127]: 📌 置顶
-                    - generic [ref=e129]:
-                      - generic [ref=e130]:
-                        - generic [ref=e131]:
+              - heading "前辈经验，助你少走弯路" [level=2] [ref=e464]
+              - paragraph [ref=e465]: 真实的面试经历、求职攻略和职场心得，帮你提升求职成功率
+            - generic [ref=e466]:
+              - tablist [ref=e467]:
+                - tab "全部" [selected] [ref=e468]
+                - tab "面经" [ref=e469]
+                - tab "攻略" [ref=e470]
+                - tab "点评" [ref=e471]
+              - tabpanel "全部" [ref=e472]:
+                - generic [ref=e473]:
+                  - generic [ref=e474] [cursor=pointer]:
+                    - generic [ref=e476]: 📌 置顶
+                    - generic [ref=e478]:
+                      - generic [ref=e479]:
+                        - generic [ref=e480]:
                           - img
                           - text: 面经
-                        - heading "字节跳动前端面经：从简历到offer全流程分享" [level=3] [ref=e132]
-                      - generic [ref=e133]:
-                        - generic [ref=e134]:
-                          - generic [ref=e136]: 字节
-                          - generic [ref=e137]: 字节跳动
-                        - generic [ref=e138]: ·
-                        - generic [ref=e139]: 前端开发工程师
-                      - generic [ref=e140]:
-                        - generic [ref=e141]:
-                          - generic [ref=e142]: 难度
-                          - generic [ref=e143]:
-                            - img [ref=e144]
-                            - img [ref=e146]
-                            - img [ref=e148]
-                            - img [ref=e150]
-                            - img [ref=e152]
-                        - generic [ref=e154]:
-                          - img [ref=e155]
-                          - generic [ref=e158]: 15分钟阅读
-                    - generic [ref=e159]:
-                      - paragraph [ref=e160]: 分享我的字节跳动面试经历，包括三轮技术面和一轮HR面。重点考察了React原理、算法、项目经验...
-                      - generic [ref=e161]:
-                        - generic [ref=e162]: 前端
-                        - generic [ref=e163]: React
-                        - generic [ref=e164]: 算法
-                        - generic [ref=e165]: 面经
-                      - generic [ref=e166]:
-                        - generic [ref=e168]: 程序
-                        - generic [ref=e169]:
-                          - generic [ref=e170]:
-                            - paragraph [ref=e171]: 程序员小王
-                            - generic [ref=e172]: 已认证
-                          - paragraph [ref=e173]: 浙江大学 · 2024届
-                        - generic [ref=e174]: 3天前
-                    - generic [ref=e176]:
-                      - generic [ref=e177]:
-                        - generic [ref=e178]:
-                          - img [ref=e179]
+                        - heading "字节跳动前端面经：从简历到offer全流程分享" [level=3] [ref=e481]
+                      - generic [ref=e482]:
+                        - generic [ref=e483]:
+                          - generic [ref=e485]: 字节
+                          - generic [ref=e486]: 字节跳动
+                        - generic [ref=e487]: ·
+                        - generic [ref=e488]: 前端开发工程师
+                      - generic [ref=e489]:
+                        - generic [ref=e490]:
+                          - generic [ref=e491]: 难度
+                          - generic [ref=e492]:
+                            - img [ref=e493]
+                            - img [ref=e495]
+                            - img [ref=e497]
+                            - img [ref=e499]
+                            - img [ref=e501]
+                        - generic [ref=e503]:
+                          - img [ref=e504]
+                          - generic [ref=e507]: 15分钟阅读
+                    - generic [ref=e508]:
+                      - paragraph [ref=e509]: 分享我的字节跳动面试经历，包括三轮技术面和一轮HR面。重点考察了React原理、算法、项目经验...
+                      - generic [ref=e510]:
+                        - generic [ref=e511]: 前端
+                        - generic [ref=e512]: React
+                        - generic [ref=e513]: 算法
+                        - generic [ref=e514]: 面经
+                      - generic [ref=e515]:
+                        - generic [ref=e517]: 程序
+                        - generic [ref=e518]:
+                          - generic [ref=e519]:
+                            - paragraph [ref=e520]: 程序员小王
+                            - generic [ref=e521]: 已认证
+                          - paragraph [ref=e522]: 浙江大学 · 2024届
+                        - generic [ref=e523]: 3天前
+                    - generic [ref=e525]:
+                      - generic [ref=e526]:
+                        - generic [ref=e527]:
+                          - img [ref=e528]
                           - text: 5.2k
-                        - button "423" [ref=e182]:
-                          - img [ref=e183]
+                        - button "423" [ref=e531]:
+                          - img [ref=e532]
                           - text: "423"
-                        - generic [ref=e185]:
-                          - img [ref=e186]
+                        - generic [ref=e534]:
+                          - img [ref=e535]
                           - text: "89"
-                      - generic [ref=e188]: 阅读全文
-                  - generic [ref=e189] [cursor=pointer]:
-                    - generic [ref=e191]: 🔥 热门
-                    - generic [ref=e193]:
-                      - generic [ref=e194]:
-                        - generic [ref=e195]:
+                      - generic [ref=e537]: 阅读全文
+                  - generic [ref=e538] [cursor=pointer]:
+                    - generic [ref=e540]: 🔥 热门
+                    - generic [ref=e542]:
+                      - generic [ref=e543]:
+                        - generic [ref=e544]:
                           - img
                           - text: 攻略
-                        - heading "产品经理求职全攻略：从0到1的转型之路" [level=3] [ref=e196]
-                      - generic [ref=e197]:
-                        - generic [ref=e198]:
-                          - generic [ref=e199]: 难度
-                          - generic [ref=e200]:
-                            - img [ref=e201]
-                            - img [ref=e203]
-                            - img [ref=e205]
-                            - img [ref=e207]
-                            - img [ref=e209]
-                        - generic [ref=e211]:
-                          - img [ref=e212]
-                          - generic [ref=e215]: 20分钟阅读
-                    - generic [ref=e216]:
-                      - paragraph [ref=e217]: 作为一个非产品专业的学生，我是如何成功转型产品经理的。包括学习路径、项目准备、面试技巧...
-                      - generic [ref=e218]:
-                        - generic [ref=e219]: 产品经理
-                        - generic [ref=e220]: 转型
-                        - generic [ref=e221]: 求职攻略
-                      - generic [ref=e222]:
-                        - generic [ref=e224]: 产品
-                        - generic [ref=e225]:
-                          - paragraph [ref=e227]: 产品小白
-                          - paragraph [ref=e228]: 复旦大学 · 2023届
-                        - generic [ref=e229]: 6天前
-                    - generic [ref=e231]:
-                      - generic [ref=e232]:
-                        - generic [ref=e233]:
-                          - img [ref=e234]
+                        - heading "产品经理求职全攻略：从0到1的转型之路" [level=3] [ref=e545]
+                      - generic [ref=e546]:
+                        - generic [ref=e547]:
+                          - generic [ref=e548]: 难度
+                          - generic [ref=e549]:
+                            - img [ref=e550]
+                            - img [ref=e552]
+                            - img [ref=e554]
+                            - img [ref=e556]
+                            - img [ref=e558]
+                        - generic [ref=e560]:
+                          - img [ref=e561]
+                          - generic [ref=e564]: 20分钟阅读
+                    - generic [ref=e565]:
+                      - paragraph [ref=e566]: 作为一个非产品专业的学生，我是如何成功转型产品经理的。包括学习路径、项目准备、面试技巧...
+                      - generic [ref=e567]:
+                        - generic [ref=e568]: 产品经理
+                        - generic [ref=e569]: 转型
+                        - generic [ref=e570]: 求职攻略
+                      - generic [ref=e571]:
+                        - generic [ref=e573]: 产品
+                        - generic [ref=e574]:
+                          - paragraph [ref=e576]: 产品小白
+                          - paragraph [ref=e577]: 复旦大学 · 2023届
+                        - generic [ref=e578]: 6天前
+                    - generic [ref=e580]:
+                      - generic [ref=e581]:
+                        - generic [ref=e582]:
+                          - img [ref=e583]
                           - text: 3.4k
-                        - button "234" [ref=e237]:
-                          - img [ref=e238]
+                        - button "234" [ref=e586]:
+                          - img [ref=e587]
                           - text: "234"
-                        - generic [ref=e240]:
-                          - img [ref=e241]
+                        - generic [ref=e589]:
+                          - img [ref=e590]
                           - text: "56"
-                      - generic [ref=e243]: 阅读全文
-                  - generic [ref=e244] [cursor=pointer]:
-                    - generic [ref=e245]:
-                      - generic [ref=e246]: 📌 置顶
-                      - generic [ref=e247]: 🔥 热门
-                    - generic [ref=e249]:
-                      - generic [ref=e250]:
-                        - generic [ref=e251]:
+                      - generic [ref=e592]: 阅读全文
+                  - generic [ref=e593] [cursor=pointer]:
+                    - generic [ref=e594]:
+                      - generic [ref=e595]: 📌 置顶
+                      - generic [ref=e596]: 🔥 热门
+                    - generic [ref=e598]:
+                      - generic [ref=e599]:
+                        - generic [ref=e600]:
                           - img
                           - text: 面经
-                        - heading "阿里巴巴算法岗面试真题解析（含代码）" [level=3] [ref=e252]
-                      - generic [ref=e253]:
-                        - generic [ref=e254]:
-                          - generic [ref=e256]: 阿里
-                          - generic [ref=e257]: 阿里巴巴
-                        - generic [ref=e258]: ·
-                        - generic [ref=e259]: 算法工程师
-                      - generic [ref=e260]:
-                        - generic [ref=e261]:
-                          - generic [ref=e262]: 难度
-                          - generic [ref=e263]:
-                            - img [ref=e264]
-                            - img [ref=e266]
-                            - img [ref=e268]
-                            - img [ref=e270]
-                            - img [ref=e272]
-                        - generic [ref=e274]:
-                          - img [ref=e275]
-                          - generic [ref=e278]: 30分钟阅读
-                    - generic [ref=e279]:
-                      - paragraph [ref=e280]: 整理了阿里巴巴算法岗的高频面试题，包括动态规划、图算法、机器学习等，附详细解答和代码...
-                      - generic [ref=e281]:
-                        - generic [ref=e282]: 算法
-                        - generic [ref=e283]: 面试题
-                        - generic [ref=e284]: 阿里巴巴
-                      - generic [ref=e285]:
-                        - generic [ref=e287]: 算法
-                        - generic [ref=e288]:
-                          - generic [ref=e289]:
-                            - paragraph [ref=e290]: 算法大神
-                            - generic [ref=e291]: 已认证
-                          - paragraph [ref=e292]: 清华大学 · 2024届
-                        - generic [ref=e293]: 2天前
-                    - generic [ref=e295]:
-                      - generic [ref=e296]:
-                        - generic [ref=e297]:
-                          - img [ref=e298]
+                        - heading "阿里巴巴算法岗面试真题解析（含代码）" [level=3] [ref=e601]
+                      - generic [ref=e602]:
+                        - generic [ref=e603]:
+                          - generic [ref=e605]: 阿里
+                          - generic [ref=e606]: 阿里巴巴
+                        - generic [ref=e607]: ·
+                        - generic [ref=e608]: 算法工程师
+                      - generic [ref=e609]:
+                        - generic [ref=e610]:
+                          - generic [ref=e611]: 难度
+                          - generic [ref=e612]:
+                            - img [ref=e613]
+                            - img [ref=e615]
+                            - img [ref=e617]
+                            - img [ref=e619]
+                            - img [ref=e621]
+                        - generic [ref=e623]:
+                          - img [ref=e624]
+                          - generic [ref=e627]: 30分钟阅读
+                    - generic [ref=e628]:
+                      - paragraph [ref=e629]: 整理了阿里巴巴算法岗的高频面试题，包括动态规划、图算法、机器学习等，附详细解答和代码...
+                      - generic [ref=e630]:
+                        - generic [ref=e631]: 算法
+                        - generic [ref=e632]: 面试题
+                        - generic [ref=e633]: 阿里巴巴
+                      - generic [ref=e634]:
+                        - generic [ref=e636]: 算法
+                        - generic [ref=e637]:
+                          - generic [ref=e638]:
+                            - paragraph [ref=e639]: 算法大神
+                            - generic [ref=e640]: 已认证
+                          - paragraph [ref=e641]: 清华大学 · 2024届
+                        - generic [ref=e642]: 2天前
+                    - generic [ref=e644]:
+                      - generic [ref=e645]:
+                        - generic [ref=e646]:
+                          - img [ref=e647]
                           - text: 8.8k
-                        - button "678" [ref=e301]:
-                          - img [ref=e302]
+                        - button "678" [ref=e650]:
+                          - img [ref=e651]
                           - text: "678"
-                        - generic [ref=e304]:
-                          - img [ref=e305]
+                        - generic [ref=e653]:
+                          - img [ref=e654]
                           - text: "123"
-                      - generic [ref=e307]: 阅读全文
-            - generic [ref=e308]:
-              - link "浏览更多经验" [ref=e309] [cursor=pointer]:
+                      - generic [ref=e656]: 阅读全文
+            - generic [ref=e657]:
+              - link "浏览更多经验" [ref=e658] [cursor=pointer]:
                 - /url: /experiences
                 - text: 浏览更多经验
                 - img
-              - button "分享你的经验" [ref=e310]:
+              - link "分享你的经验" [ref=e659] [cursor=pointer]:
+                - /url: /experiences/share
                 - img
                 - text: 分享你的经验
-          - generic [ref=e314]:
-            - generic [ref=e315]:
-              - generic [ref=e316]:
+          - generic [ref=e663]:
+            - generic [ref=e664]:
+              - generic [ref=e665]:
                 - img
                 - text: 明星企业
-              - heading "优质企业，职业起点" [level=2] [ref=e317]
-              - paragraph [ref=e318]: 了解企业文化、福利待遇和发展前景，找到适合你的公司
-            - generic [ref=e319]:
-              - generic [ref=e320] [cursor=pointer]:
-                - generic [ref=e322]: 🔥 热门
-                - generic [ref=e324]:
-                  - generic [ref=e326]: 字节
-                  - generic [ref=e327]:
-                    - generic [ref=e329]:
-                      - heading "字节跳动 正在招聘" [level=3] [ref=e330]:
+              - heading "优质企业，职业起点" [level=2] [ref=e666]
+              - paragraph [ref=e667]: 了解企业文化、福利待遇和发展前景，找到适合你的公司
+            - generic [ref=e668]:
+              - generic [ref=e669] [cursor=pointer]:
+                - generic [ref=e671]: 🔥 热门
+                - generic [ref=e673]:
+                  - generic [ref=e675]: 字节
+                  - generic [ref=e676]:
+                    - generic [ref=e678]:
+                      - heading "字节跳动 正在招聘" [level=3] [ref=e679]:
                         - text: 字节跳动
-                        - generic [ref=e331]: 正在招聘
-                      - generic [ref=e332]:
-                        - generic [ref=e333]:
-                          - generic [ref=e334]: 💻
+                        - generic [ref=e680]: 正在招聘
+                      - generic [ref=e681]:
+                        - generic [ref=e682]:
+                          - generic [ref=e683]: 💻
                           - text: 互联网
-                        - generic [ref=e335]: 大厂
-                        - generic [ref=e336]: D轮及以上
-                    - generic [ref=e338]:
-                      - img [ref=e339]
-                      - generic [ref=e341]: "4.5"
-                      - generic [ref=e342]: 企业文化评分
-                - generic [ref=e343]:
-                  - paragraph [ref=e344]: 字节跳动是一家全球化的科技公司，旗下拥有抖音、今日头条等多款产品。
-                  - generic [ref=e345]:
-                    - generic [ref=e346]:
-                      - generic [ref=e347]:
-                        - img [ref=e348]
-                        - generic [ref=e351]: "256"
-                      - paragraph [ref=e352]: 在招职位
-                    - generic [ref=e353]:
-                      - generic [ref=e354]: 30k
-                      - paragraph [ref=e355]: 平均薪资
-                    - generic [ref=e356]:
-                      - generic [ref=e357]:
-                        - img [ref=e358]
-                        - generic [ref=e361]: 45%
-                      - paragraph [ref=e362]: 增长率
-                  - generic [ref=e363]:
-                    - img [ref=e364]
-                    - generic [ref=e367]:
-                      - generic [ref=e368]: 北京
-                      - generic [ref=e369]: 上海
-                      - generic [ref=e370]: 深圳
-                      - generic [ref=e371]: 杭州
-                      - generic [ref=e372]: 成都
-                  - generic [ref=e373]:
-                    - generic [ref=e374]: 六险一金
-                    - generic [ref=e375]: 免费三餐
-                    - generic [ref=e376]: 租房补贴
-                    - generic [ref=e377]: 带薪年假
-                    - generic [ref=e378]: 健身房
-                  - generic [ref=e379]:
-                    - generic [ref=e380]: "#大厂"
-                    - generic [ref=e381]: "#高成长"
-                    - generic [ref=e382]: "#技术驱动"
-              - generic [ref=e383] [cursor=pointer]:
-                - generic [ref=e385]: 🔥 热门
-                - generic [ref=e387]:
-                  - generic [ref=e389]: 阿里
-                  - generic [ref=e390]:
-                    - generic [ref=e392]:
-                      - heading "阿里巴巴 正在招聘" [level=3] [ref=e393]:
+                        - generic [ref=e684]: 大厂
+                        - generic [ref=e685]: D轮及以上
+                    - generic [ref=e687]:
+                      - img [ref=e688]
+                      - generic [ref=e690]: "4.5"
+                      - generic [ref=e691]: 企业文化评分
+                - generic [ref=e692]:
+                  - paragraph [ref=e693]: 字节跳动是一家全球化的科技公司，旗下拥有抖音、今日头条等多款产品。
+                  - generic [ref=e694]:
+                    - generic [ref=e695]:
+                      - generic [ref=e696]:
+                        - img [ref=e697]
+                        - generic [ref=e700]: "256"
+                      - paragraph [ref=e701]: 在招职位
+                    - generic [ref=e702]:
+                      - generic [ref=e703]: 30k
+                      - paragraph [ref=e704]: 平均薪资
+                    - generic [ref=e705]:
+                      - generic [ref=e706]:
+                        - img [ref=e707]
+                        - generic [ref=e710]: 45%
+                      - paragraph [ref=e711]: 增长率
+                  - generic [ref=e712]:
+                    - img [ref=e713]
+                    - generic [ref=e716]:
+                      - generic [ref=e717]: 北京
+                      - generic [ref=e718]: 上海
+                      - generic [ref=e719]: 深圳
+                      - generic [ref=e720]: 杭州
+                      - generic [ref=e721]: 成都
+                  - generic [ref=e722]:
+                    - generic [ref=e723]: 六险一金
+                    - generic [ref=e724]: 免费三餐
+                    - generic [ref=e725]: 租房补贴
+                    - generic [ref=e726]: 带薪年假
+                    - generic [ref=e727]: 健身房
+                  - generic [ref=e728]:
+                    - generic [ref=e729]: "#大厂"
+                    - generic [ref=e730]: "#高成长"
+                    - generic [ref=e731]: "#技术驱动"
+              - generic [ref=e732] [cursor=pointer]:
+                - generic [ref=e734]: 🔥 热门
+                - generic [ref=e736]:
+                  - generic [ref=e738]: 阿里
+                  - generic [ref=e739]:
+                    - generic [ref=e741]:
+                      - heading "阿里巴巴 正在招聘" [level=3] [ref=e742]:
                         - text: 阿里巴巴
-                        - generic [ref=e394]: 正在招聘
-                      - generic [ref=e395]:
-                        - generic [ref=e396]:
-                          - generic [ref=e397]: 💻
+                        - generic [ref=e743]: 正在招聘
+                      - generic [ref=e744]:
+                        - generic [ref=e745]:
+                          - generic [ref=e746]: 💻
                           - text: 互联网
-                        - generic [ref=e398]: 大厂
-                        - generic [ref=e399]: 上市公司
-                    - generic [ref=e401]:
-                      - img [ref=e402]
-                      - generic [ref=e404]: "4.4"
-                      - generic [ref=e405]: 企业文化评分
-                - generic [ref=e406]:
-                  - paragraph [ref=e407]: 阿里巴巴集团是全球领先的数字经济体，业务覆盖电商、云计算、金融等领域。
-                  - generic [ref=e408]:
-                    - generic [ref=e409]:
-                      - generic [ref=e410]:
-                        - img [ref=e411]
-                        - generic [ref=e414]: "234"
-                      - paragraph [ref=e415]: 在招职位
-                    - generic [ref=e416]:
-                      - generic [ref=e417]: 32k
-                      - paragraph [ref=e418]: 平均薪资
-                    - generic [ref=e419]:
-                      - generic [ref=e420]:
-                        - img [ref=e421]
-                        - generic [ref=e424]: 28%
-                      - paragraph [ref=e425]: 增长率
-                  - generic [ref=e426]:
-                    - img [ref=e427]
-                    - generic [ref=e430]:
-                      - generic [ref=e431]: 杭州
-                      - generic [ref=e432]: 北京
-                      - generic [ref=e433]: 上海
-                      - generic [ref=e434]: 深圳
-                  - generic [ref=e435]:
-                    - generic [ref=e436]: 股票激励
-                    - generic [ref=e437]: housing fund
-                    - generic [ref=e438]: 弹性工作
-                    - generic [ref=e439]: 培训机会
-                  - generic [ref=e440]:
-                    - generic [ref=e441]: "#大厂"
-                    - generic [ref=e442]: "#电商巨头"
-                    - generic [ref=e443]: "#技术强"
-            - generic [ref=e444]:
-              - generic [ref=e445]:
-                - img [ref=e446]
-                - generic [ref=e448]: 2,456
-                - generic [ref=e449]: 合作企业
-              - generic [ref=e450]:
-                - generic [ref=e451]: 92%
-                - generic [ref=e452]: 大厂占比
-              - generic [ref=e453]:
-                - generic [ref=e454]: 35k
-                - generic [ref=e455]: 平均月薪
-              - generic [ref=e456]:
-                - generic [ref=e457]: "4.5"
-                - generic [ref=e458]: 平均评分
-            - link "探索更多企业" [ref=e460] [cursor=pointer]:
+                        - generic [ref=e747]: 大厂
+                        - generic [ref=e748]: 上市公司
+                    - generic [ref=e750]:
+                      - img [ref=e751]
+                      - generic [ref=e753]: "4.4"
+                      - generic [ref=e754]: 企业文化评分
+                - generic [ref=e755]:
+                  - paragraph [ref=e756]: 阿里巴巴集团是全球领先的数字经济体，业务覆盖电商、云计算、金融等领域。
+                  - generic [ref=e757]:
+                    - generic [ref=e758]:
+                      - generic [ref=e759]:
+                        - img [ref=e760]
+                        - generic [ref=e763]: "234"
+                      - paragraph [ref=e764]: 在招职位
+                    - generic [ref=e765]:
+                      - generic [ref=e766]: 32k
+                      - paragraph [ref=e767]: 平均薪资
+                    - generic [ref=e768]:
+                      - generic [ref=e769]:
+                        - img [ref=e770]
+                        - generic [ref=e773]: 28%
+                      - paragraph [ref=e774]: 增长率
+                  - generic [ref=e775]:
+                    - img [ref=e776]
+                    - generic [ref=e779]:
+                      - generic [ref=e780]: 杭州
+                      - generic [ref=e781]: 北京
+                      - generic [ref=e782]: 上海
+                      - generic [ref=e783]: 深圳
+                  - generic [ref=e784]:
+                    - generic [ref=e785]: 股票激励
+                    - generic [ref=e786]: housing fund
+                    - generic [ref=e787]: 弹性工作
+                    - generic [ref=e788]: 培训机会
+                  - generic [ref=e789]:
+                    - generic [ref=e790]: "#大厂"
+                    - generic [ref=e791]: "#电商巨头"
+                    - generic [ref=e792]: "#技术强"
+            - generic [ref=e793]:
+              - generic [ref=e794]:
+                - img [ref=e795]
+                - generic [ref=e797]: 2,456
+                - generic [ref=e798]: 合作企业
+              - generic [ref=e799]:
+                - generic [ref=e800]: 92%
+                - generic [ref=e801]: 大厂占比
+              - generic [ref=e802]:
+                - generic [ref=e803]: 35k
+                - generic [ref=e804]: 平均月薪
+              - generic [ref=e805]:
+                - generic [ref=e806]: "4.5"
+                - generic [ref=e807]: 平均评分
+            - link "探索更多企业" [ref=e809] [cursor=pointer]:
               - /url: /companies
               - text: 探索更多企业
               - img
-          - generic [ref=e462]:
-            - generic [ref=e463]:
-              - heading "平台数据" [level=2] [ref=e464]
-              - paragraph [ref=e465]: 实时更新的求职数据，助你把握机会
-            - generic [ref=e466]:
-              - generic [ref=e467]:
-                - img [ref=e468]
-                - generic [ref=e470]: 0+
-                - generic [ref=e471]: 在招职位
-              - generic [ref=e472]:
-                - img [ref=e473]
-                - generic [ref=e479]: 68%
-                - generic [ref=e480]: 求职成功率
-              - generic [ref=e481]:
-                - img [ref=e482]
-                - generic [ref=e487]: "58960"
-                - generic [ref=e488]: 活跃用户
-              - generic [ref=e489]:
-                - img [ref=e490]
-                - generic [ref=e494]: 0+
-                - generic [ref=e495]: 内推机会
-          - generic [ref=e498]:
-            - heading "开启你的职业征程" [level=2] [ref=e499]
-            - paragraph [ref=e500]: 加入我们，获取最新职位信息和内推机会
-            - generic [ref=e501]:
-              - button "立即注册" [ref=e502]
-              - button "了解更多" [ref=e503]
-      - contentinfo [ref=e504]:
-        - generic [ref=e505]:
-          - generic [ref=e506]:
-            - generic [ref=e507]:
-              - generic [ref=e508]:
-                - img [ref=e509]
-                - generic [ref=e516]: OpenMCP
-              - paragraph [ref=e517]: OpenMCP 是一个一站式 AI 全聚合平台，专注于 MCP 生态的构建和发展，推动AI技术创新和应用落地。
-            - generic [ref=e518]:
-              - heading "快速链接" [level=3] [ref=e519]
-              - list [ref=e520]:
-                - listitem [ref=e521]:
-                  - link "MCP 客户端" [ref=e522] [cursor=pointer]:
-                    - /url: /category/client
-                - listitem [ref=e523]:
-                  - link "MCP 服务器" [ref=e524] [cursor=pointer]:
-                    - /url: /category/server
-                - listitem [ref=e525]:
-                  - link "MCP 应用" [ref=e526] [cursor=pointer]:
-                    - /url: /category/application
-                - listitem [ref=e527]:
-                  - link "提交应用" [ref=e528] [cursor=pointer]:
-                    - /url: /submit
-            - generic [ref=e529]:
-              - heading "关于我们" [level=3] [ref=e530]
-              - list [ref=e531]:
-                - listitem [ref=e532]:
-                  - link "关于 OpenMCP" [ref=e533] [cursor=pointer]:
+          - generic [ref=e811]:
+            - generic [ref=e812]:
+              - heading "平台数据" [level=2] [ref=e813]
+              - paragraph [ref=e814]: 实时更新的求职数据，助你把握机会
+            - generic [ref=e815]:
+              - generic [ref=e816]:
+                - img [ref=e817]
+                - generic [ref=e819]: 12,580+
+                - generic [ref=e820]: 在招职位
+              - generic [ref=e821]:
+                - img [ref=e822]
+                - generic [ref=e828]: ≈68%
+                - generic [ref=e829]: 求职成功率
+              - generic [ref=e830]:
+                - img [ref=e831]
+                - generic [ref=e836]: 58,960+
+                - generic [ref=e837]: 活跃用户
+              - generic [ref=e838]:
+                - img [ref=e839]
+                - generic [ref=e843]: 856+
+                - generic [ref=e844]: 内推机会
+          - generic [ref=e847]:
+            - heading "开启你的职业征程" [level=2] [ref=e848]
+            - paragraph [ref=e849]: 加入我们，获取最新职位信息和内推机会
+            - generic [ref=e850]:
+              - button "立即注册" [ref=e851]
+              - button "了解更多" [ref=e852]
+      - contentinfo [ref=e853]:
+        - generic [ref=e854]:
+          - generic [ref=e855]:
+            - generic [ref=e856]:
+              - generic [ref=e857]:
+                - img [ref=e858]
+                - generic [ref=e865]: 职启航
+              - paragraph [ref=e866]: 职启航专注服务秋招应届生与在校生，整合职位、内推、面经与薪酬情报，帮助你自信踏出职场第一步。
+            - generic [ref=e867]:
+              - heading "求职导航" [level=3] [ref=e868]
+              - list [ref=e869]:
+                - listitem [ref=e870]:
+                  - link "职位广场" [ref=e871] [cursor=pointer]:
+                    - /url: /jobs
+                - listitem [ref=e872]:
+                  - link "内推机会" [ref=e873] [cursor=pointer]:
+                    - /url: /referrals
+                - listitem [ref=e874]:
+                  - link "面经与攻略" [ref=e875] [cursor=pointer]:
+                    - /url: /experiences
+                - listitem [ref=e876]:
+                  - link "企业库" [ref=e877] [cursor=pointer]:
+                    - /url: /companies
+                - listitem [ref=e878]:
+                  - link "薪酬洞察" [ref=e879] [cursor=pointer]:
+                    - /url: /salary
+            - generic [ref=e880]:
+              - heading "服务支持" [level=3] [ref=e881]
+              - list [ref=e882]:
+                - listitem [ref=e883]:
+                  - link "帮助中心" [ref=e884] [cursor=pointer]:
+                    - /url: /help
+                - listitem [ref=e885]:
+                  - link "关于我们" [ref=e886] [cursor=pointer]:
                     - /url: /about
-                - listitem [ref=e534]:
-                  - link "隐私政策" [ref=e535] [cursor=pointer]:
+                - listitem [ref=e887]:
+                  - link "隐私政策" [ref=e888] [cursor=pointer]:
                     - /url: /about/terms
-                - listitem [ref=e536]:
-                  - link "服务条款" [ref=e537] [cursor=pointer]:
+                - listitem [ref=e889]:
+                  - link "服务条款" [ref=e890] [cursor=pointer]:
                     - /url: /about/service
-                - listitem [ref=e538]:
-                  - button "联系我们" [ref=e539]
-            - generic [ref=e540]:
-              - heading "订阅更新" [level=3] [ref=e541]
-              - paragraph [ref=e542]: 订阅我们的邮件列表，获取 MCP 生态系统的最新动态和更新。
-              - generic [ref=e543]:
-                - textbox "输入您的邮箱..." [ref=e544]
-                - button "订阅" [ref=e545]:
+                - listitem [ref=e891]:
+                  - button "企业合作" [ref=e892]
+            - generic [ref=e893]:
+              - heading "订阅求职情报" [level=3] [ref=e894]
+              - paragraph [ref=e895]: 获取最新职位投递窗口、内推开放提醒和校招攻略，领先一步拿到 Offer。
+              - generic [ref=e896]:
+                - textbox "输入您的邮箱..." [ref=e897]
+                - button "订阅" [ref=e898]:
                   - img
                   - text: 订阅
-          - generic [ref=e547]:
-            - paragraph [ref=e548]: Copyright ©2025-2027 天津聚链科技有限公司版权所有
-            - generic [ref=e549]:
-              - link "津ICP备2023007973号-1" [ref=e550] [cursor=pointer]:
+          - generic [ref=e900]:
+            - paragraph [ref=e901]: Copyright ©2025-2027 天津聚链科技有限公司版权所有
+            - generic [ref=e902]:
+              - link "津ICP备2023007973号-1" [ref=e903] [cursor=pointer]:
                 - /url: https://beian.miit.gov.cn/
               - text: "|"
-              - link "津公网安备12011402001495号 津公网安备12011402001495号" [ref=e551] [cursor=pointer]:
+              - link "津公网安备12011402001495号 津公网安备12011402001495号" [ref=e904] [cursor=pointer]:
                 - /url: http://www.beian.gov.cn/portal/registerSystemInfo
-                - img "津公网安备12011402001495号" [ref=e553]
+                - img "津公网安备12011402001495号" [ref=e906]
                 - text: 津公网安备12011402001495号
     - region "Notifications alt+T"
   - region "Notifications alt+T"
-  - alert [ref=e554]
+  - alert [ref=e907]
+  - generic [ref=e912] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=e913]:
+      - img [ref=e914]
+    - generic [ref=e917]:
+      - button "Open issues overlay" [ref=e918]:
+        - generic [ref=e919]:
+          - generic [ref=e920]: "1"
+          - generic [ref=e921]: "2"
+        - generic [ref=e922]:
+          - text: Issue
+          - generic [ref=e923]: s
+      - button "Collapse issues badge" [ref=e924]:
+        - img [ref=e925]
 ```

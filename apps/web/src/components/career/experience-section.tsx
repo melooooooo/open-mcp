@@ -107,9 +107,15 @@ export function ExperienceSection({ experiences, showViewAll = true }: Experienc
               </Link>
             </Button>
           )}
-          <Button size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-            <TrendingUp className="mr-2 h-4 w-4" />
-            分享你的经验
+          <Button
+            size="lg"
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+            asChild
+          >
+            <Link href="/experiences/share">
+              <TrendingUp className="mr-2 h-4 w-4" />
+              分享你的经验
+            </Link>
           </Button>
         </div>
       </div>
