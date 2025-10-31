@@ -1,5 +1,6 @@
-import { JobsDataWrapper } from "@/components/career/jobs-data-wrapper"
+import { JobSourcesClient } from "@/components/career/job-sources-client"
 
 export default function JobsPage() {
-  return <JobsDataWrapper />
+  // 聚合来源卡片式界面
+  return <JobSourcesClient />
 }
