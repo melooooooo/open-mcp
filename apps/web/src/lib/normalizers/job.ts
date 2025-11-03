@@ -71,10 +71,10 @@ export function normalizeJobRecord(job: SupabaseJob | MockJob): NormalizedJob {
   const company = isMock
     ? job.company
     : {
-        name: job.companies?.name || "未知公司",
-        logo: job.companies?.logo_url || undefined,
-        size: job.companies?.size || undefined,
-      }
+      name: (job as any).company_name || job.companies?.name || "未知公司",
+      logo: (job as any).company_logo || job.companies?.logo_url || undefined,
+      size: job.companies?.size || undefined,
+    }
 
   const salaryMin = isMock ? job.salaryMin : job.salary_min ?? job.salaryMin
   const salaryMax = isMock ? job.salaryMax : job.salary_max ?? job.salaryMax

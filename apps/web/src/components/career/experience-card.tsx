@@ -35,7 +35,7 @@ interface ExperienceCardProps {
     isPinned?: boolean
     isHot?: boolean
   }
-  variant?: "default" | "compact" | "detailed"
+  variant?: "default" | "compact" | "detailed" | "list"
   className?: string
   onClick?: () => void
   onLike?: () => void
@@ -71,10 +71,10 @@ const DifficultyStars = ({ level }: { level: number }) => {
               ? level <= 2
                 ? "fill-green-500 text-green-500"
                 : level <= 3
-                ? "fill-yellow-500 text-yellow-500"
-                : level <= 4
-                ? "fill-orange-500 text-orange-500"
-                : "fill-red-500 text-red-500"
+                  ? "fill-yellow-500 text-yellow-500"
+                  : level <= 4
+                    ? "fill-orange-500 text-orange-500"
+                    : "fill-red-500 text-red-500"
               : "fill-gray-200 text-gray-200 dark:fill-gray-700 dark:text-gray-700"
           )}
         />
@@ -91,7 +91,7 @@ export function ExperienceCard({ experience, variant = "default", className, onC
     const now = new Date()
     const diffTime = Math.abs(now.getTime() - date.getTime())
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    
+
     if (diffDays === 0) return "今天"
     if (diffDays === 1) return "昨天"
     if (diffDays < 7) return `${diffDays}天前`
@@ -102,7 +102,7 @@ export function ExperienceCard({ experience, variant = "default", className, onC
 
   if (variant === "compact") {
     return (
-      <Card 
+      <Card
         className={cn(
           "group cursor-pointer transition-all duration-200 hover:shadow-lg",
           className
@@ -115,18 +115,14 @@ export function ExperienceCard({ experience, variant = "default", className, onC
               <h3 className="font-medium text-sm line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex-1">
                 {experience.title}
               </h3>
-              {experience.difficulty && (
-                <DifficultyStars level={experience.difficulty} />
-              )}
+              {experience.difficulty && <DifficultyStars level={experience.difficulty} />}
             </div>
             <div className="flex items-center justify-between text-xs text-muted-foreground">
               <div className="flex items-center gap-2">
                 <Badge className={cn("text-xs h-5", typeConfig[experience.type].color)}>
                   {typeConfig[experience.type].label}
                 </Badge>
-                {experience.company && (
-                  <span>{experience.company.name}</span>
-                )}
+                {experience.company && <span>{experience.company.name}</span>}
               </div>
               <span>{formatDate(experience.createdAt)}</span>
             </div>
@@ -150,8 +146,40 @@ export function ExperienceCard({ experience, variant = "default", className, onC
     )
   }
 
+  // 列表样式：标题、作者、发布时间/公司
+  if (variant === "list") {
+    return (
+      <Card className={cn("group cursor-pointer hover:bg-muted/40 transition-colors", className)} onClick={onClick}>
+        <CardContent className="p-4">
+          <div className="flex items-center gap-3">
+            <Avatar className="h-8 w-8 shrink-0">
+              <AvatarImage src={experience.author.avatar} alt={experience.author.name} />
+              <AvatarFallback className="text-[10px]">
+                {experience.author.name.slice(0, 2)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <h3 className="font-medium text-sm truncate">{experience.title}</h3>
+                <Badge className={cn("h-5 text-[10px] px-2 py-0.5", typeConfig[experience.type].color)}>
+                  {typeConfig[experience.type].label}
+                </Badge>
+              </div>
+              <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                <span className="truncate">作者：{experience.author.name}</span>
+                {experience.company?.name && <span>公司：{experience.company.name}</span>}
+                <span>发布时间：{formatDate(experience.createdAt)}</span>
+                {typeof experience.viewCount === "number" && <span>浏览：{experience.viewCount}</span>}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
   return (
-    <Card 
+    <Card
       className={cn(
         "group cursor-pointer transition-all duration-200 hover:shadow-xl relative overflow-hidden",
         className
@@ -298,7 +326,7 @@ export function ExperienceCard({ experience, variant = "default", className, onC
               </span>
             )}
             {experience.likeCount !== undefined && (
-              <button 
+              <button
                 className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 onClick={(e) => {
                   e.stopPropagation()

@@ -8,7 +8,7 @@ export async function HomeDataWrapper() {
   // 从数据库获取真实数据
   const allJobs = await getJobs()
   const allReferrals = await getReferrals()
-  
+
   const isJobFallback = allJobs.length === 0
   const isReferralFallback = allReferrals.length === 0
 
@@ -22,6 +22,9 @@ export async function HomeDataWrapper() {
 
     return {
       id: referral.id,
+      title: referral.title || referral.jobs?.title || referral.job?.title || "",
+      createdAt: referral.created_at || referral.createdAt || (isMock ? new Date().toISOString() : undefined),
+      updatedAt: referral.updated_at || referral.updatedAt || (isMock ? new Date().toISOString() : undefined),
       referrer: {
         id: referral.referrer?.id || "",
         name: referral.referrer?.full_name || referral.referrer?.name || "匿名",
@@ -69,7 +72,7 @@ export async function HomeDataWrapper() {
   }
 
   return (
-    <HomeClient 
+    <HomeClient
       jobs={jobs}
       referrals={referrals}
       experiences={mockExperiences}

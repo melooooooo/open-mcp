@@ -36,14 +36,17 @@ interface ReferralCardProps {
     description?: string
     rating?: number
     reviews?: number
+    createdAt?: string // 发布时间（可选）
+    updatedAt?: string // 修改时间（可选）
+    title?: string // 发布标题（有些数据源可能有单独标题）
   }
-  variant?: "default" | "compact"
+  variant?: "default" | "compact" | "minimal" | "list"
   className?: string
   onApply?: () => void
   onClick?: () => void
 }
 
-export function ReferralCard({ referral, variant = "default", className, onApply, onClick }: ReferralCardProps) {
+export function ReferralCard({ referral, variant = "list", className, onApply, onClick }: ReferralCardProps) {
   const quotaPercentage = (referral.quotaUsed / referral.quotaTotal) * 100
   const quotaRemaining = referral.quotaTotal - referral.quotaUsed
   const isQuotaFull = quotaRemaining === 0
@@ -67,9 +70,90 @@ export function ReferralCard({ referral, variant = "default", className, onApply
     return "text-gray-600 dark:text-gray-400"
   }
 
+  // 极简样式：仅显示发布标题、发布人、发布时间
+  if (variant === "minimal") {
+    const title = referral.title || referral.job.title
+    const publishedAt = referral.createdAt
+      ? new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit" }).format(
+        new Date(referral.createdAt)
+      )
+      : undefined
+
+    return (
+      <Card
+        className={cn(
+          "group cursor-pointer transition-all duration-150 hover:shadow-md",
+          className
+        )}
+        onClick={onClick}
+      >
+        <CardContent className="p-4">
+          <div className="flex items-center gap-3">
+            <Avatar className="h-8 w-8 shrink-0">
+              <AvatarImage src={referral.referrer.avatar} alt={referral.referrer.name} />
+              <AvatarFallback className="text-[10px]">
+                {referral.referrer.name.slice(0, 2)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2">
+                <h3 className="font-medium text-sm truncate">{title}</h3>
+                {referral.referrer.isVerified && (
+                  <Badge variant="secondary" className="h-5 text-[10px]">已认证</Badge>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground mt-0.5 truncate">
+                {referral.referrer.name}
+                {publishedAt && ` · ${publishedAt}`}
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+  // 列表样式：标题、发布人、发布时间/修改时间
+  if (variant === "list") {
+    const title = referral.title || referral.job.title
+    const formatDate = (iso?: string) =>
+      iso ? new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }).format(new Date(iso)) : undefined
+
+    const publishedAt = formatDate(referral.createdAt)
+    const updatedAt = formatDate(referral.updatedAt)
+
+    return (
+      <Card className={cn("group cursor-pointer hover:bg-muted/40 transition-colors", className)} onClick={onClick}>
+        <CardContent className="p-4">
+          <div className="flex items-center gap-3">
+            <Avatar className="h-8 w-8 shrink-0">
+              <AvatarImage src={referral.referrer.avatar} alt={referral.referrer.name} />
+              <AvatarFallback className="text-[10px]">
+                {referral.referrer.name.slice(0, 2)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <h3 className="font-medium text-sm truncate">{title}</h3>
+                {referral.referrer.isVerified && (
+                  <Badge variant="secondary" className="h-5 text-[10px]">已认证</Badge>
+                )}
+              </div>
+              <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                <span className="truncate">发布人：{referral.referrer.name}</span>
+                {publishedAt && <span>发布时间：{publishedAt}</span>}
+                {updatedAt && <span>修改时间：{updatedAt}</span>}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+
   if (variant === "compact") {
     return (
-      <Card 
+      <Card
         className={cn(
           "group cursor-pointer transition-all duration-200 hover:shadow-lg",
           isQuotaFull && "opacity-60",
@@ -96,7 +180,7 @@ export function ReferralCard({ referral, variant = "default", className, onApply
                     {referral.referrer.successRate}% 成功率
                   </Badge>
                 )}
-                <Badge 
+                <Badge
                   variant={isQuotaFull ? "destructive" : "default"}
                   className="text-xs"
                 >
@@ -111,7 +195,7 @@ export function ReferralCard({ referral, variant = "default", className, onApply
   }
 
   return (
-    <Card 
+    <Card
       className={cn(
         "group cursor-pointer transition-all duration-200 hover:shadow-xl relative overflow-hidden",
         isQuotaFull && "opacity-75",
@@ -237,8 +321,8 @@ export function ReferralCard({ referral, variant = "default", className, onApply
               {referral.quotaUsed}/{referral.quotaTotal} 已使用
             </span>
           </div>
-          <Progress 
-            value={quotaPercentage} 
+          <Progress
+            value={quotaPercentage}
             className="h-2"
           />
           {!isQuotaFull && quotaRemaining <= 3 && (
@@ -253,7 +337,7 @@ export function ReferralCard({ referral, variant = "default", className, onApply
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
             {daysLeft && (
-              <Badge 
+              <Badge
                 variant={daysLeft.includes("剩") || daysLeft.includes("今日") ? "destructive" : "secondary"}
                 className="text-xs"
               >

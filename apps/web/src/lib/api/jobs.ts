@@ -1,50 +1,73 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { createClient } from '@/lib/supabase/client'
-import type { Database } from '@/types/supabase'
 
-type Job = Database['public']['Tables']['jobs']['Row']
-type Company = Database['public']['Tables']['companies']['Row']
-type JobWithCompany = Job & {
-  companies: Company | null
-}
+// Using career_platform schema at runtime. Keep types broad to avoid mismatch with legacy public schema types.
+type JobWithCompany = any
 
-// 服务端函数 - 获取所有职位
+// 服务端函数 - 获取所有职位（视图优先，失败则回退到 schema 直查）
 export async function getJobs() {
   const supabase = await createServerSupabaseClient()
-  
-  const { data, error } = await supabase
-    .from('jobs')
-    .select(`
-      *,
-      companies (*)
-    `)
+
+  // 方案 A：public 视图
+  let { data, error } = await supabase
+    .from('cp_jobs')
+    .select('*')
     .eq('status', 'active')
     .order('created_at', { ascending: false })
 
   if (error) {
-    console.error('Error fetching jobs:', error)
-    return []
+    console.error('Error fetching jobs via view:', JSON.stringify(error, null, 2))
+    // 方案 B：直查 schema 表（避免视图权限/策略导致的问题）
+    const fallback = await supabase
+      .schema('career_platform')
+      .from('jobs')
+      .select(`
+        *,
+        companies (*)
+      `)
+      .eq('status', 'active')
+      .order('created_at', { ascending: false })
+
+    if (fallback.error) {
+      console.error('Error fetching jobs via schema:', JSON.stringify(fallback.error, null, 2))
+      return []
+    }
+
+    data = fallback.data as any
   }
 
   return data as JobWithCompany[]
 }
 
-// 服务端函数 - 获取单个职位详情
+// 服务端函数 - 获取单个职位详情（视图优先，失败则回退）
 export async function getJobById(id: string) {
   const supabase = await createServerSupabaseClient()
-  
-  const { data, error } = await supabase
-    .from('jobs')
-    .select(`
-      *,
-      companies (*)
-    `)
+
+  let { data, error } = await supabase
+    .from('cp_jobs')
+    .select('*')
     .eq('id', id)
     .single()
 
   if (error) {
-    console.error('Error fetching job:', error)
-    return null
+    console.error('Error fetching job via view:', JSON.stringify(error, null, 2))
+
+    const fallback = await supabase
+      .schema('career_platform')
+      .from('jobs')
+      .select(`
+        *,
+        companies (*)
+      `)
+      .eq('id', id)
+      .single()
+
+    if (fallback.error) {
+      console.error('Error fetching job via schema:', JSON.stringify(fallback.error, null, 2))
+      return null
+    }
+
+    data = fallback.data as any
   }
 
   return data as JobWithCompany
@@ -59,8 +82,9 @@ export async function searchJobs(params: {
   salaryMax?: number
 }) {
   const supabase = createClient()
-  
+
   let query = supabase
+    .schema('career_platform')
     .from('jobs')
     .select(`
       *,
@@ -102,15 +126,15 @@ export async function searchJobs(params: {
 // 客户端函数 - 获取热门职位
 export async function getHotJobs(limit = 6) {
   const supabase = createClient()
-  
+
   const { data, error } = await supabase
+    .schema('career_platform')
     .from('jobs')
     .select(`
       *,
       companies (*)
     `)
     .eq('status', 'active')
-    .eq('is_hot', true)
     .order('view_count', { ascending: false })
     .limit(limit)
 
@@ -125,13 +149,10 @@ export async function getHotJobs(limit = 6) {
 // 客户端函数 - 获取最新职位
 export async function getNewJobs(limit = 6) {
   const supabase = createClient()
-  
+
   const { data, error } = await supabase
-    .from('jobs')
-    .select(`
-      *,
-      companies (*)
-    `)
+    .from('cp_jobs')
+    .select(`*`)
     .eq('status', 'active')
     .order('created_at', { ascending: false })
     .limit(limit)
@@ -147,7 +168,7 @@ export async function getNewJobs(limit = 6) {
 // 客户端函数 - 增加浏览量
 export async function incrementJobView(jobId: string) {
   const supabase = createClient()
-  
+
   const { error } = await supabase.rpc('increment_job_view', {
     job_id: jobId
   })

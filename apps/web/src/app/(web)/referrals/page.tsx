@@ -30,19 +30,19 @@ export default function ReferralsPage() {
   ]
 
   const filteredReferrals = mockReferrals.filter(referral => {
-    const matchesSearch = 
+    const matchesSearch =
       referral.job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       referral.referrer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       referral.referrer.company.toLowerCase().includes(searchQuery.toLowerCase())
-    
+
     const matchesCompany = !selectedCompany || referral.referrer.company === selectedCompany
-    
-    const matchesLocation = !selectedLocation || 
+
+    const matchesLocation = !selectedLocation ||
       referral.job.location.some(loc => loc === selectedLocation)
-    
-    const matchesSuccessRate = !referral.referrer.successRate || 
+
+    const matchesSuccessRate = !referral.referrer.successRate ||
       referral.referrer.successRate >= successRateFilter[0]
-    
+
     return matchesSearch && matchesCompany && matchesLocation && matchesSuccessRate
   })
 
@@ -51,7 +51,7 @@ export default function ReferralsPage() {
     totalReferrals: mockReferrals.length,
     activeReferrers: new Set(mockReferrals.map(r => r.referrer.id)).size,
     avgSuccessRate: Math.round(
-      mockReferrals.reduce((acc, r) => acc + (r.referrer.successRate || 0), 0) / 
+      mockReferrals.reduce((acc, r) => acc + (r.referrer.successRate || 0), 0) /
       mockReferrals.filter(r => r.referrer.successRate).length
     ),
     totalQuota: mockReferrals.reduce((acc, r) => acc + (r.quotaTotal - r.quotaUsed), 0)
@@ -206,8 +206,8 @@ export default function ReferralsPage() {
                     />
                   </div>
 
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="w-full"
                     onClick={() => {
                       setSearchQuery("")
@@ -259,8 +259,8 @@ export default function ReferralsPage() {
             {/* 移动端筛选按钮 */}
             <div className="flex items-center justify-between mb-6 lg:hidden">
               <h2 className="font-semibold">共 {filteredReferrals.length} 个内推机会</h2>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="sm"
                 onClick={() => setShowFilters(!showFilters)}
               >
@@ -285,10 +285,10 @@ export default function ReferralsPage() {
               </Select>
             </div>
 
-            {/* 内推列表 */}
-            <div className="space-y-4">
+            {/* 内推列表（列表样式） */}
+            <div className="rounded-lg border bg-card divide-y">
               {filteredReferrals.length === 0 ? (
-                <Card>
+                <Card className="border-0 shadow-none rounded-none">
                   <CardContent className="text-center py-12">
                     <div className="text-6xl mb-4">🔍</div>
                     <h3 className="text-lg font-medium mb-2">未找到匹配的内推机会</h3>
@@ -297,11 +297,16 @@ export default function ReferralsPage() {
                 </Card>
               ) : (
                 filteredReferrals.map(referral => (
-                  <ReferralCard 
-                    key={referral.id} 
-                    referral={referral}
+                  <ReferralCard
+                    key={referral.id}
+                    referral={{
+                      ...referral,
+                      createdAt: (referral as any).created_at || (referral as any).createdAt || new Date().toISOString(),
+                      updatedAt: (referral as any).updated_at || (referral as any).updatedAt || new Date().toISOString(),
+                    }}
+                    variant="list"
+                    className="rounded-none shadow-none border-0"
                     onClick={() => window.open(`/referrals/${referral.id}`, '_blank')}
-                    onApply={() => console.log('Apply for referral:', referral.id)}
                   />
                 ))
               )}

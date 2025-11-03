@@ -3,8 +3,12 @@ import { mockExperiences } from "@/data/mock-data"
 import { Container } from "@/components/web/container"
 import { Button } from "@repo/ui/components/ui/button"
 import Link from "next/link"
+import { ExperienceCard } from "@/components/career/experience-card"
 
 export default function ExperiencesPage() {
+  const pinnedExperiences = mockExperiences.filter((e) => e.isPinned)
+  const hotExperiences = mockExperiences.filter((e) => e.isHot)
+
   return (
     <main className="bg-background pb-16">
       <section className="border-b bg-muted/20">
@@ -27,7 +31,56 @@ export default function ExperiencesPage() {
         </Container>
       </section>
 
+      {/* 置顶与热门区块 */}
+      <section className="py-10">
+        <Container className="space-y-10">
+          {pinnedExperiences.length > 0 && (
+            <div>
+              <h2 className="text-xl font-semibold mb-4">📌 置顶</h2>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {pinnedExperiences.map((experience) => (
+                  <ExperienceCard key={experience.id} experience={experience} />
+                ))}
+              </div>
+            </div>
+          )}
+          {hotExperiences.length > 0 && (
+            <div>
+              <h2 className="text-xl font-semibold mb-4">🔥 热门</h2>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {hotExperiences.map((experience) => (
+                  <ExperienceCard key={experience.id} experience={experience} />
+                ))}
+              </div>
+            </div>
+          )}
+        </Container>
+      </section>
+
+      {/* 分类精选区块（保留原有） */}
       <ExperienceSection experiences={mockExperiences} showViewAll={false} />
+
+      {/* 全部经验列表（列表样式，参考内推页） */}
+      <section className="mt-12">
+        <Container>
+          <h2 className="text-xl font-semibold mb-4">全部经验分享</h2>
+          <div className="rounded-lg border bg-card divide-y">
+            {mockExperiences.map((exp) => (
+              <ExperienceCard
+                key={exp.id}
+                experience={exp}
+                variant="list"
+                className="rounded-none shadow-none border-0"
+              />
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <Button variant="outline" size="lg">
+              加载更多经验
+            </Button>
+          </div>
+        </Container>
+      </section>
 
       <section className="mt-12">
         <Container className="grid gap-6 rounded-xl border bg-card p-8 md:grid-cols-2">

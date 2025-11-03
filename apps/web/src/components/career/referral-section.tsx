@@ -13,11 +13,11 @@ interface ReferralSectionProps {
   showViewAll?: boolean
 }
 
-export function ReferralSection({ 
-  title = "内推机会", 
+export function ReferralSection({
+  title = "内推机会",
   description = "来自大厂在职员工的真实内推，提高简历通过率",
-  referrals, 
-  showViewAll = true 
+  referrals,
+  showViewAll = true
 }: ReferralSectionProps) {
   return (
     <section className="py-12 bg-gradient-to-br from-orange-50/50 to-amber-50/50 dark:from-orange-950/20 dark:to-amber-950/20">
@@ -48,14 +48,15 @@ export function ReferralSection({
           )}
         </div>
 
-        {/* 内推卡片网格 */}
+        {/* 内推列表（列表样式：标题/发布人/时间） */}
         {referrals.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-2 rounded-lg border bg-card p-2">
             {referrals.map((referral) => (
               <ReferralCard
                 key={referral.id}
                 referral={referral}
-                onApply={() => console.log(`Apply for referral ${referral.id}`)}
+                variant="list"
+                className="border-none shadow-none"
                 onClick={() => console.log(`Navigate to referral ${referral.id}`)}
               />
             ))}
