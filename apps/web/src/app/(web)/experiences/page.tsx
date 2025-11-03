@@ -1,4 +1,3 @@
-import { ExperienceSection } from "@/components/career/experience-section"
 import { mockExperiences } from "@/data/mock-data"
 import { Container } from "@/components/web/container"
 import { Button } from "@repo/ui/components/ui/button"
@@ -31,34 +30,7 @@ export default function ExperiencesPage() {
         </Container>
       </section>
 
-      {/* 置顶与热门区块 */}
-      <section className="py-10">
-        <Container className="space-y-10">
-          {pinnedExperiences.length > 0 && (
-            <div>
-              <h2 className="text-xl font-semibold mb-4">📌 置顶</h2>
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {pinnedExperiences.map((experience) => (
-                  <ExperienceCard key={experience.id} experience={experience} />
-                ))}
-              </div>
-            </div>
-          )}
-          {hotExperiences.length > 0 && (
-            <div>
-              <h2 className="text-xl font-semibold mb-4">🔥 热门</h2>
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {hotExperiences.map((experience) => (
-                  <ExperienceCard key={experience.id} experience={experience} />
-                ))}
-              </div>
-            </div>
-          )}
-        </Container>
-      </section>
 
-      {/* 分类精选区块（保留原有） */}
-      <ExperienceSection experiences={mockExperiences} showViewAll={false} />
 
       {/* 全部经验列表（列表样式，参考内推页） */}
       <section className="mt-12">
