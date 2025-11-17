@@ -6,15 +6,9 @@ export const dynamic = "force-dynamic"
 export async function GET() {
   const supabase = await createServerSupabaseClient()
 
-  // Basic ping: fetch current_timestamp from Postgres
-  const { data: pingData, error: pingError } = await supabase
-    .from("jobs")
-    .select("id")
-    .limit(1)
-
-  // Try reading companies as well (helps validate RLS for public reads)
-  const { error: companiesError } = await supabase
-    .from("companies")
+  // Basic ping: ensure career_platform.job_sites 可读
+  const { error: jobSitesError } = await supabase
+    .from("cp_job_sites")
     .select("id")
     .limit(1)
 
@@ -27,7 +21,7 @@ export async function GET() {
     hasIncrementJobView = !rpcErr || !/42883/.test(String(rpcErr.message))
   } catch {}
 
-  const ok = !pingError && !companiesError
+  const ok = !jobSitesError
   return NextResponse.json({
     ok,
     env: {
@@ -35,20 +29,17 @@ export async function GET() {
       anon_or_publishable_key: (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY) ? "present" : "missing",
     },
     reads: {
-      jobsReachable: !pingError,
-      companiesReachable: !companiesError,
+      jobSitesReachable: !jobSitesError,
     },
     features: {
       rpc_increment_job_view_detected: hasIncrementJobView,
     },
     notes: [
-      "If jobs/companies show not reachable, check RLS and that status='active' rows exist.",
+      "If job_sites shows not reachable, confirm RLS policy allows public read and rows exist.",
       "This endpoint does not require auth and validates public read path only.",
     ],
     errors: {
-      jobs: pingError?.message,
-      companies: companiesError?.message,
+      jobSites: jobSitesError?.message,
     },
   })
 }
-

@@ -11,7 +11,7 @@ import { Providers } from "./providers"
 
 export const metadata: Metadata = {
   title: "职启航 - 秋招应届生求职平台",
-  description: "汇聚名企职位、内推机会、面试经验，助力应届生成功斩获心仪offer"
+  description: "汇聚名企职位、网站合集与面试经验，助力应届生成功斩获心仪 offer"
 };
 
 export const viewport: Viewport = {

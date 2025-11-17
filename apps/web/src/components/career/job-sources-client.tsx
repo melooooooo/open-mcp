@@ -7,7 +7,6 @@ import { Separator } from "@repo/ui/components/ui/separator"
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/ui/alert"
 import { AlertCircle, Clock, Flame, GraduationCap, BriefcaseBusiness, Baby, Compass } from "lucide-react"
 import { JobSourceCard, type JobSource } from "./job-source-card"
-import { mockJobSources } from "@/data/mock-data"
 import Link from "next/link"
 
 // 顶部筛选标签配置
@@ -19,7 +18,7 @@ const quickFilters = [
   { key: "intern", label: "实习", icon: Baby },
 ]
 
-const platforms = [
+const defaultPlatforms = [
   "牛客网",
   "北邮人导航",
   "智联招聘",
@@ -28,11 +27,18 @@ const platforms = [
   "实习僧",
 ]
 
-export function JobSourcesClient() {
+interface JobSourcesClientProps {
+  sources: JobSource[]
+  isFallback: boolean
+}
+
+export function JobSourcesClient({ sources, isFallback }: JobSourcesClientProps) {
   const [activeFilter, setActiveFilter] = useState<string>("today")
   const [activePlatform, setActivePlatform] = useState<string>("全部平台")
 
-  const sources = mockJobSources as JobSource[]
+  const platformNames = sources.length
+    ? Array.from(new Set(sources.map((s) => s.name)))
+    : defaultPlatforms
 
   const filtered = useMemo(() => {
     return sources.filter((s) => {
@@ -49,14 +55,16 @@ export function JobSourcesClient() {
         <div className="container py-8">
           <h1 className="text-3xl font-bold">职位聚合</h1>
           <p className="text-muted-foreground mt-2">整合多平台的高质量职位来源，点击前往原站查看</p>
-          <Alert className="mt-4 border-dashed">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>当前展示模拟数据</AlertTitle>
-            <AlertDescription>
-              你可以随时接入真实抓取/接口数据。需要传统列表搜索？前往
-              <Link href="/jobs/search" className="underline underline-offset-4 ml-1">职位搜索</Link>
-            </AlertDescription>
-          </Alert>
+          {isFallback && (
+            <Alert className="mt-4 border-dashed">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>当前展示模拟数据</AlertTitle>
+              <AlertDescription>
+                你可以随时接入真实抓取/接口数据。需要传统列表搜索？前往
+                <Link href="/jobs/search" className="underline underline-offset-4 ml-1">职位搜索</Link>
+              </AlertDescription>
+            </Alert>
+          )}
         </div>
       </div>
 
@@ -96,14 +104,14 @@ export function JobSourcesClient() {
             >
               全部平台
             </Badge>
-            {platforms.map((p) => (
+            {platformNames.map((name) => (
               <Badge
-                key={p}
-                variant={activePlatform === p ? "default" : "outline"}
+                key={name}
+                variant={activePlatform === name ? "default" : "outline"}
                 className="cursor-pointer rounded-full px-3 py-1"
-                onClick={() => setActivePlatform(p)}
+                onClick={() => setActivePlatform(name)}
               >
-                {p}
+                {name}
               </Badge>
             ))}
           </div>
@@ -121,4 +129,3 @@ export function JobSourcesClient() {
     </div>
   )
 }
-

@@ -123,7 +123,7 @@ export function SinglePost({
             tags.map((tag) => (
               <span
                 key={tag}
-                className="px-2.5 py-0.5 bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-300 rounded-full text-xs font-medium"
+                className="px-2 py-0.5 bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-300 rounded-full text-xs font-medium"
               >
                 {tag}
               </span>

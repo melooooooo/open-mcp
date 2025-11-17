@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Search, Briefcase, Users, TrendingUp, Sparkles, ArrowRight } from "lucide-react"
+import { Search, Briefcase, Users, Target, Sparkles, ArrowRight } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import { Button } from "@repo/ui/components/ui/button"
 import { Input } from "@repo/ui/components/ui/input"
@@ -42,7 +42,7 @@ export function CareerHeroSection({
   const resolvedStats: HeroStat[] = stats ?? [
     { label: "在招职位", value: "12,580+", icon: Briefcase, color: "text-blue-600 dark:text-blue-400" },
     { label: "合作企业", value: "2,456", icon: Users, color: "text-green-600 dark:text-green-400" },
-    { label: "内推机会", value: "856", icon: TrendingUp, color: "text-orange-600 dark:text-orange-400" },
+    { label: "活跃候选人", value: "58,960", icon: Target, color: "text-orange-600 dark:text-orange-400" },
     { label: "求职成功率", value: "68%", icon: Sparkles, color: "text-purple-600 dark:text-purple-400" },
   ]
 
@@ -53,8 +53,8 @@ export function CareerHeroSection({
 
   const resolvedCtas: HeroCta[] = ctas ?? [
     {
-      label: "查看内推机会",
-      href: "/referrals",
+      label: "探索职位合集",
+      href: "/jobs",
       icon: Users,
       variant: "outline",
     },
@@ -100,7 +100,7 @@ export function CareerHeroSection({
 
           {/* 副标题 */}
           <p className="mb-8 text-lg text-muted-foreground md:text-xl">
-            汇聚名企职位、内推机会、面试经验，助力应届生成功斩获心仪offer
+            汇聚名企职位、网站合集与面试经验，助力应届生成功斩获心仪 offer
           </p>
 
           {/* 搜索框 */}

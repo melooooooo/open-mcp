@@ -8,23 +8,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avat
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
 import { Separator } from "@repo/ui/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs"
-import { JobCard } from "@/components/career/job-card"
-import { ReferralCard } from "@/components/career/referral-card"
 import Link from "next/link"
 
 interface JobDetailServerClientProps {
   job: any
-  referrals: any[]
 }
 
-export function JobDetailServerClient({ job, referrals }: JobDetailServerClientProps) {
+export function JobDetailServerClient({ job }: JobDetailServerClientProps) {
   const [isBookmarked, setIsBookmarked] = useState(false)
-  
-  // 相关内推机会（过滤相关的）
-  const relatedReferrals = referrals.filter(r => 
-    r.job.title.toLowerCase().includes(job.title.toLowerCase().split(' ')[0]) ||
-    r.referrer.company === job.company.name
-  ).slice(0, 2)
 
   const formatSalary = (min?: number, max?: number) => {
     if (!min && !max) return "薪资面议"
@@ -80,11 +71,6 @@ export function JobDetailServerClient({ job, referrals }: JobDetailServerClientP
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
                         <h1 className="text-2xl font-bold">{job.title}</h1>
-                        {job.hasReferral && (
-                          <Badge className="bg-gradient-to-r from-orange-500 to-amber-500 text-white border-0">
-                            有内推
-                          </Badge>
-                        )}
                         {job.isHot && (
                           <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white border-0">
                             🔥 热门
@@ -177,11 +163,6 @@ export function JobDetailServerClient({ job, referrals }: JobDetailServerClientP
                   <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                     立即申请
                   </Button>
-                  {job.hasReferral && (
-                    <Button variant="outline" size="lg">
-                      申请内推
-                    </Button>
-                  )}
                 </div>
               </CardContent>
             </Card>
@@ -286,25 +267,6 @@ export function JobDetailServerClient({ job, referrals }: JobDetailServerClientP
 
           {/* 侧边栏 */}
           <div className="lg:w-80 space-y-6">
-            {/* 相关内推机会 */}
-            {relatedReferrals.length > 0 && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">相关内推机会</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {relatedReferrals.map(referral => (
-                    <ReferralCard
-                      key={referral.id}
-                      referral={referral}
-                      variant="compact"
-                      onClick={() => window.open(`/referrals/${referral.id}`, '_blank')}
-                      onApply={() => console.log('Apply for referral:', referral.id)}
-                    />
-                  ))}
-                </CardContent>
-              </Card>
-            )}
 
             {/* 申请建议 */}
             <Card className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 border-blue-200 dark:border-blue-800">

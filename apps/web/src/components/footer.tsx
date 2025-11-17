@@ -22,7 +22,7 @@ export function Footer() {
               <span className="font-bold">职启航</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              职启航专注服务秋招应届生与在校生，整合职位、内推、面经与薪酬情报，帮助你自信踏出职场第一步。
+              职启航专注服务秋招应届生与在校生，整合职位、面经与薪酬情报，帮助你自信踏出职场第一步。
             </p>
           </div>
 
@@ -32,11 +32,6 @@ export function Footer() {
               <li>
                 <Link href="/jobs" className="text-muted-foreground hover:text-foreground transition-colors">
                   职位广场
-                </Link>
-              </li>
-              <li>
-                <Link href="/referrals" className="text-muted-foreground hover:text-foreground transition-colors">
-                  内推机会
                 </Link>
               </li>
               <li>
@@ -93,7 +88,7 @@ export function Footer() {
 
           <div className="space-y-4">
             <h3 className="font-medium">订阅求职情报</h3>
-            <p className="text-sm text-muted-foreground">获取最新职位投递窗口、内推开放提醒和校招攻略，领先一步拿到 Offer。</p>
+            <p className="text-sm text-muted-foreground">获取最新职位投递窗口、面试经验和校招攻略，领先一步拿到 Offer。</p>
             <EmailSubscribe />
           </div>
         </div>

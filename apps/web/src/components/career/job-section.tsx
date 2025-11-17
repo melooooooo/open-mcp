@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { ArrowRight, Flame, Sparkles, Building2 } from "lucide-react"
+import { ArrowRight, Flame, Sparkles } from "lucide-react"
 import { Button } from "@repo/ui/components/ui/button"
 import { JobCard } from "./job-card"
 import { Badge } from "@repo/ui/components/ui/badge"
@@ -10,12 +10,11 @@ import { Badge } from "@repo/ui/components/ui/badge"
 interface JobSectionProps {
   hotJobs: any[]
   newJobs: any[]
-  referralJobs?: any[]
 }
 
-export function JobSection({ hotJobs, newJobs, referralJobs = [] }: JobSectionProps) {
+export function JobSection({ hotJobs, newJobs }: JobSectionProps) {
   const router = useRouter()
-  const hasJobs = hotJobs.length > 0 || newJobs.length > 0 || referralJobs.length > 0
+  const hasJobs = hotJobs.length > 0 || newJobs.length > 0
 
   return (
     <section className="py-12">
@@ -104,32 +103,6 @@ export function JobSection({ hotJobs, newJobs, referralJobs = [] }: JobSectionPr
           </div>
         )}
 
-        {referralJobs.length > 0 && (
-          <div className="rounded-xl border bg-muted/40 p-6">
-            <div className="flex items-center justify-between flex-wrap gap-2 mb-6">
-              <div className="flex items-center gap-2">
-                <Building2 className="h-5 w-5 text-emerald-500" />
-                <h3 className="text-lg font-semibold">开放内推的岗位</h3>
-              </div>
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/referrals">
-                  查看全部内推
-                  <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
-                </Link>
-              </Button>
-            </div>
-            <div className="grid gap-4 md:grid-cols-3">
-              {referralJobs.map((job) => (
-                <JobCard
-                  key={`${job.id}-referral`}
-                  job={{ ...job, hasReferral: true }}
-                  variant="compact"
-                  onClick={() => router.push(`/jobs/${job.id}`)}
-                />
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </section>
   )

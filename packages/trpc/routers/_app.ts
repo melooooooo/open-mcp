@@ -7,7 +7,7 @@ import { mcpRelatedAppsRouter } from "./web/mcp-related-apps";
 import { mcpappRouter } from "./web/mcp-apps";
 import { mcpAppSubmissionsRouter } from "./web/mcp-app-submissions";
 import { mcpClaimsRouter } from "./web/mcp-app-claims";
-import { mcpDashboardRouter } from "./web/mcp-dashboaard";
+import { mcpDashboardRouter } from "./web/mcp-dashboard";
 import { mcpSuggestionsRouter } from "./web/mcp-suggestions";
 import { mcpSearchRouter } from "./web/mcp-search";
 import { mcpRecommendationsRouter } from "./web/mcp-recommendation";

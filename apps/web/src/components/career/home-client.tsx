@@ -2,7 +2,6 @@
 
 import { CareerHeroSection } from "@/components/career/hero-section"
 import { JobSection } from "@/components/career/job-section"
-import { ReferralSection } from "@/components/career/referral-section"
 import { ExperienceSection } from "@/components/career/experience-section"
 import { CompanySection } from "@/components/career/company-section"
 import { Container } from "@/components/web/container"
@@ -17,25 +16,20 @@ type StatValue = {
 
 interface HomeClientProps {
   jobs: any[]
-  referrals: any[]
   experiences: any[]
   companies: any[]
   stats: {
     totalJobs: StatValue
-    totalReferrals: StatValue
     totalCompanies: StatValue
     totalUsers: StatValue
     successRate: StatValue
   }
 }
 
-export function HomeClient({ jobs, referrals, experiences, companies, stats }: HomeClientProps) {
+export function HomeClient({ jobs, experiences, companies, stats }: HomeClientProps) {
   // 筛选热门和最新职位
   const hotJobs = jobs.filter(job => job.isHot).slice(0, 3)
   const newJobs = jobs.filter(job => job.isNew).slice(0, 3)
-  
-  // 筛选有内推的职位
-  const referralJobs = jobs.filter(job => job.hasReferral).slice(0, 3)
   
   // 获取热门公司
   const popularCompanies = companies.filter(company => company.isPopular).slice(0, 3)
@@ -54,8 +48,8 @@ export function HomeClient({ jobs, referrals, experiences, companies, stats }: H
 
   const heroStats = [
     { label: "在招职位", value: formatCount(stats.totalJobs), icon: ChartBar, color: "text-blue-600 dark:text-blue-400" },
-    { label: "内推机会", value: formatCount(stats.totalReferrals), icon: Target, color: "text-orange-600 dark:text-orange-400" },
     { label: "合作企业", value: formatCount(stats.totalCompanies), icon: UsersIcon, color: "text-green-600 dark:text-green-400" },
+    { label: "活跃用户", value: formatCount(stats.totalUsers), icon: Target, color: "text-orange-600 dark:text-orange-400" },
     { label: "求职成功率", value: formatRate(stats.successRate), icon: Trophy, color: "text-purple-600 dark:text-purple-400" },
   ]
 
@@ -67,8 +61,8 @@ export function HomeClient({ jobs, referrals, experiences, companies, stats }: H
           stats={heroStats}
           ctas={[
             {
-              label: "查看内推机会",
-              href: "/referrals",
+              label: "查看全部职位",
+              href: "/jobs",
               icon: UsersIcon,
               variant: "outline",
             },
@@ -88,15 +82,7 @@ export function HomeClient({ jobs, referrals, experiences, companies, stats }: H
             <JobSection 
               hotJobs={hotJobs.length > 0 ? hotJobs : jobs.slice(0, 3)} 
               newJobs={newJobs.length > 0 ? newJobs : jobs.slice(3, 6)} 
-              referralJobs={referralJobs}
             />
-          </Container>
-        </Section>
-
-        {/* Referral Section */}
-        <Section className="bg-muted/30">
-          <Container>
-            <ReferralSection referrals={referrals.slice(0, 3)} />
           </Container>
         </Section>
 
@@ -128,19 +114,19 @@ export function HomeClient({ jobs, referrals, experiences, companies, stats }: H
                 <div className="text-sm text-muted-foreground">在招职位</div>
               </div>
               <div className="bg-card border rounded-lg p-6 text-center">
-                <Trophy className="h-8 w-8 text-green-500 mx-auto mb-3" />
-                <div className="text-3xl font-bold mb-1">{formatRate(stats.successRate)}</div>
-                <div className="text-sm text-muted-foreground">求职成功率</div>
-              </div>
-              <div className="bg-card border rounded-lg p-6 text-center">
                 <UsersIcon className="h-8 w-8 text-orange-500 mx-auto mb-3" />
                 <div className="text-3xl font-bold mb-1">{formatCount(stats.totalUsers)}</div>
                 <div className="text-sm text-muted-foreground">活跃用户</div>
               </div>
               <div className="bg-card border rounded-lg p-6 text-center">
-                <Target className="h-8 w-8 text-purple-500 mx-auto mb-3" />
-                <div className="text-3xl font-bold mb-1">{formatCount(stats.totalReferrals)}</div>
-                <div className="text-sm text-muted-foreground">内推机会</div>
+                <UsersIcon className="h-8 w-8 text-purple-500 mx-auto mb-3" />
+                <div className="text-3xl font-bold mb-1">{formatCount(stats.totalCompanies)}</div>
+                <div className="text-sm text-muted-foreground">合作企业</div>
+              </div>
+              <div className="bg-card border rounded-lg p-6 text-center">
+                <Trophy className="h-8 w-8 text-green-500 mx-auto mb-3" />
+                <div className="text-3xl font-bold mb-1">{formatRate(stats.successRate)}</div>
+                <div className="text-sm text-muted-foreground">求职成功率</div>
               </div>
             </div>
           </Container>
@@ -152,7 +138,7 @@ export function HomeClient({ jobs, referrals, experiences, companies, stats }: H
             <div className="text-center">
               <h2 className="text-3xl font-bold mb-4">开启你的职业征程</h2>
               <p className="text-lg mb-8 opacity-95">
-                加入我们，获取最新职位信息和内推机会
+                加入我们，获取最新职位信息和备战材料
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" variant="secondary">

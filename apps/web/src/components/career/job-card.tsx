@@ -28,7 +28,7 @@ interface JobCardProps {
     applicationCount?: number
     isHot?: boolean
     isNew?: boolean
-    hasReferral?: boolean
+    websiteUrl?: string
   }
   variant?: "default" | "compact" | "detailed"
   className?: string
@@ -167,11 +167,6 @@ export function JobCard({ job, variant = "default", className, onBookmark, onCli
                         {companySizeMap[companySizeKey] || job.company?.size}
                       </Badge>
                     </>
-                  )}
-                  {job.hasReferral && (
-                    <Badge className="bg-gradient-to-r from-orange-500 to-amber-500 text-white border-0 text-xs">
-                      内推
-                    </Badge>
                   )}
                 </div>
               </div>

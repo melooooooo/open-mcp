@@ -13,17 +13,17 @@ export default function SalaryPage() {
     {
       label: "样本平均薪资",
       value: `${averageSalary}k`,
-      description: "基于近一年校招与社招样本的平均月薪",
+      description: "统计国有大行、股份行、头部券商近一年校招/社招样本",
     },
     {
-      label: "统计公司数",
+      label: "统计机构数",
       value: `${mockSalaryData.length}`,
-      description: "覆盖头部互联网企业热门岗位",
+      description: "覆盖银行、证券、资管、信托等热门金融机构",
     },
     {
       label: "最高平均薪资",
       value: `${highestAverage}k`,
-      description: "多地 offer 数据实时更新",
+      description: "包含投行前台/自营/资管条线，多地 offer 实时更新",
     },
   ]
 
@@ -31,10 +31,10 @@ export default function SalaryPage() {
     <main className="bg-background pb-16">
       <section className="border-b bg-muted/20">
         <Container className="py-12 sm:py-16 space-y-4">
-          <Badge variant="secondary" className="w-fit">Compensation Transparency</Badge>
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">薪酬洞察</h1>
+          <Badge variant="secondary" className="w-fit">Financial Industry Insight</Badge>
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">银行 / 证券薪酬洞察</h1>
           <p className="text-lg text-muted-foreground max-w-2xl">
-            汇总近一年校招与社招 Offer 数据，提供公司、岗位、城市维度的薪酬对比，帮助你在谈薪与 offer 选择阶段争取更优条件。
+            集中展示银行、证券、资管、信托等金融机构近一年 Offer 数据，涵盖岗位/城市/条线维度，帮助你在投递与谈薪中更快找到市场锚点。
           </p>
         </Container>
       </section>
@@ -59,7 +59,7 @@ export default function SalaryPage() {
         <Container>
           <Card>
             <CardHeader>
-              <CardTitle>热门企业薪酬区间</CardTitle>
+              <CardTitle>头部银行 & 券商薪酬区间</CardTitle>
             </CardHeader>
             <CardContent className="overflow-x-auto">
               <table className="w-full min-w-[480px] text-left text-sm">
@@ -94,7 +94,7 @@ export default function SalaryPage() {
               <CardTitle>税后收入计算器（开发中）</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm text-muted-foreground">
-              <p>录入城市与税前薪资，即可查看五险一金、个税后的到手情况，并支持生成谈薪备忘单。</p>
+              <p>录入城市、税前薪资与条线类别，即可折算五险一金、年终奖、住房补贴后的到手收入，并生成金融行业谈薪备忘单。</p>
             </CardContent>
           </Card>
           <Card className="border-dashed">
@@ -102,7 +102,7 @@ export default function SalaryPage() {
               <CardTitle>Offer 对比清单（开发中）</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm text-muted-foreground">
-              <p>支持多份 offer 的薪资、福利、发展空间等维度横向对比，让你的选择更有底气。</p>
+              <p>支持投研、风控、交易、科技等多条线 Offer 在薪酬、福利、晋升通道维度横向对比，让你的选择更有底气。</p>
             </CardContent>
           </Card>
         </Container>

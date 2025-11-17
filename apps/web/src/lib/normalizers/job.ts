@@ -18,7 +18,7 @@ export interface NormalizedJob {
   applicationCount?: number
   isHot?: boolean
   isNew?: boolean
-  hasReferral?: boolean
+  websiteUrl?: string
 }
 
 type SupabaseJob = {
@@ -39,8 +39,6 @@ type SupabaseJob = {
   viewCount?: number | null
   application_count?: number | null
   applicationCount?: number | null
-  has_referral?: boolean | null
-  hasReferral?: boolean | null
   locations?: string[] | null
   location?: string[] | string | null
   tags?: string[] | null
@@ -49,6 +47,11 @@ type SupabaseJob = {
     logo_url?: string | null
     size?: string | null
   } | null
+  company_name?: string | null
+  company_logo?: string | null
+  company_size?: string | null
+  website_url?: string | null
+  websiteUrl?: string | null
 }
 
 type MockJob = NormalizedJob
@@ -73,7 +76,7 @@ export function normalizeJobRecord(job: SupabaseJob | MockJob): NormalizedJob {
     : {
       name: (job as any).company_name || job.companies?.name || "未知公司",
       logo: (job as any).company_logo || job.companies?.logo_url || undefined,
-      size: job.companies?.size || undefined,
+      size: (job as any).company_size || job.companies?.size || undefined,
     }
 
   const salaryMin = isMock ? job.salaryMin : job.salary_min ?? job.salaryMin
@@ -105,7 +108,7 @@ export function normalizeJobRecord(job: SupabaseJob | MockJob): NormalizedJob {
     isNew:
       job.isNew ??
       (createdAt ? new Date(createdAt).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000 : false),
-    hasReferral: job.hasReferral ?? job.has_referral ?? false,
+    websiteUrl: (job as any).website_url ?? (job as any).websiteUrl,
   }
 
   return normalized

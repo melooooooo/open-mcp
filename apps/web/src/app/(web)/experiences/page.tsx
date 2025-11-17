@@ -23,7 +23,7 @@ export default function ExperiencesPage() {
                 <Link href="/experiences/share">分享我的经验</Link>
               </Button>
               <Button variant="outline" asChild>
-                <Link href="/referrals">查看内推机会</Link>
+                <Link href="/jobs">查看职位合集</Link>
               </Button>
             </div>
           </div>
@@ -32,7 +32,7 @@ export default function ExperiencesPage() {
 
 
 
-      {/* 全部经验列表（列表样式，参考内推页） */}
+      {/* 全部经验列表 */}
       <section className="mt-12">
         <Container>
           <h2 className="text-xl font-semibold mb-4">全部经验分享</h2>

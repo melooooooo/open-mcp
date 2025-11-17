@@ -22,7 +22,7 @@ export default function CompaniesPage() {
               </p>
             </div>
             <Button asChild>
-              <Link href="/referrals">寻找该公司的内推人</Link>
+              <Link href="/jobs">查看相关职位</Link>
             </Button>
           </div>
         </Container>
@@ -47,7 +47,7 @@ export default function CompaniesPage() {
           <div className="rounded-xl border bg-card p-6">
             <h2 className="text-lg font-semibold">岗位提醒</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              订阅感兴趣公司的校招岗位，当开放投递或内推时，将第一时间通过站内信和邮件通知你。
+              订阅感兴趣公司的校招岗位，当开放投递或更新职位时，将第一时间通过站内信和邮件通知你。
             </p>
           </div>
         </Container>
