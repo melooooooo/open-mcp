@@ -81,6 +81,9 @@
 }
 
 @theme inline {
+  /* Spacing scale - default is 0.25rem (4px) to match Tailwind CSS 3.x */
+  --spacing: 0.25rem;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
