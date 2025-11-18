@@ -11,6 +11,7 @@ import Link from "next/link"
 
 // 顶部筛选标签配置
 const quickFilters = [
+  { key: "all", label: "全部", icon: Compass },
   { key: "today", label: "今日更新", icon: Clock },
   { key: "hot", label: "热门", icon: Flame },
   { key: "campus", label: "校招", icon: GraduationCap },
@@ -33,7 +34,7 @@ interface JobSourcesClientProps {
 }
 
 export function JobSourcesClient({ sources, isFallback }: JobSourcesClientProps) {
-  const [activeFilter, setActiveFilter] = useState<string>("today")
+  const [activeFilter, setActiveFilter] = useState<string>("all")
   const [activePlatform, setActivePlatform] = useState<string>("全部平台")
 
   const platformNames = sources.length
@@ -83,14 +84,6 @@ export function JobSourcesClient({ sources, isFallback }: JobSourcesClientProps)
               {label}
             </Button>
           ))}
-          <Button
-            variant={activeFilter === "all" ? "default" : "outline"}
-            size="sm"
-            className="rounded-full"
-            onClick={() => setActiveFilter("all")}
-          >
-            <Compass className="h-4 w-4 mr-1.5" />全部
-          </Button>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">

@@ -12,10 +12,13 @@
     "mcp:supabase": "SUPABASE_ACCESS_TOKEN=sbp_ff366281db25d755234613382246ea7afe37bd42 npx mcp-server-supabase"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.932.0",
     "@modelcontextprotocol/sdk": "^1.18.2",
     "@playwright/mcp": "^0.0.40",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "dotenv": "^17.2.3",
+    "pg": "^8.16.3",
     "playwright": "^1.56.1",
     "prettier": "^3.5.1",
     "turbo": "^2.4.2",
