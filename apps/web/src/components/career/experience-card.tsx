@@ -148,28 +148,79 @@ export function ExperienceCard({ experience, variant = "default", className, onC
 
   // 列表样式：标题、作者、发布时间/公司
   if (variant === "list") {
+    const TypeIcon = typeConfig[experience.type].icon
     return (
-      <Card className={cn("group cursor-pointer hover:bg-muted/40 transition-colors", className)} onClick={onClick}>
-        <CardContent className="p-4">
-          <div className="flex items-center gap-3">
-            <Avatar className="h-8 w-8 shrink-0">
-              <AvatarImage src={experience.author.avatar} alt={experience.author.name} />
-              <AvatarFallback className="text-[10px]">
-                {experience.author.name.slice(0, 2)}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <h3 className="font-medium text-sm truncate">{experience.title}</h3>
-                <Badge className={cn("h-5 text-[10px] px-2 py-0.5", typeConfig[experience.type].color)}>
+      <Card className={cn("group cursor-pointer hover:bg-muted/40 transition-all duration-300 border-0", className)} onClick={onClick}>
+        <CardContent className="p-0">
+          <div className="flex items-start gap-4">
+            {/* 左侧图标区域 */}
+            <div className="flex flex-col items-center gap-2 pt-1">
+              <div className={cn(
+                "flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 group-hover:scale-110",
+                typeConfig[experience.type].color
+              )}>
+                <TypeIcon className="w-6 h-6" />
+              </div>
+            </div>
+
+            {/* 中间内容区域 */}
+            <div className="flex-1 min-w-0 space-y-2">
+              <div className="flex items-start gap-3 flex-wrap">
+                <h3 className="font-semibold text-base group-hover:text-primary transition-colors flex-1 min-w-0">
+                  {experience.title}
+                </h3>
+                <Badge className={cn("h-6 text-xs px-3 py-1 font-medium shrink-0", typeConfig[experience.type].color)}>
                   {typeConfig[experience.type].label}
                 </Badge>
               </div>
-              <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                <span className="truncate">作者：{experience.author.name}</span>
-                {experience.company?.name && <span>公司：{experience.company.name}</span>}
-                <span>发布时间：{formatDate(experience.createdAt)}</span>
-                {typeof experience.viewCount === "number" && <span>浏览：{experience.viewCount}</span>}
+
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
+                <span className="flex items-center gap-2">
+                  <span className="text-base">👤</span>
+                  <span className="font-medium">{experience.author.name}</span>
+                </span>
+                {experience.company?.name && (
+                  <span className="flex items-center gap-2">
+                    <span className="text-base">🏢</span>
+                    <span>{experience.company.name}</span>
+                  </span>
+                )}
+                <span className="flex items-center gap-2">
+                  <Clock className="w-4 h-4" />
+                  <span>{formatDate(experience.createdAt)}</span>
+                </span>
+                {typeof experience.viewCount === "number" && (
+                  <span className="flex items-center gap-2">
+                    <Eye className="w-4 h-4" />
+                    <span>{experience.viewCount}</span>
+                  </span>
+                )}
+              </div>
+
+              {/* 标签 */}
+              {experience.tags && experience.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {experience.tags.slice(0, 3).map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                  {experience.tags.length > 3 && (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-muted text-muted-foreground text-xs">
+                      +{experience.tags.length - 3}
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* 右侧箭头 */}
+            <div className="flex items-center pt-1">
+              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+                <span className="text-lg group-hover:translate-x-0.5 transition-transform">→</span>
               </div>
             </div>
           </div>

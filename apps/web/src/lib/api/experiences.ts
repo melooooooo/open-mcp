@@ -3,7 +3,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server"
 type ExperienceListOptions = {
   limit?: number
   page?: number
-  tag?: string
+  tag?: string // also used as keyword: 会匹配标签、标题、公司名、岗位
   industry?: string
   type?: string
 }
@@ -40,6 +40,7 @@ export async function getExperiencesList(options: ExperienceListOptions = {}) {
       { count: "exact" }
     )
 
+  const keyword = tag?.trim()
   if (industry) {
     query = query.eq("industry", industry)
   }
@@ -48,8 +49,17 @@ export async function getExperiencesList(options: ExperienceListOptions = {}) {
     query = query.eq("article_type", type)
   }
 
-  if (tag) {
-    query = query.contains("tags", [tag])
+  if (keyword) {
+    // 支持标签 / 公司名 / 标题 / 岗位的模糊匹配，并保留对标签的精确包含
+    const escaped = keyword.replace(/,/g, "\\,")
+    query = query.or(
+      [
+        `tags.cs.{${escaped}}`,
+        `title.ilike.%${escaped}%`,
+        `organization_name.ilike.%${escaped}%`,
+        `job_title.ilike.%${escaped}%`,
+      ].join(",")
+    )
   }
 
   const { data, error, count } = await query
