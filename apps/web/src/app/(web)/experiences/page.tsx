@@ -38,15 +38,19 @@ function buildQueryString(values: Record<string, string | number | undefined>) {
   return qs ? `?${qs}` : ""
 }
 
+type SearchParams = Record<string, string | string[] | undefined>
+
 type ExperiencesPageProps = {
-  searchParams: Record<string, string | string[] | undefined>
+  searchParams: SearchParams | Promise<SearchParams>
 }
 
 export default async function ExperiencesPage({ searchParams }: ExperiencesPageProps) {
-  const currentPage = Math.max(parseInt(getParamValue(searchParams.page) || "1", 10), 1)
-  const tagFilter = getParamValue(searchParams.tag)
-  const industryFilter = getParamValue(searchParams.industry)
-  const typeFilter = getParamValue(searchParams.type)
+  const resolvedParams = await searchParams
+
+  const currentPage = Math.max(parseInt(getParamValue(resolvedParams.page) || "1", 10), 1)
+  const tagFilter = getParamValue(resolvedParams.tag)
+  const industryFilter = getParamValue(resolvedParams.industry)
+  const typeFilter = getParamValue(resolvedParams.type)
 
   const { items: experiences, total } = await getExperiencesList({
     limit: PAGE_SIZE,

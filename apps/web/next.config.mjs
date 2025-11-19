@@ -36,6 +36,8 @@ const nextConfig = {
     "@repo/email",
     "@repo/github",
     "@repo/trpc",
+    "@daveyplate/better-auth-ui",
+    "@daveyplate/better-auth-tanstack",
   ],
 };
 
