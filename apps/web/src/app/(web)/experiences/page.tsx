@@ -63,9 +63,9 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
 
   return (
     <main className="bg-background pb-16">
-      <section className="border-b bg-muted/40">
-        <Container className="py-12 sm:py-16">
-          <div className="grid gap-6 lg:grid-cols-[1.1fr,0.9fr] items-center">
+      <section className="border-b bg-muted/30">
+        <Container className="py-8 sm:py-10">
+          <div className="space-y-4">
             <div className="max-w-3xl space-y-4">
               <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
                 Interview Stories
@@ -83,27 +83,22 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
                 </Button>
               </div>
             </div>
-            <div className="rounded-2xl border border-border/70 bg-card/70 p-6 shadow-sm">
-              <div className="space-y-3">
-                <p className="text-sm font-semibold text-foreground">精选亮点</p>
-                <div className="grid grid-cols-2 gap-3 text-sm text-muted-foreground">
-                  <div className="rounded-xl border border-border/60 bg-muted/40 px-4 py-3">
-                    <p className="text-lg font-semibold text-foreground">{total}</p>
-                    <p>真实经验分享</p>
-                  </div>
-                  <div className="rounded-xl border border-border/60 bg-muted/40 px-4 py-3">
-                    <p className="text-lg font-semibold text-foreground">{selectedTags.length}</p>
-                    <p>热门标签</p>
-                  </div>
-                  <div className="rounded-xl border border-border/60 bg-muted/40 px-4 py-3">
-                    <p className="text-lg font-semibold text-foreground">{INDUSTRY_OPTIONS.length - 1}</p>
-                    <p>覆盖行业</p>
-                  </div>
-                  <div className="rounded-xl border border-border/60 bg-muted/40 px-4 py-3">
-                    <p className="text-lg font-semibold text-foreground">{TYPE_OPTIONS.length - 1}</p>
-                    <p>内容类型</p>
-                  </div>
-                </div>
+            <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <span className="text-xl font-semibold text-foreground leading-none">{total}</span>
+                <span>真实经验分享</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xl font-semibold text-foreground leading-none">{selectedTags.length}</span>
+                <span>热门标签</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xl font-semibold text-foreground leading-none">{INDUSTRY_OPTIONS.length - 1}</span>
+                <span>覆盖行业</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xl font-semibold text-foreground leading-none">{TYPE_OPTIONS.length - 1}</span>
+                <span>内容类型</span>
               </div>
             </div>
           </div>
@@ -112,10 +107,10 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
 
 
 
-      {/* 筛选区域 */}
-      <section className="mt-12">
+      {/* 筛选 + 摘要 */}
+      <section className="mt-6">
         <Container>
-          <div className="rounded-2xl border border-border/80 bg-card/80 backdrop-blur-sm shadow-sm p-8 space-y-6">
+          <div className="rounded-2xl border border-border/80 bg-card/80 backdrop-blur-sm shadow-sm p-5 space-y-4">
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
                 <div className="h-1 w-10 bg-primary rounded-full" />
@@ -126,7 +121,7 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
                 按标签、行业与内容类型组合筛选，快速定位你关注的经验内容。
               </p>
             </div>
-            <form className="grid gap-6 md:grid-cols-4" method="get" action="/experiences">
+            <form className="grid gap-4 md:grid-cols-4" method="get" action="/experiences">
               <input type="hidden" name="page" value="1" />
               <div className="flex flex-col gap-3">
                 <label htmlFor="tag" className="text-sm font-semibold text-foreground">
@@ -137,7 +132,7 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
                   name="tag"
                   placeholder="如：薪资待遇"
                   defaultValue={tagFilter}
-                  className="rounded-lg border border-border px-4 py-3 text-sm bg-background focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  className="rounded-lg border border-border px-4 py-2.5 text-sm bg-background focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                 />
               </div>
 
@@ -149,7 +144,7 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
                   id="industry"
                   name="industry"
                   defaultValue={industryFilter}
-                  className="rounded-lg border border-border px-4 py-3 text-sm bg-background focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer"
+                  className="rounded-lg border border-border px-4 py-2.5 text-sm bg-background focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer"
                 >
                   {INDUSTRY_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -167,7 +162,7 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
                   id="type"
                   name="type"
                   defaultValue={typeFilter}
-                  className="rounded-lg border border-border px-4 py-3 text-sm bg-background focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer"
+                  className="rounded-lg border border-border px-4 py-2.5 text-sm bg-background focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer"
                 >
                   {TYPE_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -178,52 +173,44 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
               </div>
 
               <div className="flex items-end gap-3 md:col-span-1">
-                <Button type="submit" className="flex-1 h-12 text-base font-semibold shadow-sm">
+                <Button type="submit" className="flex-1 h-11 text-sm font-semibold shadow-sm">
                   应用筛选
                 </Button>
-                <Button variant="outline" asChild className="h-12 px-6">
+                <Button variant="outline" asChild className="h-11 px-5 text-sm">
                   <Link href="/experiences">重置</Link>
                 </Button>
               </div>
             </form>
+
+            {(tagFilter || industryFilter || typeFilter) && (
+              <div className="border-t border-border/60 pt-4 space-y-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">当前筛选</span>
+                  {industryFilter && (
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium border border-primary/20">
+                      {INDUSTRY_OPTIONS.find(opt => opt.value === industryFilter)?.label}
+                    </span>
+                  )}
+                  {typeFilter && (
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium border border-primary/20">
+                      {TYPE_OPTIONS.find(opt => opt.value === typeFilter)?.label}
+                    </span>
+                  )}
+                  {tagFilter && (
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium border border-primary/20">
+                      #{tagFilter}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </Container>
       </section>
 
       {/* 经验列表 */}
-      <section className="mt-16">
-        <Container className="space-y-8">
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-2">
-              <div className="h-1 w-10 bg-primary rounded-full" />
-              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">Featured</p>
-            </div>
-            <h2 className="text-3xl font-semibold tracking-tight">全部经验分享</h2>
-            <p className="text-muted-foreground text-lg max-w-3xl">
-              根据筛选条件展示的经验列表。点击卡片查看详情与薪酬数据。
-            </p>
-            {(tagFilter || industryFilter || typeFilter) && (
-              <div className="flex flex-wrap items-center gap-2 mt-2">
-                <span className="text-sm text-muted-foreground">当前筛选:</span>
-                {industryFilter && (
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium border border-primary/20">
-                    {INDUSTRY_OPTIONS.find(opt => opt.value === industryFilter)?.label}
-                  </span>
-                )}
-                {typeFilter && (
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium border border-primary/20">
-                    {TYPE_OPTIONS.find(opt => opt.value === typeFilter)?.label}
-                  </span>
-                )}
-                {tagFilter && (
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium border border-primary/20">
-                    #{tagFilter}
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-
+      <section className="mt-6">
+        <Container className="space-y-6">
           {experiences.length > 0 ? (
             <div className="rounded-2xl border border-border/70 bg-card/80 divide-y divide-border/60 shadow-md overflow-hidden backdrop-blur-sm">
               {experiences.map((exp) => (

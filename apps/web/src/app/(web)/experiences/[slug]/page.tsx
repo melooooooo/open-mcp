@@ -57,8 +57,15 @@ function sanitize(html?: string | null): string {
   return sanitizeHtml(html, sanitizeOptions)
 }
 
-export default async function ExperienceDetailPage({ params }: { params: { slug: string } }) {
-  const experience = await getExperienceBySlug(params.slug)
+type ExperienceDetailPageProps = {
+  params: Promise<{ slug: string }>
+}
+
+export default async function ExperienceDetailPage({ params }: ExperienceDetailPageProps) {
+  const resolvedParams = await params
+  // URL decode the slug to handle Chinese characters
+  const decodedSlug = decodeURIComponent(resolvedParams.slug)
+  const experience = await getExperienceBySlug(decodedSlug)
 
   if (!experience) {
     notFound()
