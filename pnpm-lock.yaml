@@ -63,6 +63,9 @@ importers:
       dotenv:
         specifier: ^17.2.3
         version: 17.2.3
+      marked:
+        specifier: ^17.0.0
+        version: 17.0.0
       pg:
         specifier: ^8.16.3
         version: 8.16.3
@@ -72,6 +75,9 @@ importers:
       prettier:
         specifier: ^3.5.1
         version: 3.6.2
+      tsx:
+        specifier: ^4.20.3
+        version: 4.20.3
       turbo:
         specifier: ^2.4.2
         version: 2.5.4
@@ -7175,6 +7181,11 @@ packages:
   marked@15.0.12:
     resolution: {integrity: sha512-8dD6FusOQSrpv9Z1rdNMdlSgQOIP880DHqnohobOmYLElGEqAL/JvxvuxZO16r4HtjTlfPRDC1hbvxC9dPN2nA==}
     engines: {node: '>= 18'}
+    hasBin: true
+
+  marked@17.0.0:
+    resolution: {integrity: sha512-KkDYEWEEiYJw/KC+DVm1zzlpMQSMIu6YRltkcCvwheCp8HWPXCk9JwOmHJKBlGfzcpzcIt6x3sMnTsRm/51oDg==}
+    engines: {node: '>= 20'}
     hasBin: true
 
   marked@7.0.4:
@@ -17194,6 +17205,8 @@ snapshots:
   markdown-table@3.0.4: {}
 
   marked@15.0.12: {}
+
+  marked@17.0.0: {}
 
   marked@7.0.4: {}
 

@@ -11,6 +11,7 @@ import fs from "node:fs/promises"
 import path from "node:path"
 import dotenv from "dotenv"
 import { Client } from "pg"
+import { marked } from "marked"
 
 const MAX_SUMMARY_LEN = 200
 const WORDS_PER_MINUTE = 420 // rough estimate for Chinese characters per minute
@@ -20,6 +21,12 @@ const OUTPUT_JSON = path.resolve(process.env.OUTPUT_JSON || path.join("analysis"
 const SKIP_DB = process.argv.includes("--dry-run") || process.env.SKIP_DB === "1"
 
 dotenv.config({ path: path.join(process.cwd(), ".env.local") })
+
+marked.setOptions({
+  mangle: false,
+  headerIds: false,
+  breaks: true,
+})
 
 if (!process.env.DATABASE_URL) {
   console.error("DATABASE_URL is required (expected in .env.local)")
@@ -164,13 +171,114 @@ const extractContent = (html) => {
   return { contentHtml, contentText }
 }
 
+const renderMarkdownToHtml = async (markdown) => {
+  const rendered = marked.parse(markdown)
+  return typeof rendered === "string" ? rendered : await rendered
+}
+
+const tryLoadMarkdown = async (dirname) => {
+  const mdPath = path.join(BANK_INFO_ROOT, `${dirname}.md`)
+  try {
+    const markdown = await fs.readFile(mdPath, "utf8")
+    const html = await renderMarkdownToHtml(markdown)
+    const tokens = marked.lexer(markdown)
+    const headingToken = tokens.find((token) => token.type === "heading")
+    const headingText = headingToken ? cleanWhitespace(headingToken.text || "") : null
+    return {
+      markdown,
+      html,
+      text: stripTags(html),
+      heading: headingText,
+      path: path.relative(process.cwd(), mdPath).replace(/\\/g, "/"),
+    }
+  } catch (err) {
+    if (err?.code !== "ENOENT") {
+      console.warn(`Failed to load markdown for ${dirname}:`, err.message || err)
+    }
+    return null
+  }
+}
+
 const headingRegex = /^([一二三四五六七八九十]+[、\.．]|第[一二三四五六七八九十]|【|「|《).+/
 const isHeadingParagraph = (text) =>
   headingRegex.test(text) || (/公司|薪|福利|待遇|招聘|岗位|总结|亮点/.test(text) && text.length <= 20)
 
-const buildSections = (contentHtml) => {
-  const paragraphMatches = contentHtml.match(/<p[\s\S]*?<\/p>/gi)
-  if (!paragraphMatches) {
+const createAnchorGenerator = () => {
+  const counter = new Map()
+  return (title, fallbackIndex = 1) => {
+    const base = toSlug(title || "") || `section-${fallbackIndex}`
+    const seen = counter.get(base) || 0
+    counter.set(base, seen + 1)
+    return seen === 0 ? base : `${base}-${seen + 1}`
+  }
+}
+
+const cloneTokens = (tokens = []) => {
+  if (typeof structuredClone === "function") return structuredClone(tokens)
+  return JSON.parse(JSON.stringify(tokens))
+}
+
+const renderTokensHtml = (tokens, links) => {
+  if (!tokens.length) return ""
+  const cloned = cloneTokens(tokens)
+  cloned.links = links
+  return marked.parser(cloned)
+}
+
+const buildSectionsFromMarkdown = (markdown) => {
+  if (!markdown || !markdown.trim()) return []
+  const tokens = marked.lexer(markdown)
+  const links = tokens.links || {}
+  const sections = []
+  const anchorGen = createAnchorGenerator()
+
+  let skippedTopHeading = false
+  let current = { title: "导语", tokens: [], raw: null, depth: 1, anchor: null }
+
+  const pushCurrent = () => {
+    if (!current.tokens.length) return
+    const html = renderTokensHtml(current.tokens, links)
+    if (!html.trim()) {
+      current = { title: null, tokens: [], raw: null, depth: null, anchor: null }
+      return
+    }
+    sections.push({
+      order: sections.length + 1,
+      title: current.title || `部分${sections.length + 1}`,
+      body_html: html,
+      body_text: stripTags(html),
+      raw_heading: current.raw,
+      depth: current.depth || null,
+      anchor: current.anchor || null,
+    })
+    current = { title: null, tokens: [], raw: null, depth: null, anchor: null }
+  }
+
+  for (const token of tokens) {
+    if (token.type === "heading") {
+      const text = cleanWhitespace(token.text || "")
+      if (token.depth === 1 && !skippedTopHeading) {
+        skippedTopHeading = true
+        continue
+      }
+      pushCurrent()
+      current.title = text || `部分${sections.length + 1}`
+      current.raw = text
+      current.depth = token.depth
+      current.anchor = anchorGen(text, sections.length + 1)
+      current.tokens = []
+      continue
+    }
+    current.tokens.push(token)
+  }
+
+  pushCurrent()
+  return sections
+}
+
+const buildSectionsFromHtml = (contentHtml) => {
+  const blockMatches = contentHtml.match(/<(p|h[1-6]|blockquote|ul|ol|pre)[\s\S]*?<\/\1>/gi)
+  if (!blockMatches) {
     return [
       {
         order: 1,
@@ -178,12 +286,16 @@ const buildSections = (contentHtml) => {
         body_html: contentHtml,
         body_text: stripTags(contentHtml),
         raw_heading: null,
+        depth: null,
+        anchor: null,
       },
     ]
   }
 
   const sections = []
-  let current = { title: "导语", htmlParts: [], raw: null }
+  const anchorGen = createAnchorGenerator()
+  let current = { title: "导语", htmlParts: [], raw: null, anchor: null, depth: null }
+  let skippedTopHeading = false
 
   const pushCurrent = () => {
     if (!current.htmlParts.length) return
@@ -194,17 +306,34 @@ const buildSections = (contentHtml) => {
       body_html: html,
       body_text: stripTags(html),
       raw_heading: current.raw,
+      anchor: current.anchor,
+      depth: current.depth,
     })
-    current = { title: null, htmlParts: [], raw: null }
+    current = { title: null, htmlParts: [], raw: null, anchor: null, depth: null }
   }
 
-  for (const fragment of paragraphMatches) {
+  for (const fragment of blockMatches) {
     const text = cleanWhitespace(stripTags(fragment))
     if (!text && !/img/i.test(fragment)) continue
-    if (isHeadingParagraph(text)) {
+
+    const tagMatch = fragment.match(/^<([a-z0-9]+)/i)
+    const tagName = tagMatch ? tagMatch[1].toLowerCase() : "p"
+    const headingLevel = tagName.startsWith("h") ? Number(tagName.replace("h", "")) : null
+    const isHeadingTag = typeof headingLevel === "number" && Number.isFinite(headingLevel)
+    if (isHeadingTag && headingLevel === 1 && !skippedTopHeading) {
+      skippedTopHeading = true
+      continue
+    }
+
+    const shouldStartSection =
+      (tagName === "p" && isHeadingParagraph(text)) || (isHeadingTag && headingLevel >= 2)
+
+    if (shouldStartSection) {
       pushCurrent()
       current.title = text.replace(/^[【「《]|[】」》]$/g, "")
       current.raw = text
+      current.anchor = anchorGen(current.title, sections.length + 1)
+      current.depth = headingLevel || null
       continue
     }
     if (!current.title) current.title = sections.length === 0 ? "导语" : `部分${sections.length + 1}`
@@ -213,6 +342,23 @@ const buildSections = (contentHtml) => {
 
   pushCurrent()
   return sections
+}
+
+const buildSections = ({ contentHtml, markdown }) => {
+  if (markdown) {
+    const markdownSections = buildSectionsFromMarkdown(markdown)
+    if (markdownSections.length) return markdownSections
+  }
+  return buildSectionsFromHtml(contentHtml)
+}
+
+const ensureTitleInContentText = (title, text) => {
+  const normalizedTitle = cleanWhitespace(title || "")
+  if (!normalizedTitle) return text
+  const normalizedText = text || ""
+  if (!normalizedText) return normalizedTitle
+  if (normalizedText.includes(normalizedTitle)) return normalizedText
+  return `${normalizedTitle}\n\n${normalizedText}`.trim()
 }
 
 const pickSalaryHighlights = (text) => {
@@ -272,11 +418,21 @@ async function loadArticles() {
         /id=["']js_row_immersive_cover_img["'][\s\S]*?<img[^>]*src=["']([^"']+)["']/i
       )
 
-      const { contentHtml, contentText } = extractContent(html)
+      const markdownDetails = await tryLoadMarkdown(dir.name)
+      const { contentHtml: htmlContent, contentText: htmlText } = extractContent(html)
+
+      let contentHtml = htmlContent
+      if (!contentHtml && markdownDetails) {
+        contentHtml = markdownDetails.html
+      }
+
       if (!contentHtml) {
         console.warn(`Skip ${dir.name}: missing content`)
         continue
       }
+
+      let contentText = markdownDetails?.text || htmlText || ""
+      contentText = ensureTitleInContentText(title, contentText)
 
       const industry = guessIndustry(title, dir.name)
       const tags = deriveTags(title, industry, dir.name, contentText)
@@ -284,7 +440,7 @@ async function loadArticles() {
       const readTimeMinutes = Math.max(1, Math.ceil(contentText.length / WORDS_PER_MINUTE))
       const organizationName = guessOrganization(title, dir.name)
       const slug = toSlug(dir.name || title)
-      const sections = buildSections(contentHtml)
+      const sections = buildSections({ contentHtml, markdown: markdownDetails?.markdown })
       const salaryHighlights = pickSalaryHighlights(contentText)
       const article_type = detectArticleType(title, contentText)
       const job_title = guessJobTitle(title, dir.name)
@@ -298,6 +454,15 @@ async function loadArticles() {
             )
             .replace(/\\/g, "/")
           : coverAssetPath || null
+
+      const markdownMeta = markdownDetails
+        ? {
+            path: markdownDetails.path,
+            heading: markdownDetails.heading || null,
+            length: markdownDetails.markdown.length,
+            content: markdownDetails.markdown,
+          }
+        : null
 
       records.push({
         slug,
@@ -327,6 +492,7 @@ async function loadArticles() {
           directory_name: dir.name,
           estimated_word_count: contentText.length,
           generated_at: new Date().toISOString(),
+          markdown_source: markdownMeta,
         },
         view_count: 0,
         like_count: 0,

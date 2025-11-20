@@ -9,6 +9,7 @@ import { Separator } from "@repo/ui/components/ui/separator"
 import { Calendar, MapPin, Eye, ArrowLeft, Briefcase, Building2 } from "lucide-react"
 import { ShareButton } from "@/components/career/share-button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@repo/ui/components/ui/accordion"
+import { MarkdownReadonly } from "@repo/ui/components/markdown/markdown-readonly"
 
 const ARTICLE_TYPE_LABELS: Record<string, string> = {
   guide: "攻略",
@@ -56,6 +57,14 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
   }
 
   const sections = Array.isArray(experience.sections) ? experience.sections : []
+  const markdownSource =
+    typeof experience.metadata?.markdown_source?.content === "string"
+      ? experience.metadata.markdown_source.content
+      : null
+  const hasMarkdown = Boolean(markdownSource && markdownSource.trim().length > 0)
+  const sectionAnchors = sections
+    .map((section: any) => (typeof section.anchor === "string" ? section.anchor : null))
+    .filter(Boolean) as string[]
 
   // Helper to check if sections have valid content
   const areSectionsValid = (sections: any[]) => {
@@ -93,7 +102,10 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
     },
   ].filter(Boolean) as { label: string; value: string; icon: typeof Building2 }[]
 
-  const metadataGrid = metadataItems.length > 0 ? (
+  const hasMetadata = metadataItems.length > 0
+  const hasSalaryHighlights = Array.isArray(salary.sentences) && salary.sentences.length > 0
+
+  const renderMetadataGrid = () => (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
       {metadataItems.map((item) => (
         <div key={item.label} className="flex items-center gap-3 p-4 rounded-xl border bg-card/60">
@@ -107,16 +119,16 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
         </div>
       ))}
     </div>
-  ) : null
+  )
 
-  const salaryHighlights = salary.sentences && salary.sentences.length > 0 ? (
+  const renderSalaryHighlights = () => (
     <div className="rounded-xl border border-amber-200/50 bg-amber-50/60 dark:bg-amber-900/10 p-6 space-y-4">
       <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400">
         <span className="text-lg">💰</span>
         <h3 className="font-semibold">薪酬亮点</h3>
       </div>
       <ul className="grid gap-2">
-        {salary.sentences.slice(0, 6).map((line: string, index: number) => (
+        {(salary.sentences ?? []).slice(0, 6).map((line: string, index: number) => (
           <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
             <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-amber-400 shrink-0" />
             <span className="leading-relaxed">{line}</span>
@@ -124,7 +136,7 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
         ))}
       </ul>
     </div>
-  ) : null
+  )
 
   return (
     <main className="bg-background min-h-screen pb-20">
@@ -196,28 +208,28 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
       <Container className="py-10 max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
         {/* Main Content */}
         <div className="lg:col-span-8 space-y-10">
-          {(metadataGrid || salaryHighlights) && (
+          {(hasMetadata || hasSalaryHighlights) && (
             <div className="lg:hidden space-y-4">
-              {metadataGrid && (
+              {hasMetadata && (
                 <Accordion type="single" collapsible defaultValue="meta" className="rounded-xl border bg-card/60 px-4">
                   <AccordionItem value="meta" className="border-b-0">
                     <AccordionTrigger className="text-sm font-semibold tracking-wide text-muted-foreground">
                       关键信息
                     </AccordionTrigger>
                     <AccordionContent className="pt-3 pb-4">
-                      {metadataGrid}
+                      {renderMetadataGrid()}
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
               )}
-              {salaryHighlights && (
+              {hasSalaryHighlights && (
                 <Accordion type="single" collapsible className="rounded-xl border bg-card/60 px-4">
                   <AccordionItem value="salary" className="border-b-0">
                     <AccordionTrigger className="text-sm font-semibold tracking-wide text-muted-foreground">
                       薪酬亮点
                     </AccordionTrigger>
                     <AccordionContent className="pt-3 pb-4">
-                      {salaryHighlights}
+                      {renderSalaryHighlights()}
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
@@ -227,17 +239,26 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
 
           {/* Content Sections */}
           <div className="space-y-10">
-            {sections.length > 0 && showSections ? (
+            {hasMarkdown ? (
+              <div className="rounded-2xl border bg-card p-8 sm:p-12 shadow-sm">
+                <MarkdownReadonly className="prose-lg prose-neutral dark:prose-invert" headingAnchors={sectionAnchors}>
+                  {markdownSource}
+                </MarkdownReadonly>
+              </div>
+            ) : sections.length > 0 && showSections ? (
               <div className="space-y-16">
                 {sections.map((section: any, index: number) => {
-                  // Skip sections with empty body_html
                   const sanitizedContent = sanitize(section.body_html)
-                  if (!sanitizedContent || sanitizedContent.trim() === '') {
+                  if (!sanitizedContent || sanitizedContent.trim() === "") {
                     return null
                   }
 
                   return (
-                    <div key={section.order ?? index} className="relative pl-8 sm:pl-12 border-l-2 border-border/40 pb-10 last:pb-0 last:border-l-0">
+                    <div
+                      key={section.order ?? index}
+                      id={section.anchor ?? undefined}
+                      className="relative pl-8 sm:pl-12 border-l-2 border-border/40 pb-10 last:pb-0 last:border-l-0"
+                    >
                       <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-primary bg-background ring-4 ring-background" />
                       <div className="space-y-6">
                         {section.title && (
@@ -257,8 +278,22 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
             ) : (
               <div className="rounded-2xl border bg-card p-8 sm:p-12 shadow-sm">
                 <div
-                  className="prose prose-lg prose-neutral dark:prose-invert max-w-none prose-p:leading-loose prose-p:text-muted-foreground prose-p:my-6 prose-headings:font-bold prose-a:text-primary hover:prose-a:underline prose-img:rounded-xl prose-li:leading-loose break-words whitespace-pre-line"
-                  dangerouslySetInnerHTML={{ __html: sanitize(experience.content_html) }}
+                  className="prose prose-lg prose-neutral dark:prose-invert max-w-none 
+                             prose-p:leading-loose prose-p:text-muted-foreground prose-p:mb-4
+                             prose-headings:font-bold prose-headings:text-2xl prose-headings:mb-6 prose-headings:mt-12
+                             prose-strong:text-xl prose-strong:font-bold prose-strong:text-gray-900 prose-strong:block prose-strong:mb-4
+                             prose-a:text-primary hover:prose-a:underline 
+                             prose-img:rounded-xl prose-li:leading-loose 
+                             break-words whitespace-pre-line
+                             [&_section]:mb-8 [&_section]:space-y-4"
+                  dangerouslySetInnerHTML={{
+                    __html: sanitizeHtml(experience.content_html, {
+                      ...sanitizeOptions,
+                      allowedTags: sanitizeOptions.allowedTags.filter(
+                        (tag: string) => tag !== "style"
+                      ),
+                    }),
+                  }}
                 />
               </div>
             )}
@@ -290,33 +325,33 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
               <ShareButton title={experience.title} />
             </div>
 
-            {metadataGrid && (
+            {hasMetadata && (
               <div className="rounded-xl border bg-card p-5 shadow-sm space-y-4">
                 <div className="text-sm text-muted-foreground uppercase tracking-wider">关键信息</div>
-                {metadataGrid}
+                {renderMetadataGrid()}
               </div>
             )}
 
-            {salaryHighlights && (
-              <div className="space-y-4">
-                {salaryHighlights}
-              </div>
-            )}
+            {hasSalaryHighlights && renderSalaryHighlights()}
 
             {/* Table of Contents (Simplified) */}
             {sections.length > 0 && showSections && (
               <div className="rounded-xl border bg-card p-5 shadow-sm space-y-4">
                 <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider">目录</h3>
                 <nav className="flex flex-col gap-2">
-                  {sections.map((section: any, index: number) => section.title && (
-                    <a
-                      key={index}
-                      href="#"
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors line-clamp-1"
-                    >
-                      {index + 1}. {section.title}
-                    </a>
-                  ))}
+                  {sections.map((section: any, index: number) => {
+                    if (!section.title) return null
+                    const anchor = typeof section.anchor === "string" ? section.anchor : null
+                    return (
+                      <a
+                        key={index}
+                        href={anchor ? `#${anchor}` : undefined}
+                        className="text-sm text-muted-foreground hover:text-primary transition-colors line-clamp-1"
+                      >
+                        {index + 1}. {section.title}
+                      </a>
+                    )
+                  })}
                 </nav>
               </div>
             )}

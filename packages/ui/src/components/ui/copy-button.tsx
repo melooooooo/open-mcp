@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect } from "react";
 import { Check, Copy } from "lucide-react";
 

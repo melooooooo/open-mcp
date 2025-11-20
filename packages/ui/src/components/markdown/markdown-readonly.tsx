@@ -1,3 +1,5 @@
+'use client'
+
 import React from "react";
 import Markdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -34,9 +36,69 @@ interface MarkdownReadonlyProps {
   children: string;
   className?: string;
   enableProse?: boolean;
+  headingAnchors?: string[];
 }
 
-export function MarkdownReadonly({ children: markdown, className, enableProse = true }: MarkdownReadonlyProps) {
+const cleanHeadingText = (text = "") => text.replace(/\s+/g, " ").trim()
+
+const slugifyHeading = (raw: string) => {
+  const name = cleanHeadingText(raw)
+  return name
+    .replace(/\s+/g, "-")
+    .replace(/_+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/[^a-zA-Z0-9\-\u4e00-\u9fa5]/g, "-")
+    .toLowerCase()
+    .replace(/^-+|-+$/g, "")
+}
+
+const extractNodeText = (node: React.ReactNode): string => {
+  if (node === null || node === undefined) return ""
+  if (typeof node === "string" || typeof node === "number") return String(node)
+  if (Array.isArray(node)) return node.map(extractNodeText).join("")
+  if (React.isValidElement(node)) return extractNodeText(node.props.children)
+  return ""
+}
+
+export function MarkdownReadonly({
+  children: markdown,
+  className,
+  enableProse = true,
+  headingAnchors,
+}: MarkdownReadonlyProps) {
+  const headingState = React.useRef<{ anchors: string[]; index: number; used: Record<string, number> }>({
+    anchors: [],
+    index: 0,
+    used: {},
+  })
+
+  React.useEffect(() => {
+    headingState.current = {
+      anchors: headingAnchors?.filter(Boolean) ?? [],
+      index: 0,
+      used: {},
+    }
+  }, [headingAnchors, markdown])
+
+  const getHeadingId = React.useCallback(
+    (depth: number, children: React.ReactNode) => {
+      if (depth <= 1) return undefined
+      const state = headingState.current
+      if (state.index < state.anchors.length) {
+        const anchor = state.anchors[state.index]
+        state.index += 1
+        return anchor
+      }
+      const text = cleanHeadingText(extractNodeText(children))
+      if (!text) return undefined
+      const base = slugifyHeading(text) || `section-${state.index + 1}`
+      const count = state.used[base] || 0
+      state.used[base] = count + 1
+      return count === 0 ? base : `${base}-${count + 1}`
+    },
+    []
+  )
+
   const markdownContent = (
     <Markdown
       remarkPlugins={[remarkGfm, remarkBreaks]}
@@ -96,14 +158,57 @@ export function MarkdownReadonly({ children: markdown, className, enableProse = 
         a({ className: aClassName, ...props }) {
           return <a className={cn("text-primary underline-offset-4 hover:underline", aClassName)} {...props} />;
         },
-        h1({ className: h1ClassName, ...props }) {
-          return <h1 className={cn("mt-2 scroll-m-20 text-4xl font-bold", h1ClassName)} {...props} />;
+        h1({ className: h1ClassName, children, ...props }) {
+          const id = getHeadingId(1, children)
+          return (
+            <h1 id={id} className={cn("mt-2 scroll-m-20 text-4xl font-bold", h1ClassName)} {...props}>
+              {children}
+            </h1>
+          )
         },
-        h2({ className: h2ClassName, ...props }) {
-          return <h2 className={cn("mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold first:mt-0", h2ClassName)} {...props} />;
+        h2({ className: h2ClassName, children, ...props }) {
+          const id = getHeadingId(2, children)
+          return (
+            <h2
+              id={id}
+              className={cn("mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold first:mt-0", h2ClassName)}
+              {...props}
+            >
+              {children}
+            </h2>
+          )
         },
-        h3({ className: h3ClassName, ...props }) {
-          return <h3 className={cn("mt-8 scroll-m-20 text-2xl font-semibold", h3ClassName)} {...props} />;
+        h3({ className: h3ClassName, children, ...props }) {
+          const id = getHeadingId(3, children)
+          return (
+            <h3 id={id} className={cn("mt-8 scroll-m-20 text-2xl font-semibold", h3ClassName)} {...props}>
+              {children}
+            </h3>
+          )
+        },
+        h4({ className: h4ClassName, children, ...props }) {
+          const id = getHeadingId(4, children)
+          return (
+            <h4 id={id} className={cn("mt-6 scroll-m-20 text-xl font-semibold", h4ClassName)} {...props}>
+              {children}
+            </h4>
+          )
+        },
+        h5({ className: h5ClassName, children, ...props }) {
+          const id = getHeadingId(5, children)
+          return (
+            <h5 id={id} className={cn("mt-4 scroll-m-20 text-lg font-semibold", h5ClassName)} {...props}>
+              {children}
+            </h5>
+          )
+        },
+        h6({ className: h6ClassName, children, ...props }) {
+          const id = getHeadingId(6, children)
+          return (
+            <h6 id={id} className={cn("mt-3 scroll-m-20 text-base font-semibold", h6ClassName)} {...props}>
+              {children}
+            </h6>
+          )
         },
         ul({ className: ulClassName, ...props }) {
           return <ul className={cn("my-6 ml-6 list-disc [&>li]:mt-2", ulClassName)} {...props} />;
