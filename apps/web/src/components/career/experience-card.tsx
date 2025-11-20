@@ -150,13 +150,13 @@ export function ExperienceCard({ experience, variant = "default", className, onC
   if (variant === "list") {
     const TypeIcon = typeConfig[experience.type].icon
     return (
-      <Card className={cn("group cursor-pointer hover:bg-muted/40 transition-all duration-300 border-0", className)} onClick={onClick}>
-        <CardContent className="p-0">
-          <div className="flex items-start gap-4">
+      <Card className={cn("group cursor-pointer hover:bg-muted/50 transition-all duration-300 border-0 bg-transparent", className)} onClick={onClick}>
+        <CardContent className="p-4 sm:p-6">
+          <div className="flex items-start gap-5">
             {/* 左侧图标区域 */}
-            <div className="flex flex-col items-center gap-2 pt-1">
+            <div className="flex flex-col items-center gap-2 pt-1 shrink-0">
               <div className={cn(
-                "flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 group-hover:scale-110",
+                "flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-md",
                 typeConfig[experience.type].color
               )}>
                 <TypeIcon className="w-6 h-6" />
@@ -164,63 +164,85 @@ export function ExperienceCard({ experience, variant = "default", className, onC
             </div>
 
             {/* 中间内容区域 */}
-            <div className="flex-1 min-w-0 space-y-2">
-              <div className="flex items-start gap-3 flex-wrap">
-                <h3 className="font-semibold text-base group-hover:text-primary transition-colors flex-1 min-w-0">
-                  {experience.title}
-                </h3>
-                <Badge className={cn("h-6 text-xs px-3 py-1 font-medium shrink-0", typeConfig[experience.type].color)}>
-                  {typeConfig[experience.type].label}
-                </Badge>
+            <div className="flex-1 min-w-0 space-y-3">
+              <div className="flex items-start justify-between gap-4">
+                <div className="space-y-1.5 flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="font-bold text-lg group-hover:text-primary transition-colors line-clamp-1">
+                      {experience.title}
+                    </h3>
+                    <Badge variant="secondary" className={cn("h-5 text-[10px] px-1.5 font-medium shrink-0 opacity-80", typeConfig[experience.type].color)}>
+                      {typeConfig[experience.type].label}
+                    </Badge>
+                    {experience.isPinned && (
+                      <Badge variant="default" className="h-5 text-[10px] px-1.5 bg-purple-500 hover:bg-purple-600 border-0">
+                        置顶
+                      </Badge>
+                    )}
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-1.5">
+                      <Avatar className="h-5 w-5 border border-border">
+                        <AvatarImage src={experience.author.avatar} />
+                        <AvatarFallback className="text-[10px]">{experience.author.name.slice(0, 1)}</AvatarFallback>
+                      </Avatar>
+                      <span className="font-medium text-foreground/80">{experience.author.name}</span>
+                    </span>
+
+                    {experience.company?.name && (
+                      <>
+                        <span className="text-border">|</span>
+                        <span className="flex items-center gap-1.5">
+                          <Briefcase className="w-3.5 h-3.5" />
+                          <span>{experience.company.name}</span>
+                        </span>
+                      </>
+                    )}
+
+                    <span className="text-border">|</span>
+                    <span className="flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5" />
+                      <span>{formatDate(experience.createdAt)}</span>
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
-                <span className="flex items-center gap-2">
-                  <span className="text-base">👤</span>
-                  <span className="font-medium">{experience.author.name}</span>
-                </span>
-                {experience.company?.name && (
-                  <span className="flex items-center gap-2">
-                    <span className="text-base">🏢</span>
-                    <span>{experience.company.name}</span>
-                  </span>
-                )}
-                <span className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  <span>{formatDate(experience.createdAt)}</span>
-                </span>
-                {typeof experience.viewCount === "number" && (
-                  <span className="flex items-center gap-2">
-                    <Eye className="w-4 h-4" />
-                    <span>{experience.viewCount}</span>
-                  </span>
-                )}
-              </div>
-
-              {/* 标签 */}
-              {experience.tags && experience.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {experience.tags.slice(0, 3).map((tag) => (
+              {/* 标签和数据 */}
+              <div className="flex items-center justify-between gap-4 pt-1">
+                <div className="flex flex-wrap gap-2">
+                  {experience.tags && experience.tags.slice(0, 4).map((tag) => (
                     <span
                       key={tag}
-                      className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium"
+                      className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-muted/50 text-muted-foreground text-xs hover:bg-primary/5 hover:text-primary transition-colors"
                     >
                       #{tag}
                     </span>
                   ))}
-                  {experience.tags.length > 3 && (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-muted text-muted-foreground text-xs">
-                      +{experience.tags.length - 3}
+                </div>
+
+                <div className="flex items-center gap-4 text-xs text-muted-foreground/70 shrink-0">
+                  {typeof experience.viewCount === "number" && (
+                    <span className="flex items-center gap-1.5">
+                      <Eye className="w-3.5 h-3.5" />
+                      <span>{experience.viewCount}</span>
+                    </span>
+                  )}
+                  {typeof experience.likeCount === "number" && (
+                    <span className="flex items-center gap-1.5">
+                      <ThumbsUp className="w-3.5 h-3.5" />
+                      <span>{experience.likeCount}</span>
                     </span>
                   )}
                 </div>
-              )}
+              </div>
             </div>
 
-            {/* 右侧箭头 */}
-            <div className="flex items-center pt-1">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-                <span className="text-lg group-hover:translate-x-0.5 transition-transform">→</span>
+            {/* 右侧箭头 - 仅在大屏幕显示 */}
+            <div className="hidden sm:flex items-center self-center pl-2">
+              <div className="w-8 h-8 rounded-full bg-transparent flex items-center justify-center text-muted-foreground/30 group-hover:text-primary group-hover:bg-primary/5 transition-all duration-300">
+                <span className="text-xl group-hover:translate-x-1 transition-transform">→</span>
               </div>
             </div>
           </div>
