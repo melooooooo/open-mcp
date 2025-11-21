@@ -60,6 +60,10 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
   const markdownSource =
     typeof experience.metadata?.markdown_source?.content === "string"
       ? experience.metadata.markdown_source.content
+        // 删除 Markdown 开头的 H1 标题,避免与页面标题重复
+        .replace(/^#\s+.+$/m, '')  // 删除 # 格式的 H1
+        .replace(/^.+\n=+$/m, '')  // 删除 === 格式的 H1
+        .trim()
       : null
   const hasMarkdown = Boolean(markdownSource && markdownSource.trim().length > 0)
   const sectionAnchors = sections
@@ -143,8 +147,8 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
       {/* Hero Section */}
       <section className="relative bg-muted/30 border-b">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-50" />
-        <Container className="relative py-10 sm:py-14">
-          <div className="space-y-8 max-w-4xl mx-auto">
+        <Container className="relative py-6 sm:py-8">
+          <div className="space-y-4 max-w-4xl mx-auto">
             <Link
               href="/experiences"
               className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
@@ -153,7 +157,7 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
               返回经验列表
             </Link>
 
-            <div className="space-y-6">
+            <div className="space-y-3">
               <div className="flex flex-wrap items-center gap-3">
                 {articleTypeLabel && (
                   <Badge variant="secondary" className="text-sm px-3 py-1 font-medium">
@@ -167,15 +171,9 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
                 ))}
               </div>
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-tight">
                 {experience.title}
               </h1>
-
-              {experience.summary && (
-                <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
-                  {experience.summary}
-                </p>
-              )}
 
               <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground pt-2">
                 <div className="flex items-center gap-2">
@@ -205,9 +203,9 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
         </Container>
       </section>
 
-      <Container className="py-10 max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <Container className="py-6 max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Main Content */}
-        <div className="lg:col-span-8 space-y-10">
+        <div className="lg:col-span-8 space-y-6">
           {(hasMetadata || hasSalaryHighlights) && (
             <div className="lg:hidden space-y-4">
               {hasMetadata && (
@@ -238,15 +236,15 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
           )}
 
           {/* Content Sections */}
-          <div className="space-y-10">
+          <div className="space-y-6">
             {hasMarkdown ? (
-              <div className="rounded-2xl border bg-card p-8 sm:p-12 shadow-sm">
-                <MarkdownReadonly className="prose-lg prose-neutral dark:prose-invert" headingAnchors={sectionAnchors}>
+              <div className="rounded-2xl border bg-card p-6 sm:p-8 shadow-sm">
+                <MarkdownReadonly className="prose prose-neutral dark:prose-invert" headingAnchors={sectionAnchors}>
                   {markdownSource}
                 </MarkdownReadonly>
               </div>
             ) : sections.length > 0 && showSections ? (
-              <div className="space-y-16">
+              <div className="space-y-10">
                 {sections.map((section: any, index: number) => {
                   const sanitizedContent = sanitize(section.body_html)
                   if (!sanitizedContent || sanitizedContent.trim() === "") {
@@ -276,9 +274,9 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
                 })}
               </div>
             ) : (
-              <div className="rounded-2xl border bg-card p-8 sm:p-12 shadow-sm">
+              <div className="rounded-2xl border bg-card p-6 sm:p-8 shadow-sm">
                 <div
-                  className="prose prose-lg prose-neutral dark:prose-invert max-w-none 
+                  className="prose prose-neutral dark:prose-invert max-w-none 
                              prose-p:leading-loose prose-p:text-muted-foreground prose-p:mb-4
                              prose-headings:font-bold prose-headings:text-2xl prose-headings:mb-6 prose-headings:mt-12
                              prose-strong:text-xl prose-strong:font-bold prose-strong:text-gray-900 prose-strong:block prose-strong:mb-4
@@ -314,10 +312,10 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
         </div>
 
         {/* Sidebar - Desktop */}
-        <aside className="hidden lg:block lg:col-span-4 space-y-8">
-          <div className="sticky top-24 space-y-6">
+        <aside className="hidden lg:block lg:col-span-4 space-y-4">
+          <div className="sticky top-24 space-y-4">
             {/* Share Card */}
-            <div className="rounded-xl border bg-card p-5 shadow-sm space-y-4">
+            <div className="rounded-xl border bg-card p-4 shadow-sm space-y-3">
               <h3 className="font-semibold">觉得有帮助？</h3>
               <p className="text-sm text-muted-foreground">
                 分享给更多正在准备面试的朋友，帮助他们少走弯路。
