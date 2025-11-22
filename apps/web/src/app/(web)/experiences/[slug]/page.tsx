@@ -18,7 +18,7 @@ const ARTICLE_TYPE_LABELS: Record<string, string> = {
 }
 
 // Configure sanitize-html options
-const sanitizeOptions: sanitizeHtml.IOptions = {
+const sanitizeOptions: any = {
   allowedTags: [
     "p", "span", "strong", "em", "ul", "ol", "li", "br",
     "blockquote", "code", "pre", "h1", "h2", "h3", "h4", "h5", "h6",
@@ -40,6 +40,53 @@ const sanitizeOptions: sanitizeHtml.IOptions = {
 function sanitize(html?: string | null): string {
   if (!html) return ""
   return sanitizeHtml(html, sanitizeOptions)
+}
+
+// Helper function to clean specific unwanted content (WeChat artifacts)
+function cleanHtmlContent(html?: string | null): string {
+  if (!html) return ""
+
+  // Use dynamic import for JSDOM (server-side only)
+  const { JSDOM } = require('jsdom')
+
+  try {
+    const dom = new JSDOM(html)
+    const document = dom.window.document
+    const body = document.body
+
+    // Remove elements containing "原创 职场江湖指北 职场江湖指北"
+    const allElements = body.querySelectorAll('*')
+    allElements.forEach((element: Element) => {
+      const text = element.textContent || ''
+      if (text.includes('原创') && text.includes('职场江湖指北')) {
+        element.remove()
+      }
+    })
+
+    // Remove elements containing WeChat placeholder text
+    const wechatTexts = ['此图片来自微信公众平台', '未经允许不可引用']
+    wechatTexts.forEach((wechatText) => {
+      allElements.forEach((element: Element) => {
+        const text = element.textContent || ''
+        if (text.includes(wechatText)) {
+          element.remove()
+        }
+      })
+    })
+
+    // Remove empty paragraphs
+    const paragraphs = body.querySelectorAll('p')
+    paragraphs.forEach((p: Element) => {
+      if (!p.textContent?.trim()) {
+        p.remove()
+      }
+    })
+
+    return body.innerHTML
+  } catch (error) {
+    console.error('Error cleaning HTML content:', error)
+    return html
+  }
 }
 
 type ExperienceDetailPageProps = {
@@ -68,8 +115,24 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
         .trim()
       : null
   const hasMarkdown = Boolean(markdownSource && markdownSource.trim().length > 0)
-  const sectionAnchors = sections
-    .map((section: any) => (typeof section.anchor === "string" ? section.anchor : null))
+  const sectionsWithAnchors = sections.map((section: any, index: number) => {
+    // Generate anchor from title if missing, or fallback to index
+    let anchor = section.anchor
+    if (!anchor && section.title) {
+      // Simple slugify: remove special chars, replace spaces with dashes, lowercase
+      anchor = section.title
+        .toLowerCase()
+        .replace(/[^\w\u4e00-\u9fa5]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+    }
+    if (!anchor) {
+      anchor = `section-${index}`
+    }
+    return { ...section, anchor }
+  })
+
+  const sectionAnchors = sectionsWithAnchors
+    .map((section: any) => section.anchor)
     .filter(Boolean) as string[]
 
   // Helper to check if sections have valid content
@@ -85,7 +148,7 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
   };
 
   const showSections = areSectionsValid(sections);
-  const salary = experience.salary_highlights || {}
+
   const articleTypeLabel = experience.article_type
     ? ARTICLE_TYPE_LABELS[experience.article_type as keyof typeof ARTICLE_TYPE_LABELS] ?? experience.article_type
     : null
@@ -109,7 +172,7 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
   ].filter(Boolean) as { label: string; value: string; icon: typeof Building2 }[]
 
   const hasMetadata = metadataItems.length > 0
-  const hasSalaryHighlights = Array.isArray(salary.sentences) && salary.sentences.length > 0
+
 
   const renderMetadataGrid = () => (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
@@ -127,22 +190,7 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
     </div>
   )
 
-  const renderSalaryHighlights = () => (
-    <div className="rounded-xl border border-amber-200/50 bg-amber-50/60 dark:bg-amber-900/10 p-6 space-y-4">
-      <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400">
-        <span className="text-lg">💰</span>
-        <h3 className="font-semibold">薪酬亮点</h3>
-      </div>
-      <ul className="grid gap-2">
-        {(salary.sentences ?? []).slice(0, 6).map((line: string, index: number) => (
-          <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
-            <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-amber-400 shrink-0" />
-            <span className="leading-relaxed">{line}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
+
 
   return (
     <main className="bg-background min-h-screen pb-20">
@@ -208,7 +256,7 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
       <Container className="py-6 max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Main Content */}
         <div className="lg:col-span-8 space-y-6">
-          {(hasMetadata || hasSalaryHighlights) && (
+          {hasMetadata && (
             <div className="lg:hidden space-y-4">
               {hasMetadata && (
                 <Accordion type="single" collapsible defaultValue="meta" className="rounded-xl border bg-card/60 px-4">
@@ -222,33 +270,17 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
                   </AccordionItem>
                 </Accordion>
               )}
-              {hasSalaryHighlights && (
-                <Accordion type="single" collapsible className="rounded-xl border bg-card/60 px-4">
-                  <AccordionItem value="salary" className="border-b-0">
-                    <AccordionTrigger className="text-sm font-semibold tracking-wide text-muted-foreground">
-                      薪酬亮点
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-3 pb-4">
-                      {renderSalaryHighlights()}
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              )}
             </div>
           )}
 
           {/* Content Sections */}
           <div className="space-y-6">
-            {hasMarkdown ? (
-              <div className="rounded-2xl border bg-card p-6 sm:p-8 shadow-sm">
-                <MarkdownReadonly className="prose prose-neutral dark:prose-invert" headingAnchors={sectionAnchors}>
-                  {markdownSource}
-                </MarkdownReadonly>
-              </div>
-            ) : sections.length > 0 && showSections ? (
-              <div className="space-y-10">
-                {sections.map((section: any, index: number) => {
-                  const sanitizedContent = sanitize(section.body_html)
+            {sections.length > 0 && showSections ? (
+              <div className="space-y-6">
+                {sectionsWithAnchors.map((section: any, index: number) => {
+                  // Clean content before sanitizing
+                  const cleanedHtml = cleanHtmlContent(section.body_html)
+                  const sanitizedContent = sanitize(cleanedHtml)
                   if (!sanitizedContent || sanitizedContent.trim() === "") {
                     return null
                   }
@@ -256,8 +288,8 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
                   return (
                     <div
                       key={section.order ?? index}
-                      id={section.anchor ?? undefined}
-                      className="relative pl-8 sm:pl-12 border-l-2 border-border/40 pb-10 last:pb-0 last:border-l-0"
+                      id={section.anchor}
+                      className="relative pl-8 sm:pl-12 border-l-2 border-border/40 pb-6 last:pb-0 last:border-l-0 scroll-mt-24"
                     >
                       <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-primary bg-background ring-4 ring-background" />
                       <div className="space-y-6">
@@ -274,6 +306,12 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
                     </div>
                   )
                 })}
+              </div>
+            ) : hasMarkdown ? (
+              <div className="rounded-2xl border bg-card p-6 sm:p-8 shadow-sm">
+                <MarkdownReadonly className="prose prose-neutral dark:prose-invert" headingAnchors={sectionAnchors}>
+                  {markdownSource}
+                </MarkdownReadonly>
               </div>
             ) : (
               <div className="rounded-2xl border bg-card p-6 sm:p-8 shadow-sm">
@@ -314,47 +352,42 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
         </div>
 
         {/* Sidebar - Desktop */}
-        <aside className="hidden lg:block lg:col-span-4 space-y-4">
-          <div className="sticky top-24 space-y-4">
-            {/* Share Card */}
-            <div className="rounded-xl border bg-card p-4 shadow-sm space-y-3">
-              <h3 className="font-semibold">觉得有帮助？</h3>
-              <p className="text-sm text-muted-foreground">
-                分享给更多正在准备面试的朋友，帮助他们少走弯路。
-              </p>
-              <ShareButton title={experience.title} />
+        <aside className="hidden lg:block lg:col-span-4 space-y-4 sticky top-24 h-fit">
+          {/* Table of Contents (Simplified) - Moved to top */}
+          {sections.length > 0 && showSections && (
+            <div className="rounded-xl border bg-card p-5 shadow-sm space-y-4">
+              <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider">目录</h3>
+              <nav className="flex flex-col gap-2">
+                {sectionsWithAnchors.map((section: any, index: number) => {
+                  if (!section.title) return null
+                  return (
+                    <a
+                      key={index}
+                      href={`#${section.anchor}`}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors line-clamp-1 block py-1"
+                    >
+                      {index + 1}. {section.title}
+                    </a>
+                  )
+                })}
+              </nav>
             </div>
+          )}
 
-            {hasMetadata && (
-              <div className="rounded-xl border bg-card p-5 shadow-sm space-y-4">
-                <div className="text-sm text-muted-foreground uppercase tracking-wider">关键信息</div>
-                {renderMetadataGrid()}
-              </div>
-            )}
+          {hasMetadata && (
+            <div className="rounded-xl border bg-card p-5 shadow-sm space-y-4">
+              <div className="text-sm text-muted-foreground uppercase tracking-wider">关键信息</div>
+              {renderMetadataGrid()}
+            </div>
+          )}
 
-            {hasSalaryHighlights && renderSalaryHighlights()}
-
-            {/* Table of Contents (Simplified) */}
-            {sections.length > 0 && showSections && (
-              <div className="rounded-xl border bg-card p-5 shadow-sm space-y-4">
-                <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider">目录</h3>
-                <nav className="flex flex-col gap-2">
-                  {sections.map((section: any, index: number) => {
-                    if (!section.title) return null
-                    const anchor = typeof section.anchor === "string" ? section.anchor : null
-                    return (
-                      <a
-                        key={index}
-                        href={anchor ? `#${anchor}` : undefined}
-                        className="text-sm text-muted-foreground hover:text-primary transition-colors line-clamp-1"
-                      >
-                        {index + 1}. {section.title}
-                      </a>
-                    )
-                  })}
-                </nav>
-              </div>
-            )}
+          {/* Share Card - Moved to bottom */}
+          <div className="rounded-xl border bg-card p-4 shadow-sm space-y-3">
+            <h3 className="font-semibold">觉得有帮助？</h3>
+            <p className="text-sm text-muted-foreground">
+              分享给更多正在准备面试的朋友，帮助他们少走弯路。
+            </p>
+            <ShareButton title={experience.title} />
           </div>
         </aside>
       </Container>

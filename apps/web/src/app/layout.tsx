@@ -30,7 +30,7 @@ export default function RootLayout({
   children: ReactNode
 }>) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
+    <html lang="zh-CN" suppressHydrationWarning className="scroll-smooth">
       <head>
         <meta name='apple-mobile-web-app-title' content='共绩算力' />
         <UmamiProvider />
