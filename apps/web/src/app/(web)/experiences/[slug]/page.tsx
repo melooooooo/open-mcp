@@ -299,7 +299,7 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
                           </h2>
                         )}
                         <div
-                          className="prose prose-lg prose-neutral dark:prose-invert max-w-none prose-p:leading-loose prose-p:text-muted-foreground prose-p:my-6 prose-headings:font-semibold prose-a:text-primary hover:prose-a:underline prose-li:leading-loose break-words whitespace-pre-line"
+                          className="prose prose-lg prose-neutral dark:prose-invert max-w-none prose-p:leading-loose prose-p:text-muted-foreground prose-p:my-6 prose-headings:font-semibold prose-a:text-primary hover:prose-a:underline prose-li:leading-loose prose-img:object-contain prose-img:w-full prose-img:h-auto break-words whitespace-pre-line"
                           dangerouslySetInnerHTML={{ __html: sanitizedContent }}
                         />
                       </div>
@@ -321,7 +321,7 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
                              prose-headings:font-bold prose-headings:text-2xl prose-headings:mb-6 prose-headings:mt-12
                              prose-strong:text-xl prose-strong:font-bold prose-strong:text-gray-900 prose-strong:block prose-strong:mb-4
                              prose-a:text-primary hover:prose-a:underline 
-                             prose-img:rounded-xl prose-li:leading-loose 
+                             prose-img:rounded-xl prose-img:object-contain prose-img:w-full prose-img:h-auto prose-li:leading-loose 
                              break-words whitespace-pre-line
                              [&_section]:mb-8 [&_section]:space-y-4"
                   dangerouslySetInnerHTML={{
