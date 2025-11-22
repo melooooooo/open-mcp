@@ -60,6 +60,8 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
   const markdownSource =
     typeof experience.metadata?.markdown_source?.content === "string"
       ? experience.metadata.markdown_source.content
+        // 删除封面图片 markdown (必须在删除标题之前)
+        .replace(/^\s*!\[cover_image\]\([^)]+\)\s*\n?/m, '')
         // 删除 Markdown 开头的 H1 标题,避免与页面标题重复
         .replace(/^#\s+.+$/m, '')  // 删除 # 格式的 H1
         .replace(/^.+\n=+$/m, '')  // 删除 === 格式的 H1

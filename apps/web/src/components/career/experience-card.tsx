@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { Star, Eye, ThumbsUp, MessageSquare, BookOpen, FileText, Briefcase, Clock } from "lucide-react"
 import { Card, CardContent, CardFooter, CardHeader } from "@repo/ui/components/ui/card"
 import { Badge } from "@repo/ui/components/ui/badge"
@@ -34,6 +35,7 @@ interface ExperienceCardProps {
     createdAt: string
     isPinned?: boolean
     isHot?: boolean
+    cover_asset_path?: string // 封面图片URL
   }
   variant?: "default" | "compact" | "detailed" | "list"
   className?: string
@@ -153,6 +155,21 @@ export function ExperienceCard({ experience, variant = "default", className, onC
       <Card className={cn("group cursor-pointer hover:bg-muted/50 transition-all duration-300 border-0 bg-transparent", className)} onClick={onClick}>
         <CardContent className="p-4 sm:p-6">
           <div className="flex items-start gap-5">
+            {/* 封面图片 - 仅在有图片时显示 */}
+            {experience.cover_asset_path && (
+              <div className="hidden sm:block shrink-0">
+                <div className="relative w-28 h-20 rounded-lg overflow-hidden bg-muted">
+                  <Image
+                    src={experience.cover_asset_path}
+                    alt={experience.title}
+                    fill
+                    sizes="112px"
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              </div>
+            )}
+
             {/* 左侧图标区域 */}
             <div className="flex flex-col items-center gap-2 pt-1 shrink-0">
               <div className={cn(
