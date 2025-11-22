@@ -153,32 +153,32 @@ export function ExperienceCard({ experience, variant = "default", className, onC
     const TypeIcon = typeConfig[experience.type].icon
     return (
       <Card className={cn("group cursor-pointer hover:bg-muted/50 transition-all duration-300 border-0 bg-transparent", className)} onClick={onClick}>
-        <CardContent className="p-4 sm:p-6">
-          <div className="flex items-start gap-5">
-            {/* 封面图片 - 仅在有图片时显示 */}
-            {experience.cover_asset_path && (
+        <CardContent className="p-3 sm:p-4">
+          <div className="flex items-start gap-4">
+            {/* 封面图片 OR 图标区域 */}
+            {typeof experience.cover_asset_path === 'string' && experience.cover_asset_path ? (
               <div className="hidden sm:block shrink-0">
-                <div className="relative w-28 h-20 rounded-lg overflow-hidden bg-muted">
+                <div className="relative w-[160px] h-[100px] rounded-lg overflow-hidden bg-muted/50 border border-border/50 shadow-sm group-hover:shadow-md transition-all duration-300">
                   <Image
                     src={experience.cover_asset_path}
                     alt={experience.title}
                     fill
-                    sizes="112px"
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="(max-width: 640px) 0vw, 160px"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
               </div>
-            )}
-
-            {/* 左侧图标区域 */}
-            <div className="flex flex-col items-center gap-2 pt-1 shrink-0">
-              <div className={cn(
-                "flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-md",
-                typeConfig[experience.type].color
-              )}>
-                <TypeIcon className="w-6 h-6" />
+            ) : (
+              /* 无封面图时显示图标 */
+              <div className="flex flex-col items-center gap-2 pt-1 shrink-0">
+                <div className={cn(
+                  "flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-md",
+                  typeConfig[experience.type].color
+                )}>
+                  <TypeIcon className="w-6 h-6" />
+                </div>
               </div>
-            </div>
+            )}
 
             {/* 中间内容区域 */}
             <div className="flex-1 min-w-0 space-y-3">

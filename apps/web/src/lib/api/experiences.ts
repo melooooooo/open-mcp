@@ -97,7 +97,7 @@ export async function getExperiencesList(options: ExperienceListOptions = {}) {
       isHot: item.is_hot || false,
       createdAt: item.publish_time || item.id,
       summary: item.summary,
-      cover: item.cover_asset_path,
+      cover_asset_path: item.cover_asset_path,
       industry: item.industry || undefined,
     })),
     total: count || 0,
