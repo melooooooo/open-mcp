@@ -5,7 +5,7 @@ import { Input } from "@repo/ui/components/ui/input"
 import { Button } from "@repo/ui/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/ui/select"
 import { Search, Loader2, X } from "lucide-react"
-import { getJobListings, getFilterOptions, type JobListing } from "@/lib/api/job-listings"
+import { getJobListings, getFilterOptions, type JobListing, COMPANY_TYPES, INDUSTRY_CATEGORIES, SESSION_OPTIONS } from "@/lib/api/job-listings"
 import { JobItem } from "./job-item"
 import { useDebounce } from "@/hooks/use-debounce"
 import { Container } from "@/components/web/container"
@@ -19,11 +19,15 @@ export function JobList() {
   const [query, setQuery] = useState("")
   const [location, setLocation] = useState("")
   const [industry, setIndustry] = useState("all")
+  const [companyType, setCompanyType] = useState("all")
   const [session, setSession] = useState("all")
 
   // Options
-  const [industryOptions, setIndustryOptions] = useState<string[]>([])
-  const [sessionOptions, setSessionOptions] = useState<string[]>([])
+  // Industry and Company Type options are now static constants, but we can still keep them in state if we want to load them async later
+  // For now, using the imported constants directly is fine, but let's stick to the pattern of loading options
+  const [industryOptions, setIndustryOptions] = useState<string[]>(INDUSTRY_CATEGORIES)
+  const [companyTypeOptions, setCompanyTypeOptions] = useState<string[]>(COMPANY_TYPES)
+  const [sessionOptions, setSessionOptions] = useState<string[]>(SESSION_OPTIONS)
 
   // Pagination
   const [page, setPage] = useState(1)
@@ -36,7 +40,8 @@ export function JobList() {
   // Load options on mount
   useEffect(() => {
     getFilterOptions().then(opts => {
-      setIndustryOptions(opts.industries)
+      // All options are now static constants, so we don't strictly need this async call anymore
+      // but keeping it for consistency if we ever revert to dynamic loading
       setSessionOptions(opts.sessions)
     })
   }, [])
@@ -51,6 +56,7 @@ export function JobList() {
         query: debouncedQuery,
         location: debouncedLocation,
         industry: industry === "all" ? undefined : industry,
+        companyType: companyType === "all" ? undefined : companyType,
         session: session === "all" ? undefined : session,
       })
 
@@ -62,12 +68,12 @@ export function JobList() {
     startTransition(() => {
       fetchData()
     })
-  }, [page, debouncedQuery, debouncedLocation, industry, session])
+  }, [page, debouncedQuery, debouncedLocation, industry, companyType, session])
 
   // Reset page when filters change
   useEffect(() => {
     setPage(1)
-  }, [debouncedQuery, debouncedLocation, industry, session])
+  }, [debouncedQuery, debouncedLocation, industry, companyType, session])
 
   const totalPages = Math.ceil(total / pageSize)
 
@@ -101,6 +107,18 @@ export function JobList() {
                 onChange={(e) => setLocation(e.target.value)}
               />
             </div>
+
+            <Select value={companyType} onValueChange={setCompanyType}>
+              <SelectTrigger className="w-[140px] shrink-0">
+                <SelectValue placeholder="企业性质" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">所有性质</SelectItem>
+                {companyTypeOptions.map(opt => (
+                  <SelectItem key={opt} value={opt}>{opt}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
             <Select value={industry} onValueChange={setIndustry}>
               <SelectTrigger className="w-[140px] shrink-0">
@@ -153,6 +171,7 @@ export function JobList() {
             setQuery("")
             setLocation("")
             setIndustry("all")
+            setCompanyType("all")
             setSession("all")
           }}>
             清除筛选条件
