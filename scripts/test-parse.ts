@@ -33,6 +33,16 @@ function parseRow(rowString: string): JobRow | null {
   // Valid company types
   const VALID_COMPANY_TYPES = ['民企', '央国企', '外企', '事业单位', '合资', '其他', '国企', '社会组织', '政府机关'];
 
+  // Valid industry categories
+  const VALID_INDUSTRIES = [
+    'IT/互联网/游戏', '专利/商标/知识产权', '交通/物流/仓储', '人力资源服务',
+    '农林牧渔', '医疗/医药/生物', '咨询', '商务服务业', '快速消费品',
+    '房地产业/建筑业', '政府/机构/组织', '教育/培训/科研', '文化/传媒/广告/体育',
+    '新能源', '智能硬件', '未明确', '机械/制造业', '检测/认证',
+    '汽车制造/维修/零配件', '法律', '生活服务业', '耐用消费品',
+    '能源/化工/环保', '财务/审计/税务', '贸易/批发/零售', '通信/电子/半导体', '金融业'
+  ];
+
   // Find Delivery anchor
   let idxDelivery = tokens.findIndex(t =>
     t.startsWith('http') ||
@@ -117,6 +127,11 @@ function parseRow(rowString: string): JobRow | null {
   let company_type = tokens[idxCompanyType] || '';
   let industry_category = tokens[idxCompanyType + 1] || '';
 
+  // Validate industry category
+  if (industry_category && !VALID_INDUSTRIES.includes(industry_category)) {
+    return null;
+  }
+
   let job_title = '';
   let work_location = '';
   let deadline = '';
@@ -187,6 +202,7 @@ async function main() {
 
   const jobs: JobRow[] = [];
   const companyTypeStats = new Map<string, number>();
+  const industryStats = new Map<string, number>();
 
   for (let i = 1; i < rawData.length; i++) {
     const row = rawData[i];
@@ -197,6 +213,9 @@ async function main() {
       jobs.push(parsed);
       if (parsed.company_type) {
         companyTypeStats.set(parsed.company_type, (companyTypeStats.get(parsed.company_type) || 0) + 1);
+      }
+      if (parsed.industry_category) {
+        industryStats.set(parsed.industry_category, (industryStats.get(parsed.industry_category) || 0) + 1);
       }
     }
   }
@@ -209,9 +228,15 @@ async function main() {
     console.log(`${type}: ${count}`);
   });
 
+  console.log('\n=== 行业分类统计 ===');
+  const sortedIndustries = Array.from(industryStats.entries()).sort((a, b) => b[1] - a[1]);
+  sortedIndustries.forEach(([industry, count]) => {
+    console.log(`${industry}: ${count}`);
+  });
+
   console.log('\n=== 前5条解析示例 ===');
   jobs.slice(0, 5).forEach((job, idx) => {
-    console.log(`\n[${idx + 1}] ${job.company_name} (${job.company_type})`);
+    console.log(`\n[${idx + 1}] ${job.company_name} (${job.company_type} - ${job.industry_category})`);
     console.log(`    岗位: ${job.job_title}`);
     console.log(`    地点: ${job.work_location}`);
   });
@@ -220,13 +245,34 @@ async function main() {
   const VALID_TYPES = ['民企', '央国企', '外企', '事业单位', '合资', '其他', '国企', '社会组织', '政府机关'];
   const invalidTypes = sorted.filter(([type]) => !VALID_TYPES.includes(type));
 
+  // Check for any invalid industries
+  const VALID_INDUSTRIES = [
+    'IT/互联网/游戏', '专利/商标/知识产权', '交通/物流/仓储', '人力资源服务',
+    '农林牧渔', '医疗/医药/生物', '咨询', '商务服务业', '快速消费品',
+    '房地产业/建筑业', '政府/机构/组织', '教育/培训/科研', '文化/传媒/广告/体育',
+    '新能源', '智能硬件', '未明确', '机械/制造业', '检测/认证',
+    '汽车制造/维修/零配件', '法律', '生活服务业', '耐用消费品',
+    '能源/化工/环保', '财务/审计/税务', '贸易/批发/零售', '通信/电子/半导体', '金融业'
+  ];
+  const invalidIndustries = sortedIndustries.filter(([ind]) => !VALID_INDUSTRIES.includes(ind));
+
+  console.log('\n=== 验证结果 ===');
   if (invalidTypes.length > 0) {
-    console.log('\n⚠️  发现无效的企业性质:');
+    console.log('⚠️  发现无效的企业性质:');
     invalidTypes.forEach(([type, count]) => {
       console.log(`  - ${type}: ${count}条`);
     });
   } else {
-    console.log('\n✅ 所有企业性质都是有效的！');
+    console.log('✅ 所有企业性质都是有效的！');
+  }
+
+  if (invalidIndustries.length > 0) {
+    console.log('\n⚠️  发现无效的行业分类:');
+    invalidIndustries.forEach(([industry, count]) => {
+      console.log(`  - ${industry}: ${count}条`);
+    });
+  } else {
+    console.log('✅ 所有行业分类都是有效的！');
   }
 }
 
