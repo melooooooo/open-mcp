@@ -69,12 +69,12 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
     <main className="bg-background min-h-screen pb-20">
       {/* Header Section */}
       <section className="relative border-b bg-muted/30 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent opacity-50" />
         <Container className="relative py-12 sm:py-16">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
             <div className="max-w-2xl space-y-6">
               <div className="space-y-2">
-                <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                <span className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">
                   Interview Stories
                 </span>
                 <h1 className="text-4xl font-bold tracking-tight sm:text-5xl text-foreground">
@@ -102,7 +102,7 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-              <Button asChild size="lg" className="shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
+              <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all">
                 <Link href="/experiences/share">分享我的经验</Link>
               </Button>
               <Button variant="outline" size="lg" asChild className="bg-background/50 backdrop-blur-sm">
@@ -119,7 +119,7 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
           <div className="sticky top-24 space-y-6">
             <div className="rounded-xl border bg-card p-5 shadow-sm space-y-5">
               <div className="flex items-center gap-2 pb-2 border-b">
-                <div className="h-4 w-1 bg-primary rounded-full" />
+                <div className="h-4 w-1 bg-blue-600 rounded-full" />
                 <h2 className="font-semibold">筛选条件</h2>
               </div>
 
@@ -135,7 +135,7 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
                     name="tag"
                     placeholder="如：薪资待遇"
                     defaultValue={tagFilter}
-                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   />
                 </div>
 
@@ -147,7 +147,7 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
                     id="industry"
                     name="industry"
                     defaultValue={industryFilter}
-                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                   >
                     {INDUSTRY_OPTIONS.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -165,7 +165,7 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
                     id="type"
                     name="type"
                     defaultValue={typeFilter}
-                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                   >
                     {TYPE_OPTIONS.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -176,11 +176,11 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
                 </div>
 
                 <div className="pt-2 space-y-2">
-                  <Button type="submit" className="w-full">
+                  <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/20">
                     应用筛选
                   </Button>
                   {(tagFilter || industryFilter || typeFilter) && (
-                    <Button variant="ghost" asChild className="w-full text-muted-foreground hover:text-foreground">
+                    <Button variant="ghost" asChild className="w-full text-muted-foreground hover:text-blue-600 hover:bg-blue-50">
                       <Link href="/experiences">重置所有条件</Link>
                     </Button>
                   )}
@@ -204,7 +204,7 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
                         page: 1,
                       })
                     }
-                    className="text-xs px-2.5 py-1 rounded-md bg-muted/50 hover:bg-primary/10 hover:text-primary transition-colors"
+                    className="text-xs px-2.5 py-1 rounded-md bg-muted/50 hover:bg-blue-50 hover:text-blue-600 transition-colors"
                   >
                     #{tag}
                   </Link>
@@ -251,17 +251,17 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
             <div className="flex flex-wrap items-center gap-2 text-sm">
               <span className="text-muted-foreground">当前筛选:</span>
               {industryFilter && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium border border-primary/20">
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-medium border border-blue-100">
                   行业: {INDUSTRY_OPTIONS.find(opt => opt.value === industryFilter)?.label}
                 </span>
               )}
               {typeFilter && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium border border-primary/20">
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-medium border border-blue-100">
                   类型: {TYPE_OPTIONS.find(opt => opt.value === typeFilter)?.label}
                 </span>
               )}
               {tagFilter && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium border border-primary/20">
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-medium border border-blue-100">
                   标签: {tagFilter}
                 </span>
               )}

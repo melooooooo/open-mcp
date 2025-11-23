@@ -36,7 +36,7 @@ export function JobContent({ content }: JobContentProps) {
         // Render Section Headers
         if (/^(职位描述|任职要求|岗位职责|工作内容|任职资格|联系方式|工作地点|薪资待遇|截止日期|加分项|岗位要求|福利待遇|招聘岗位|招聘要求)/.test(line)) {
           return (
-            <h3 key={index} className="font-bold text-lg mt-8 mb-3 text-primary border-l-4 border-primary pl-3">
+            <h3 key={index} className="font-bold text-lg mt-8 mb-3 text-blue-700 border-l-4 border-blue-500 pl-3">
               {line.replace(/[:：]$/, '')}
             </h3>
           )
@@ -83,7 +83,7 @@ function linkify(text: string) {
           href={part}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-primary hover:underline break-all font-medium"
+          className="text-blue-600 hover:underline break-all font-medium"
         >
           {part}
         </a>
@@ -98,7 +98,7 @@ function linkify(text: string) {
           <a
             key={`${i}-${j}`}
             href={`mailto:${subPart}`}
-            className="text-primary hover:underline font-medium"
+            className="text-blue-600 hover:underline font-medium"
           >
             {subPart}
           </a>

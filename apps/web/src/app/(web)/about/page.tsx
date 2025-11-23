@@ -8,14 +8,14 @@ export default function AboutPage() {
 
         <section className="space-y-6">
           <div>
-            <h2 className="text-2xl font-semibold mb-4">我们的愿景</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-blue-700">我们的愿景</h2>
             <p className="text-muted-foreground">
               OpenMCP 致力于打造一个开放、共享、创新的 AI 生态系统。我们希望通过 MCP 协议，让不同的 AI 模型能够无缝对接，为开发者和用户提供更好的人工智能应用体验。
             </p>
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold mb-4">平台简介</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-blue-700">平台简介</h2>
             <p className="text-muted-foreground mb-4">
               作为一站式 AI 全聚合平台，OpenMCP 专注于:
             </p>
@@ -28,14 +28,14 @@ export default function AboutPage() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold mb-4">我们的使命</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-blue-700">我们的使命</h2>
             <p className="text-muted-foreground">
               通过技术创新和开放协作，推动 AI 技术的民主化，让每个开发者都能轻松构建智能化应用，为用户创造更大的价值。
             </p>
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold mb-4">加入我们</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-blue-700">加入我们</h2>
             <p className="text-muted-foreground">
               无论您是开发者、创业者还是 AI 爱好者，我们都欢迎您加入 OpenMCP 社区。您可以：
             </p>

@@ -30,22 +30,22 @@ export function Footer() {
             <h3 className="font-medium">求职导航</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/jobs" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link href="/jobs" className="text-muted-foreground hover:text-blue-600 transition-colors">
                   职位广场
                 </Link>
               </li>
               <li>
-                <Link href="/experiences" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link href="/experiences" className="text-muted-foreground hover:text-blue-600 transition-colors">
                   面经与攻略
                 </Link>
               </li>
               <li>
-                <Link href="/companies" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link href="/companies" className="text-muted-foreground hover:text-blue-600 transition-colors">
                   企业库
                 </Link>
               </li>
               <li>
-                <Link href="/salary" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link href="/salary" className="text-muted-foreground hover:text-blue-600 transition-colors">
                   薪酬洞察
                 </Link>
               </li>
@@ -56,29 +56,29 @@ export function Footer() {
             <h3 className="font-medium">服务支持</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/help" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link href="/help" className="text-muted-foreground hover:text-blue-600 transition-colors">
                   帮助中心
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link href="/about" className="text-muted-foreground hover:text-blue-600 transition-colors">
                   关于我们
                 </Link>
               </li>
               <li>
-                <Link href="/about/terms" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link href="/about/terms" className="text-muted-foreground hover:text-blue-600 transition-colors">
                   隐私政策
                 </Link>
               </li>
               <li>
-                <Link href="/about/service" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link href="/about/service" className="text-muted-foreground hover:text-blue-600 transition-colors">
                   服务条款
                 </Link>
               </li>
               <li>
                 <button
                   onClick={() => setIsContactDialogOpen(true)}
-                  className="text-muted-foreground hover:text-foreground transition-colors w-full text-left"
+                  className="text-muted-foreground hover:text-blue-600 transition-colors w-full text-left"
                 >
                   企业合作
                 </button>

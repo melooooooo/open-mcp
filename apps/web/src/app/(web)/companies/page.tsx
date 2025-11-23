@@ -12,7 +12,7 @@ export default function CompaniesPage() {
         <Container className="py-12 sm:py-16">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="space-y-4 max-w-2xl">
-              <div className="flex items-center gap-2 text-primary">
+              <div className="flex items-center gap-2 text-blue-600">
                 <Building2 className="h-5 w-5" />
                 <span className="text-sm uppercase tracking-widest">Company Insights</span>
               </div>
@@ -21,7 +21,7 @@ export default function CompaniesPage() {
                 了解目标公司的招聘节奏、福利待遇与发展机会。我们持续收集校招反馈与员工评分，为你的投递决策提供参考。
               </p>
             </div>
-            <Button asChild>
+            <Button asChild className="bg-blue-600 hover:bg-blue-700">
               <Link href="/jobs">查看相关职位</Link>
             </Button>
           </div>

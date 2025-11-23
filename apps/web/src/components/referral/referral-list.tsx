@@ -30,10 +30,10 @@ export function ReferralList({ jobs }: ReferralListProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {jobs.map((job) => (
-        <Card key={job.id} className="hover:shadow-md transition-shadow">
+        <Card key={job.id} className="hover:shadow-md transition-all hover:border-blue-200 group">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg font-medium line-clamp-2" title={job.title}>
-              <Link href={`/referrals/${job.id}`} className="hover:underline flex items-start gap-2">
+              <Link href={`/referrals/${job.id}`} className="group-hover:text-blue-600 transition-colors flex items-start gap-2">
                 {job.title}
               </Link>
             </CardTitle>
@@ -42,19 +42,17 @@ export function ReferralList({ jobs }: ReferralListProps) {
             <div className="flex items-center justify-between text-sm text-muted-foreground mt-2">
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1">
-                  <Calendar className="h-3 w-3" />
+                  <Calendar className="h-3 w-3 text-blue-400" />
                   <span>{job.publish_date || "未知日期"}</span>
                 </div>
                 {job.reply_count !== null && (
                   <div className="flex items-center gap-1">
-                    <MessageSquare className="h-3 w-3" />
+                    <MessageSquare className="h-3 w-3 text-blue-400" />
                     <span>{job.reply_count} 回复</span>
                   </div>
                 )}
               </div>
-              <Badge variant="secondary" className="text-xs">
-                {job.source === 'byr_bbs' ? '北邮人论坛' : '其他来源'}
-              </Badge>
+
             </div>
           </CardContent>
         </Card>

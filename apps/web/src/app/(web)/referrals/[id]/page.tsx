@@ -36,7 +36,7 @@ export default async function ReferralDetailPage({ params }: PageProps) {
       <Section className="py-8">
         <Container>
           <div className="mb-6">
-            <Button variant="ghost" size="sm" asChild className="-ml-2 text-muted-foreground">
+            <Button variant="ghost" size="sm" asChild className="-ml-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50">
               <Link href="/referrals">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 返回内推列表
@@ -44,24 +44,22 @@ export default async function ReferralDetailPage({ params }: PageProps) {
             </Button>
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
+          <div className="grid gap-8 lg:grid-cols-1">
             <div className="space-y-6">
               <div>
                 <h1 className="text-3xl font-bold tracking-tight mb-4">{job.title}</h1>
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-1">
-                    <Calendar className="h-4 w-4" />
+                    <Calendar className="h-4 w-4 text-blue-500" />
                     <span>{job.publish_date || "未知日期"}</span>
                   </div>
                   {job.reply_count !== null && (
                     <div className="flex items-center gap-1">
-                      <MessageSquare className="h-4 w-4" />
+                      <MessageSquare className="h-4 w-4 text-blue-500" />
                       <span>{job.reply_count} 回复</span>
                     </div>
                   )}
-                  <Badge variant="secondary">
-                    {job.source === 'byr_bbs' ? '北邮人论坛' : '其他来源'}
-                  </Badge>
+
                 </div>
               </div>
 
@@ -72,20 +70,7 @@ export default async function ReferralDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            <div className="space-y-6">
-              <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-                <h3 className="font-semibold mb-4">原始链接</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  点击下方按钮跳转至原始发布页面查看更多详情或进行回复。
-                </p>
-                <Button className="w-full" asChild>
-                  <Link href={job.link} target="_blank">
-                    查看原文
-                    <ExternalLink className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
+
           </div>
         </Container>
       </Section>

@@ -82,7 +82,7 @@ export function JobList() {
       <div className="space-y-4">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-blue-400" />
             <Input
               placeholder="搜索职位、公司..."
               value={query}
@@ -187,6 +187,7 @@ export function JobList() {
             size="sm"
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page === 1 || loading}
+            className="hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200"
           >
             上一页
           </Button>
@@ -198,6 +199,7 @@ export function JobList() {
             size="sm"
             onClick={() => setPage(p => Math.min(totalPages, p + 1))}
             disabled={page === totalPages || loading}
+            className="hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200"
           >
             下一页
           </Button>

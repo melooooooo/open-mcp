@@ -23,19 +23,19 @@ export function JobItem({ job }: JobItemProps) {
   }
 
   return (
-    <div className="group flex flex-col md:flex-row gap-4 p-6 bg-card hover:bg-muted/50 border rounded-xl transition-colors">
+    <div className="group flex flex-col md:flex-row gap-4 p-6 bg-card hover:bg-muted/50 border rounded-xl transition-all hover:border-blue-200 hover:shadow-md">
       {/* Main Content */}
       <div className="flex-1 space-y-3">
         {/* Header: Company & Date */}
         <div className="flex flex-wrap items-center gap-3">
-          <h3 className="text-xl font-bold text-primary">
+          <h3 className="text-xl font-bold text-blue-700">
             {job.company_name}
           </h3>
           <Badge variant="secondary" className="font-normal">
             {job.company_type}
           </Badge>
           <span className="text-sm text-muted-foreground flex items-center ml-auto md:ml-0">
-            <Calendar className="w-3.5 h-3.5 mr-1" />
+            <Calendar className="w-3.5 h-3.5 mr-1 text-blue-500" />
             {job.source_updated_at}
           </span>
         </div>
@@ -48,11 +48,11 @@ export function JobItem({ job }: JobItemProps) {
         {/* Metadata */}
         <div className="flex flex-wrap gap-y-2 gap-x-4 text-sm text-muted-foreground">
           <div className="flex items-center">
-            <MapPin className="w-4 h-4 mr-1.5 shrink-0" />
+            <MapPin className="w-4 h-4 mr-1.5 shrink-0 text-blue-500" />
             <span>{job.work_location}</span>
           </div>
           <div className="flex items-center">
-            <GraduationCap className="w-4 h-4 mr-1.5 shrink-0" />
+            <GraduationCap className="w-4 h-4 mr-1.5 shrink-0 text-blue-500" />
             <span>{job.degree_requirement}</span>
           </div>
           <div className="flex items-center px-2 py-0.5 bg-muted rounded text-xs font-medium">
@@ -81,7 +81,7 @@ export function JobItem({ job }: JobItemProps) {
             rel="noopener noreferrer"
             className={cn(
               "inline-flex items-center justify-center h-10 px-6 rounded-lg font-medium transition-colors",
-              "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
+              "bg-blue-600 text-white hover:bg-blue-700 shadow-sm"
             )}
           >
             立即投递 <ExternalLink className="w-4 h-4 ml-2" />

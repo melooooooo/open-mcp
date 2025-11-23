@@ -48,9 +48,9 @@ export function HomeClient({ jobs, experiences, companies, stats }: HomeClientPr
 
   const heroStats = [
     { label: "在招职位", value: formatCount(stats.totalJobs), icon: ChartBar, color: "text-blue-600 dark:text-blue-400" },
-    { label: "合作企业", value: formatCount(stats.totalCompanies), icon: UsersIcon, color: "text-green-600 dark:text-green-400" },
-    { label: "活跃用户", value: formatCount(stats.totalUsers), icon: Target, color: "text-orange-600 dark:text-orange-400" },
-    { label: "求职成功率", value: formatRate(stats.successRate), icon: Trophy, color: "text-purple-600 dark:text-purple-400" },
+    { label: "合作企业", value: formatCount(stats.totalCompanies), icon: UsersIcon, color: "text-blue-500 dark:text-blue-300" },
+    { label: "活跃用户", value: formatCount(stats.totalUsers), icon: Target, color: "text-blue-400 dark:text-blue-200" },
+    { label: "求职成功率", value: formatRate(stats.successRate), icon: Trophy, color: "text-blue-700 dark:text-blue-500" },
   ]
 
   return (
@@ -71,7 +71,7 @@ export function HomeClient({ jobs, experiences, companies, stats }: HomeClientPr
               href: "/experiences",
               icon: Sparkles,
               variant: "default",
-              className: "bg-gradient-to-r from-purple-600 to-pink-600 border-0 text-white hover:from-purple-700 hover:to-pink-700",
+              className: "bg-gradient-to-r from-blue-600 to-blue-500 border-0 text-white hover:from-blue-700 hover:to-blue-600",
             },
           ]}
         />
@@ -114,17 +114,17 @@ export function HomeClient({ jobs, experiences, companies, stats }: HomeClientPr
                 <div className="text-sm text-muted-foreground">在招职位</div>
               </div>
               <div className="bg-card border rounded-lg p-6 text-center">
-                <UsersIcon className="h-8 w-8 text-orange-500 mx-auto mb-3" />
+                <UsersIcon className="h-8 w-8 text-blue-500 mx-auto mb-3" />
                 <div className="text-3xl font-bold mb-1">{formatCount(stats.totalUsers)}</div>
                 <div className="text-sm text-muted-foreground">活跃用户</div>
               </div>
               <div className="bg-card border rounded-lg p-6 text-center">
-                <UsersIcon className="h-8 w-8 text-purple-500 mx-auto mb-3" />
+                <UsersIcon className="h-8 w-8 text-blue-600 mx-auto mb-3" />
                 <div className="text-3xl font-bold mb-1">{formatCount(stats.totalCompanies)}</div>
                 <div className="text-sm text-muted-foreground">合作企业</div>
               </div>
               <div className="bg-card border rounded-lg p-6 text-center">
-                <Trophy className="h-8 w-8 text-green-500 mx-auto mb-3" />
+                <Trophy className="h-8 w-8 text-blue-700 mx-auto mb-3" />
                 <div className="text-3xl font-bold mb-1">{formatRate(stats.successRate)}</div>
                 <div className="text-sm text-muted-foreground">求职成功率</div>
               </div>
@@ -140,7 +140,7 @@ export function HomeClient({ jobs, experiences, companies, stats }: HomeClientPr
               alt="Office Background"
               className="w-full h-full object-cover opacity-10"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/90 to-purple-600/90" />
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/90 to-blue-900/90" />
           </div>
 
           <Section className="relative z-10 bg-transparent text-white">

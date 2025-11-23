@@ -61,9 +61,9 @@ export function Header() {
       <Container>
         <div className="flex h-16 items-center">
           <div className="mr-4 flex">
-            <Link href="/" className="flex items-center space-x-2" aria-label="返回首页">
-              <LogoIcon type="openmcp" />
-              <span className="font-bold hidden sm:inline-block">职启航</span>
+            <Link href="/" className="flex items-center space-x-2 text-blue-600" aria-label="返回首页">
+              <LogoIcon type="openmcp" className="text-blue-600" />
+              <span className="font-bold hidden sm:inline-block text-blue-600">职启航</span>
             </Link>
           </div>
           <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
@@ -72,15 +72,18 @@ export function Header() {
                 <Link
                   key={route.href}
                   href={route.href}
-                  className={`text-sm font-medium transition-colors hover:text-primary ${route.active ? "text-foreground" : "text-muted-foreground"
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 relative py-2 ${route.active ? "text-blue-600" : "text-muted-foreground"
                     }`}
                 >
                   {route.label}
+                  {route.active && (
+                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 rounded-full" />
+                  )}
                 </Link>
               ))}
             </nav>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="rounded-full" asChild>
+              <Button variant="outline" size="sm" className="rounded-full border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300" asChild>
                 {session ? (
                   <Link href="/web/dashboard">
                     <ShieldCheck className="h-4 w-4 mr-1" />

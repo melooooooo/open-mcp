@@ -178,7 +178,7 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
       {metadataItems.map((item) => (
         <div key={item.label} className="flex items-center gap-3 p-4 rounded-xl border bg-card/60">
-          <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+          <div className="h-10 w-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
             <item.icon className="w-5 h-5" />
           </div>
           <div>
@@ -196,12 +196,12 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
     <main className="bg-background min-h-screen pb-20">
       {/* Hero Section */}
       <section className="relative bg-muted/30 border-b">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent opacity-50" />
         <Container className="relative py-6 sm:py-8">
           <div className="space-y-4 max-w-4xl mx-auto">
             <Link
               href="/experiences"
-              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-blue-600 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               返回经验列表
@@ -210,12 +210,12 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
             <div className="space-y-3">
               <div className="flex flex-wrap items-center gap-3">
                 {articleTypeLabel && (
-                  <Badge variant="secondary" className="text-sm px-3 py-1 font-medium">
+                  <Badge variant="secondary" className="text-sm px-3 py-1 font-medium bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-100">
                     {articleTypeLabel}
                   </Badge>
                 )}
                 {experience.tags?.slice(0, 3).map((tag: string) => (
-                  <span key={tag} className="text-xs font-medium text-muted-foreground bg-background/50 px-2.5 py-1 rounded-md border border-border/50">
+                  <span key={tag} className="text-xs font-medium text-blue-600 bg-blue-50/50 px-2.5 py-1 rounded-md border border-blue-100">
                     #{tag}
                   </span>
                 ))}
@@ -291,7 +291,7 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
                       id={section.anchor}
                       className="relative pl-8 sm:pl-12 border-l-2 border-border/40 pb-6 last:pb-0 last:border-l-0 scroll-mt-24"
                     >
-                      <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-primary bg-background ring-4 ring-background" />
+                      <div className="absolute -left-[9px] top-1 h-4 w-4 rounded-full border-2 border-blue-600 bg-background ring-4 ring-background" />
                       <div className="space-y-6">
                         {section.title && (
                           <h2 className="text-2xl font-bold tracking-tight text-foreground">
@@ -299,7 +299,7 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
                           </h2>
                         )}
                         <div
-                          className="prose prose-lg prose-neutral dark:prose-invert max-w-none prose-p:leading-loose prose-p:text-muted-foreground prose-p:my-6 prose-headings:font-semibold prose-a:text-primary hover:prose-a:underline prose-li:leading-loose prose-img:object-contain prose-img:w-full prose-img:h-auto break-words whitespace-pre-line"
+                          className="prose prose-lg prose-neutral dark:prose-invert max-w-none prose-p:leading-loose prose-p:text-muted-foreground prose-p:my-6 prose-headings:font-semibold prose-a:text-blue-600 hover:prose-a:underline prose-li:leading-loose prose-img:object-contain prose-img:w-full prose-img:h-auto break-words whitespace-pre-line"
                           dangerouslySetInnerHTML={{ __html: sanitizedContent }}
                         />
                       </div>
@@ -320,7 +320,7 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
                              prose-p:leading-loose prose-p:text-muted-foreground prose-p:mb-4
                              prose-headings:font-bold prose-headings:text-2xl prose-headings:mb-6 prose-headings:mt-12
                              prose-strong:text-xl prose-strong:font-bold prose-strong:text-gray-900 prose-strong:block prose-strong:mb-4
-                             prose-a:text-primary hover:prose-a:underline 
+                             prose-a:text-blue-600 hover:prose-a:underline 
                              prose-img:rounded-xl prose-img:object-contain prose-img:w-full prose-img:h-auto prose-li:leading-loose 
                              break-words whitespace-pre-line
                              [&_section]:mb-8 [&_section]:space-y-4"
@@ -342,7 +342,7 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
             <div className="pt-8 border-t">
               <div className="flex flex-wrap gap-2">
                 {experience.tags.map((tag: string) => (
-                  <Badge key={tag} variant="secondary" className="text-sm py-1 px-3 hover:bg-secondary/80 transition-colors">
+                  <Badge key={tag} variant="secondary" className="text-sm py-1 px-3 bg-blue-50 text-blue-600 hover:bg-blue-100 border-blue-100 transition-colors">
                     #{tag}
                   </Badge>
                 ))}
@@ -364,7 +364,7 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
                     <a
                       key={index}
                       href={`#${section.anchor}`}
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors line-clamp-1 block py-1"
+                      className="text-sm text-muted-foreground hover:text-blue-600 transition-colors line-clamp-1 block py-1"
                     >
                       {index + 1}. {section.title}
                     </a>
