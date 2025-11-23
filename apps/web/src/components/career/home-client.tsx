@@ -30,7 +30,7 @@ export function HomeClient({ jobs, experiences, companies, stats }: HomeClientPr
   // 筛选热门和最新职位
   const hotJobs = jobs.filter(job => job.isHot).slice(0, 3)
   const newJobs = jobs.filter(job => job.isNew).slice(0, 3)
-  
+
   // 获取热门公司
   const popularCompanies = companies.filter(company => company.isPopular).slice(0, 3)
 
@@ -79,9 +79,9 @@ export function HomeClient({ jobs, experiences, companies, stats }: HomeClientPr
         {/* Job Section */}
         <Section>
           <Container>
-            <JobSection 
-              hotJobs={hotJobs.length > 0 ? hotJobs : jobs.slice(0, 3)} 
-              newJobs={newJobs.length > 0 ? newJobs : jobs.slice(3, 6)} 
+            <JobSection
+              hotJobs={hotJobs.length > 0 ? hotJobs : jobs.slice(0, 3)}
+              newJobs={newJobs.length > 0 ? newJobs : jobs.slice(3, 6)}
             />
           </Container>
         </Section>
@@ -133,24 +133,35 @@ export function HomeClient({ jobs, experiences, companies, stats }: HomeClientPr
         </Section>
 
         {/* CTA Section */}
-        <Section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-          <Container>
-            <div className="text-center">
-              <h2 className="text-3xl font-bold mb-4">开启你的职业征程</h2>
-              <p className="text-lg mb-8 opacity-95">
-                加入我们，获取最新职位信息和备战材料
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" variant="secondary">
-                  立即注册
-                </Button>
-                <Button size="lg" variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20">
-                  了解更多
-                </Button>
+        <div className="relative relative overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <img
+              src="/images/cta-bg.png"
+              alt="Office Background"
+              className="w-full h-full object-cover opacity-10"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/90 to-purple-600/90" />
+          </div>
+
+          <Section className="relative z-10 bg-transparent text-white">
+            <Container>
+              <div className="text-center">
+                <h2 className="text-3xl font-bold mb-4">开启你的职业征程</h2>
+                <p className="text-lg mb-8 opacity-95">
+                  加入我们，获取最新职位信息和备战材料
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button size="lg" variant="secondary">
+                    立即注册
+                  </Button>
+                  <Button size="lg" variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20">
+                    了解更多
+                  </Button>
+                </div>
               </div>
-            </div>
-          </Container>
-        </Section>
+            </Container>
+          </Section>
+        </div>
       </main>
     </div>
   )

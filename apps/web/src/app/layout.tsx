@@ -10,8 +10,8 @@ import { geistMono, geistSans } from "./fonts";
 import { Providers } from "./providers"
 
 export const metadata: Metadata = {
-  title: "职启航 - 秋招应届生求职平台",
-  description: "汇聚名企职位、网站合集与面试经验，助力应届生成功斩获心仪 offer"
+  title: "银行帮 - 银行招聘求职平台",
+  description: "专注银行招聘，汇聚各大银行校招、社招信息与面试经验，助力银行求职。"
 };
 
 export const viewport: Viewport = {
@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" suppressHydrationWarning className="scroll-smooth">
       <head>
-        <meta name='apple-mobile-web-app-title' content='共绩算力' />
+        <meta name='apple-mobile-web-app-title' content='银行帮' />
         <UmamiProvider />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>

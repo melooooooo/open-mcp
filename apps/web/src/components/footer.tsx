@@ -19,10 +19,10 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <LogoIcon type="openmcp" />
-              <span className="font-bold">职启航</span>
+              <span className="font-bold">银行帮</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              职启航专注服务秋招应届生与在校生，整合职位、面经与薪酬情报，帮助你自信踏出职场第一步。
+              银行帮专注服务银行求职者，整合各大银行招聘信息、面经与薪酬情报，帮助你自信踏出职场第一步。
             </p>
           </div>
 

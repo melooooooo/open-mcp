@@ -1,0 +1,822 @@
+[dotenv@17.2.3] injecting env (7) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+SUPABASE_URL: https://nxnmvoqvotdpzurohzdg.supabase.co
+SUPABASE_KEY length: 208
+Reading jobs from: /Users/jiang/develop/GitHub/open-mcp/byr_jobs.json
+Found 90 jobs to process.
+Failed to insert job 977558: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977529: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 937846: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 915932: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977646: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977645: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977644: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977643: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977642: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977639: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977637: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977636: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977635: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977634: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977633: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977632: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977629: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977628: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977627: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977626: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977624: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977623: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977621: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977620: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977619: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977618: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977617: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977616: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977615: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977614: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977613: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977612: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977611: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977610: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977609: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977608: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977607: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977606: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977604: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977603: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977602: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977601: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977600: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977599: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977598: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977597: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977596: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977595: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977594: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977593: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977592: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977591: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977590: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977589: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977588: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977587: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977586: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977585: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977584: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977583: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977582: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977581: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977580: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977579: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977578: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977577: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977576: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977575: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977574: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977572: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977571: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977570: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977569: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977568: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977567: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977566: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977565: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977564: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977563: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977560: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977559: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977557: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977555: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977554: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977552: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977551: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977549: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977548: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977546: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+Failed to insert job 977545: {
+  message: 'TypeError: fetch failed',
+  details: 'TypeError: fetch failed\n' +
+    '    at node:internal/deps/undici/undici:13510:13\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async main (/Users/jiang/develop/GitHub/open-mcp/scripts/upload-byr-jobs.ts:89:23)',
+  hint: '',
+  code: ''
+}
+
+--- Summary ---
+Total: 90
+Inserted: 0
+Skipped (Already Exists): 0
+Failed: 90
