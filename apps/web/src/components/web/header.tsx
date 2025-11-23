@@ -25,6 +25,11 @@ export function Header() {
       active: pathname?.startsWith("/jobs"),
     },
     {
+      href: "/recruitment",
+      label: "招聘",
+      active: pathname?.startsWith("/recruitment"),
+    },
+    {
       href: "/experiences",
       label: "经验",
       active: pathname?.startsWith("/experiences"),

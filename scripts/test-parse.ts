@@ -1,19 +1,5 @@
 import * as XLSX from 'xlsx';
-import { createClient } from '@supabase/supabase-js';
 import * as path from 'path';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
-
-const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const SUPABASE_KEY = process.env.SUPABASE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-
-if (!SUPABASE_URL || !SUPABASE_KEY) {
-  console.error('Error: SUPABASE_URL and SUPABASE_KEY must be set in environment variables.');
-  process.exit(1);
-}
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const FILE_PATH = path.resolve(__dirname, '../职位列表.xlsx');
 
@@ -37,27 +23,17 @@ interface JobRow {
   referral_code: string | null;
 }
 
-function cleanValue(value: string | undefined): string | null {
-  if (!value || value === '/' || value.trim() === '') {
-    return null;
-  }
-  return value.trim();
-}
-
 function parseRow(rowString: string): JobRow | null {
-  // Remove leading/trailing spaces and split
   const tokens = rowString.trim().split(/\s+/);
 
   if (tokens.length < 10) {
-    console.warn('Skipping row with too few tokens:', rowString.substring(0, 50));
     return null;
   }
 
   // Valid company types
   const VALID_COMPANY_TYPES = ['民企', '央国企', '外企', '事业单位', '合资', '其他', '国企', '社会组织', '政府机关'];
 
-  // 1. Find Anchor: Delivery (starts with "http" or looks like a link/email)
-  // Expanded to include www, @ (email), and common domains
+  // Find Delivery anchor
   let idxDelivery = tokens.findIndex(t =>
     t.startsWith('http') ||
     t.startsWith('www.') ||
@@ -69,33 +45,21 @@ function parseRow(rowString: string): JobRow | null {
     t.includes('.edu')
   );
 
-  // Fallback if no URL found
   if (idxDelivery === -1) {
-    // Try to find "投递" keyword, but exclude "尽快投递" (which is usually deadline)
     idxDelivery = tokens.findIndex(t => t.includes('投递') && !t.includes('尽快投递'));
-
-    // If still not found, use heuristic based on end of string
-    if (idxDelivery === -1) {
-      // Assume it's roughly 5th from end if we have enough tokens
-      if (tokens.length > 15) {
-        idxDelivery = tokens.length - 5;
-      }
+    if (idxDelivery === -1 && tokens.length > 15) {
+      idxDelivery = tokens.length - 5;
     }
   }
 
-  // 2. Find Anchor: Session (contains "届")
-  // Search BACKWARDS from idxDelivery (or from end if idxDelivery is invalid/late)
+  // Find Session anchor
   let searchEnd = idxDelivery !== -1 ? idxDelivery : tokens.length - 1;
   let idxSession = -1;
 
   for (let i = searchEnd - 1; i >= 0; i--) {
     const token = tokens[i];
     if (!token) continue;
-
-    // Session usually starts with a digit (e.g. "2026届") and is relatively short
     if (token.includes('届')) {
-      // Strict check: must start with digit or be very short (< 10 chars)
-      // This avoids matching "福州市2026届..." which is a Source/Title
       if (/^\d/.test(token) || token.length < 8) {
         idxSession = i;
         break;
@@ -104,30 +68,19 @@ function parseRow(rowString: string): JobRow | null {
   }
 
   if (idxSession === -1) {
-    // Fallback: search forward
     idxSession = tokens.findIndex(t => t.includes('届') && (/^\d/.test(t) || t.length < 8));
   }
 
-  // If strict check failed, try loose check as last resort
   if (idxSession === -1) {
     idxSession = tokens.findIndex(t => t.includes('届'));
   }
 
   if (idxSession === -1) {
-    console.warn('Skipping row: Could not find "届" anchor:', rowString.substring(0, 50));
     return null;
   }
 
   if (idxDelivery === -1) {
     idxDelivery = tokens.length - 5;
-  }
-
-
-
-
-  if (idxSession === -1) {
-    // console.log(`Row ${rowIndex}: No session found`);
-    return null;
   }
 
   // Extract Announcement Source
@@ -141,14 +94,11 @@ function parseRow(rowString: string): JobRow | null {
       announcement_source = tokens[idxSource] || '';
     }
   }
-  // Fallback if not found by delivery anchor
   if (!announcement_source && idxSession + 2 < tokens.length) {
     announcement_source = tokens[idxSession + 2] || '';
   }
 
-
-  // --- Field Mapping ---
-  // Find company_type index (it should be one of the valid types)
+  // Find company_type index
   let idxCompanyType = -1;
   for (let i = 2; i < Math.min(tokens.length, 10); i++) {
     if (tokens[i] && VALID_COMPANY_TYPES.includes(tokens[i])) {
@@ -157,46 +107,38 @@ function parseRow(rowString: string): JobRow | null {
     }
   }
 
-  // If company type not found in expected range, skip this row
   if (idxCompanyType === -1) {
-    console.warn('Skipping row: Could not find valid company type:', rowString.substring(0, 80));
     return null;
   }
 
   let serial_number = tokens[0] || '';
   let source_updated_at = tokens[1] || '';
-  // Company name is everything between source_updated_at and company_type
   let company_name = tokens.slice(2, idxCompanyType).join(' ');
   let company_type = tokens[idxCompanyType] || '';
   let industry_category = tokens[idxCompanyType + 1] || '';
 
-  // Job title, location, and deadline will be parsed later based on session anchor
   let job_title = '';
   let work_location = '';
   let deadline = '';
 
-  // Standard mapping for Session and Delivery
   const session = tokens[idxSession] || '';
   const application_method = idxDelivery !== -1 ? tokens[idxDelivery] : "详见公告";
 
-  // Find deadline (should be right before session)
+  // Find deadline
   if (idxSession > 0 && (tokens[idxSession - 1] === "尽快投递" || /^\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2}$/.test(tokens[idxSession - 1] || ''))) {
     deadline = tokens[idxSession - 1] || '';
   }
 
-  // Smart Location & Job Title Parsing
-  // Location is usually before Deadline (or Session if Deadline missing)
+  // Find location
   let idxLocationEnd = idxSession - 1;
   if (deadline && deadline === tokens[idxSession - 1]) {
     idxLocationEnd = idxSession - 2;
   }
 
-  // Find location start by looking backwards for tokens ending with comma
   let idxLocationStart = idxLocationEnd;
-  const minJobTitleStart = idxCompanyType + 2; // After industry_category
+  const minJobTitleStart = idxCompanyType + 2;
   while (idxLocationStart > minJobTitleStart) {
     const prevToken = tokens[idxLocationStart - 1];
-    // Heuristic: if previous token ends with comma, it's part of location
     if (prevToken && prevToken.endsWith(',')) {
       idxLocationStart--;
     } else {
@@ -207,13 +149,9 @@ function parseRow(rowString: string): JobRow | null {
   if (idxLocationStart < minJobTitleStart) idxLocationStart = minJobTitleStart;
   if (idxLocationEnd < idxLocationStart) idxLocationEnd = idxLocationStart;
 
-  // Extract location and job title
   work_location = tokens.slice(idxLocationStart, idxLocationEnd + 1).join(' ');
   job_title = tokens.slice(idxCompanyType + 2, idxLocationStart).join(' ');
 
-  // ... (rest of the parsing logic for degree, batch etc)
-
-  // Helper to clean strings
   const clean = (s: string | null) => s?.replace(/[,，、]+$/, "") || null;
 
   return {
@@ -226,7 +164,7 @@ function parseRow(rowString: string): JobRow | null {
     work_location: clean(work_location),
     deadline: clean(deadline),
     session: clean(session),
-    degree_requirement: null, // Will be filled by keyword search
+    degree_requirement: null,
     batch: idxSession + 1 < tokens.length ? clean(tokens[idxSession + 1] || '') : null,
     announcement_source: clean(announcement_source),
     application_method: clean(application_method),
@@ -240,53 +178,55 @@ function parseRow(rowString: string): JobRow | null {
 async function main() {
   console.log(`Reading file from: ${FILE_PATH}`);
 
-  try {
-    const workbook = XLSX.readFile(FILE_PATH);
-    const sheetName = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[sheetName];
+  const workbook = XLSX.readFile(FILE_PATH);
+  const sheetName = workbook.SheetNames[0];
+  const sheet = workbook.Sheets[sheetName];
 
-    // Get raw strings (header: 1 gives array of arrays)
-    const rawData = XLSX.utils.sheet_to_json(sheet, { header: 1 }) as string[][];
-    console.log(`Found ${rawData.length} rows (including header).`);
+  const rawData = XLSX.utils.sheet_to_json(sheet, { header: 1 }) as string[][];
+  console.log(`Found ${rawData.length} rows (including header).\n`);
 
-    const jobs: JobRow[] = [];
+  const jobs: JobRow[] = [];
+  const companyTypeStats = new Map<string, number>();
 
-    // Skip header (index 0)
-    for (let i = 1; i < rawData.length; i++) {
-      const row = rawData[i];
-      if (!row || typeof row[0] !== 'string') continue;
+  for (let i = 1; i < rawData.length; i++) {
+    const row = rawData[i];
+    if (!row || typeof row[0] !== 'string') continue;
 
-      const parsed = parseRow(row[0]);
-      if (parsed) {
-        jobs.push(parsed);
+    const parsed = parseRow(row[0]);
+    if (parsed) {
+      jobs.push(parsed);
+      if (parsed.company_type) {
+        companyTypeStats.set(parsed.company_type, (companyTypeStats.get(parsed.company_type) || 0) + 1);
       }
     }
+  }
 
-    console.log(`Successfully parsed ${jobs.length} jobs.`);
-    if (jobs.length > 0) {
-      console.log('Sample parsed row:', JSON.stringify(jobs[0], null, 2));
-    }
+  console.log(`Successfully parsed ${jobs.length} jobs.\n`);
 
-    console.log('Uploading to Supabase...');
+  console.log('=== 企业性质统计 ===');
+  const sorted = Array.from(companyTypeStats.entries()).sort((a, b) => b[1] - a[1]);
+  sorted.forEach(([type, count]) => {
+    console.log(`${type}: ${count}`);
+  });
 
-    const BATCH_SIZE = 100;
-    for (let i = 0; i < jobs.length; i += BATCH_SIZE) {
-      const batch = jobs.slice(i, i + BATCH_SIZE);
-      const { error } = await supabase
-        .from('job_listings')
-        .insert(batch);
+  console.log('\n=== 前5条解析示例 ===');
+  jobs.slice(0, 5).forEach((job, idx) => {
+    console.log(`\n[${idx + 1}] ${job.company_name} (${job.company_type})`);
+    console.log(`    岗位: ${job.job_title}`);
+    console.log(`    地点: ${job.work_location}`);
+  });
 
-      if (error) {
-        console.error(`Error uploading batch ${i / BATCH_SIZE + 1}:`, error);
-      } else {
-        if (i % 1000 === 0) console.log(`Uploaded ${i} / ${jobs.length}`);
-      }
-    }
+  // Check for any invalid company types
+  const VALID_TYPES = ['民企', '央国企', '外企', '事业单位', '合资', '其他', '国企', '社会组织', '政府机关'];
+  const invalidTypes = sorted.filter(([type]) => !VALID_TYPES.includes(type));
 
-    console.log('Done!');
-
-  } catch (error) {
-    console.error('Error processing file:', error);
+  if (invalidTypes.length > 0) {
+    console.log('\n⚠️  发现无效的企业性质:');
+    invalidTypes.forEach(([type, count]) => {
+      console.log(`  - ${type}: ${count}条`);
+    });
+  } else {
+    console.log('\n✅ 所有企业性质都是有效的！');
   }
 }
 
