@@ -1,5 +1,5 @@
 import { db, pg } from "..";
-import { users } from "../schema";
+import { user } from "../../schema";
 
 async function main() {
   const userData = {
@@ -9,7 +9,7 @@ async function main() {
     emailVerified: new Date(),
   }; // password is codersaadi
   const [createdUser] = await db
-    .insert(users)
+    .insert(user)
     .values(userData)
     .onConflictDoNothing()
     .returning();

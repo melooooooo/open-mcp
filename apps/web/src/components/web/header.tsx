@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Container } from "@/components/web/container"
 import { LogoIcon } from "@/components/web/logo-icon"
+import { UserNav } from "@/components/web/user-nav"
 import { useSession } from "@/hooks/auth-hooks"
 
 export function Header() {
@@ -83,19 +84,16 @@ export function Header() {
               ))}
             </nav>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="rounded-full border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300" asChild>
-                {session ? (
-                  <Link href="/web/dashboard">
-                    <ShieldCheck className="h-4 w-4 mr-1" />
-                    控制台
-                  </Link>
-                ) : (
+              {session ? (
+                <UserNav user={session.user} />
+              ) : (
+                <Button variant="outline" size="sm" className="rounded-full border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300" asChild>
                   <Link href="/auth/sign-in">
                     <User className="h-4 w-4 mr-2" />
                     登录
                   </Link>
-                )}
-              </Button>
+                </Button>
+              )}
               <ThemeToggle />
             </div>
           </div>

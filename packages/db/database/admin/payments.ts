@@ -1,6 +1,6 @@
 import { and, asc, desc, eq, like, or, sql } from "drizzle-orm";
 import { db } from "../../index";
-import { invoices, payments, users } from "../../schema";
+import { user } from "../../schema";
 import { zCreatePaymentSchema, zUpdatePaymentSchema, zSearchPaymentsSchema, PaymentStatus } from "../../types";
 
 // 支付数据访问模块

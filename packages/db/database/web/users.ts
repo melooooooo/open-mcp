@@ -1,7 +1,7 @@
 import { eq, sql } from "drizzle-orm";
 import { createId } from "@paralleldrive/cuid2";
 import { db } from "../../index";
-import { accounts, users } from "../../schema";
+import { account, user } from "../../schema";
 
 /**
  * Fetch user by email.
@@ -11,7 +11,7 @@ import { accounts, users } from "../../schema";
  */
 export async function getUserByEmail(email: string) {
   try {
-    return await db.query.users.findFirst({
+    return await db.query.user.findFirst({
       where(fields, operators) {
         return operators.eq(fields.email, email);
       },
@@ -30,7 +30,7 @@ export async function getUserByEmail(email: string) {
  */
 export async function getUserById(id: string) {
   try {
-    return await db.query.users.findFirst({
+    return await db.query.user.findFirst({
       where(fields, operators) {
         return operators.eq(fields.id, id);
       },
@@ -55,12 +55,12 @@ export async function verifyUserEmail(
   const now = new Date();
   try {
     await db
-      .update(users)
+      .update(user)
       .set({
         emailVerified: sql`now()`,
         email: email ? email : undefined,
       })
-      .where(eq(users.id, id));
+      .where(eq(user.id, id));
     console.info("[users.ts] [verifyUserEmail] 验证成功");
   } catch (error) {
     console.error("[users.ts] [verifyUserEmail] 验证失败", error);
@@ -81,7 +81,7 @@ export async function createUser(user: {
 }) {
   const now = new Date();
   const [newUser] = await db
-    .insert(users)
+    .insert(user)
     .values({
       id: createId(),
       ...user,
@@ -101,7 +101,7 @@ export async function createUserByPhone(user: {
 }) {
   const now = new Date();
   const [newUser] = await db
-    .insert(users)
+    .insert(user)
     .values({
       id: createId(),
       name: user.name,
@@ -128,9 +128,9 @@ export async function updateUserPassword(
   password: string
 ): Promise<void> {
   await db
-    .update(users)
+    .update(user)
     .set({ password })
-    .where(eq(users.email, email))
+    .where(eq(user.email, email))
     .execute();
 }
 
@@ -141,10 +141,10 @@ export async function updateUserPassword(
  * @returns True if user exists, otherwise false.
  */
 export async function userExists(userId: string): Promise<boolean> {
-  const user = await db.query.users.findFirst({
-    where: eq(users.id, userId),
+  const foundUser = await db.query.user.findFirst({
+    where: eq(user.id, userId),
   });
-  return user !== null;
+  return foundUser !== null;
 }
 
 /**
@@ -155,8 +155,8 @@ export async function userExists(userId: string): Promise<boolean> {
 export async function deleteUserWithData(userId: string): Promise<void> {
   try {
     await db.transaction(async (tx) => {
-      await tx.delete(accounts).where(eq(accounts.userId, userId));
-      await tx.delete(users).where(eq(users.id, userId));
+      await tx.delete(account).where(eq(account.userId, userId));
+      await tx.delete(user).where(eq(user.id, userId));
     });
   } catch (error) {
     console.error("Error deleting user with data:", error);
@@ -172,7 +172,7 @@ export async function deleteUserWithData(userId: string): Promise<void> {
  */
 export async function getUserByPhone(phone: string) {
   try {
-    return await db.query.users.findFirst({
+    return await db.query.user.findFirst({
       where(fields, operators) {
         return operators.eq(fields.phoneNumber, phone);
       },

@@ -1,7 +1,7 @@
 import { and, asc, desc, eq, exists, inArray, like, not, or, sql } from "drizzle-orm";
 import { db } from "../../index";
 import { zCreateAppSchema, zUpdateAppSchema, zSearchAppsSchema, zCreateRecommendationAppSchema } from "../../types";
-import { ads, appCategories, appRss, apps, appSubmissions, appTags, categories, claims, rankingRecords, recommendationApps, recommendations, relatedApps, suggestions, users, repos, tags } from "../../schema";
+import { user } from "../../schema";
 
 // 应用程序数据访问模块
 export const appsDataAccess = {
@@ -313,8 +313,8 @@ export const appsDataAccess = {
         email: users.email,
         image: users.image,
       })
-      .from(users)
-      .where(eq(users.id, app[0].ownerId));
+      .from(user)
+      .where(eq(user.id, app[0].ownerId));
     if (owner.length === 0) return null;
     const otherApps = await db
       .select({

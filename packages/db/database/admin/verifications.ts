@@ -1,5 +1,5 @@
 import { createId } from "@paralleldrive/cuid2";
-import { verifications } from "@repo/db/schema";
+import { verification } from "../../schema";
 import { eq } from "drizzle-orm";
 import { db } from "../../index";
 
@@ -9,7 +9,7 @@ export const verificationsDataAccess = {
   // 创建验证码，发送魔法链接验证邮箱时使用
   create: async (identifier: string, expiresAt: Date) => {
     const code = generateCode().toString();
-    const [verification] = await db.insert(verifications).values({
+    const [verification] = await db.insert(verification).values({
       id: createId(),
       identifier,
       value: code,

@@ -1,6 +1,6 @@
 import { and, asc, desc, eq, like, or, sql } from "drizzle-orm";
 import { db } from "../../index";
-import { account, users } from "../../schema";
+import { account, user } from "../../schema";
 import { createId } from "@paralleldrive/cuid2"
 
 import { zCreateUserSchema, zUpdateUserSchema, zSearchUsersSchema } from "../../types";
@@ -12,7 +12,7 @@ import { zCreateUserSchema, zUpdateUserSchema, zSearchUsersSchema } from "../../
  */
 export async function getUserByEmail(email: string) {
   try {
-    return await db.query.users.findFirst({
+    return await db.query.user.findFirst({
       where(fields, operators) {
         return operators.eq(fields.email, email);
       },
@@ -31,7 +31,7 @@ export async function getUserByEmail(email: string) {
  */
 export async function getUserById(id: string) {
   try {
-    return await db.query.users.findFirst({
+    return await db.query.user.findFirst({
       where(fields, operators) {
         return operators.eq(fields.id, id);
       },
@@ -56,12 +56,12 @@ export async function verifyUserEmail(
   const now = new Date();
   try {
     await db
-      .update(users)
+      .update(user)
       .set({
         emailVerified: sql`now()`,
         email: email ? email : undefined,
       })
-      .where(eq(users.id, id));
+      .where(eq(user.id, id));
     console.info("[users.ts] [verifyUserEmail] 验证成功");
   } catch (error) {
     console.error("[users.ts] [verifyUserEmail] 验证失败", error);
@@ -81,7 +81,7 @@ export async function createUser(user: {
   name: string;
 }) {
   const [newUser] = await db
-    .insert(users)
+    .insert(user)
     .values({
       id: createId(),
       name: user.name,
@@ -104,7 +104,7 @@ export async function createUserByPhone(user: {
   name: string;
 }) {
   const [newUser] = await db
-    .insert(users)
+    .insert(user)
     .values({
       // @ts-expect-error
       id: createId(),
@@ -133,9 +133,9 @@ export async function updateUserPassword(
   password: string
 ): Promise<void> {
   await db
-    .update(users)
+    .update(user)
     .set({ password })
-    .where(eq(users.email, email))
+    .where(eq(user.email, email))
     .execute();
 }
 
@@ -146,8 +146,8 @@ export async function updateUserPassword(
  * @returns True if user exists, otherwise false.
  */
 export async function userExists(userId: string): Promise<boolean> {
-  const user = await db.query.users.findFirst({
-    where: eq(users.id, userId),
+  const user = await db.query.user.findFirst({
+    where: eq(user.id, userId),
   });
   return user !== null;
 }
@@ -161,7 +161,7 @@ export async function deleteUserWithData(userId: string): Promise<void> {
   try {
     await db.transaction(async (tx) => {
       await tx.delete(accounts).where(eq(accounts.userId, userId));
-      await tx.delete(users).where(eq(users.id, userId));
+      await tx.delete(user).where(eq(user.id, userId));
     });
   } catch (error) {
     console.error("Error deleting user with data:", error);
@@ -177,7 +177,7 @@ export async function deleteUserWithData(userId: string): Promise<void> {
  */
 export async function getUserByPhone(phone: string) {
   try {
-    return await db.query.users.findFirst({
+    return await db.query.user.findFirst({
       where(fields, operators) {
         return operators.eq(fields.phoneNumber, phone);
       },
@@ -193,7 +193,7 @@ export const usersDataAccess = {
   // 创建用户
   create: async (data: typeof zCreateUserSchema._type) => {
     const now = new Date();
-    return db.insert(users).values({
+    return db.insert(user).values({
       ...data,
       id: createId(),
       emailVerified: false,
@@ -207,31 +207,31 @@ export const usersDataAccess = {
   update: async (id: string, data: typeof zUpdateUserSchema._type) => {
     const now = new Date();
     return db
-      .update(users)
+      .update(user)
       .set({
         ...data,
         updatedAt: now,
       })
-      .where(eq(users.id, id))
+      .where(eq(user.id, id))
       .returning();
   },
 
   // 获取用户
   getById: async (id: string) => {
-    return db.query.users.findFirst({
-      where: eq(users.id, id),
+    return db.query.user.findFirst({
+      where: eq(user.id, id),
     });
   },
 
   getByEmail: async (email: string) => {
-    return await db.query.users.findFirst({
-      where: eq(users.email, email),
+    return await db.query.user.findFirst({
+      where: eq(user.email, email),
     });
   },
 
   getByPhone: async (phone: string) => {
-    return await db.query.users.findFirst({
-      where: eq(users.phoneNumber, phone),
+    return await db.query.user.findFirst({
+      where: eq(user.phoneNumber, phone),
     });
   },
   // 搜索用户
@@ -245,14 +245,14 @@ export const usersDataAccess = {
     if (query) {
       conditions.push(
         or(
-          like(users.name, `%${query}%`),
-          like(users.email, `%${query}%`)
+          like(user.name, `%${query}%`),
+          like(user.email, `%${query}%`)
         )
       );
     }
 
     if (role && (role === "admin" || role === "user")) {
-      conditions.push(eq(users.role, role));
+      conditions.push(eq(user.role, role));
     }
 
     // 构建排序条件
@@ -264,11 +264,11 @@ export const usersDataAccess = {
       if (field === "createdAt") orderBy.push(orderDirection(users.createdAt));
     } else {
       // 默认按创建时间倒序
-      orderBy.push(desc(users.createdAt));
+      orderBy.push(desc(user.createdAt));
     }
 
     // 执行查询
-    const results = await db.query.users.findMany({
+    const results = await db.query.user.findMany({
       where: conditions.length > 0 ? and(...conditions) : undefined,
       orderBy,
       limit,
@@ -278,7 +278,7 @@ export const usersDataAccess = {
     // 获取总数
     const countResult = await db
       .select({ count: sql<number>`count(*)` })
-      .from(users)
+      .from(user)
       .where(conditions.length > 0 ? and(...conditions) : undefined);
 
     const total = countResult[0]?.count ?? 0;
@@ -296,6 +296,6 @@ export const usersDataAccess = {
 
   // 删除用户
   delete: async (id: string) => {
-    return db.delete(users).where(eq(users.id, id)).returning();
+    return db.delete(user).where(eq(user.id, id)).returning();
   },
 };
