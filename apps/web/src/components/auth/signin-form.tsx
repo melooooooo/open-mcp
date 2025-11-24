@@ -10,7 +10,10 @@ import { useState } from "react"
 import { EmailLogin } from "@/components/auth/email-signin"
 import { PhoneSignin } from "@/components/auth/phone-signin"
 
-export type AuthMode = "phone" | "email"
+import { GoogleIcon } from "@/components/icons/google"
+import { authClient } from "@/lib/auth-client"
+
+export type AuthMode = "email"
 
 interface LoginFormProps {
   onSuccess?: () => void
@@ -19,7 +22,8 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ onSuccess, onCancel, isModal = false }: LoginFormProps) {
-  const [authMode, setAuthMode] = useState<AuthMode>("phone")
+  const [authMode, setAuthMode] = useState<AuthMode>("email")
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get("redirectTo") || "/"
@@ -32,6 +36,21 @@ export function LoginForm({ onSuccess, onCancel, isModal = false }: LoginFormPro
     }
   }
 
+  const handleGoogleLogin = async () => {
+    try {
+      setIsLoading(true)
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: redirectTo,
+        errorCallbackURL: "/auth/error",
+      })
+    } catch (error) {
+      console.error('Google login error:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <Card className="w-full max-w-md mx-auto border-none shadow-lg">
       <CardHeader className="space-y-1 pb-2">
@@ -39,31 +58,34 @@ export function LoginForm({ onSuccess, onCancel, isModal = false }: LoginFormPro
         <CardDescription className="text-center">登录您的账户继续访问</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex items-center justify-center space-x-2 mb-6 bg-muted/50 p-2 rounded-lg">
-          <Label
-            htmlFor="auth-mode"
-            className={`text-sm ${authMode === "phone" ? "font-medium" : "text-muted-foreground"}`}
+        <div className="space-y-4">
+          <Button
+            variant="outline"
+            className="w-full py-6 flex items-center justify-center gap-2 text-base font-medium hover:bg-muted/50 transition-colors"
+            onClick={handleGoogleLogin}
+            disabled={isLoading}
           >
-            手机号登录
-          </Label>
-          <Switch
-            id="auth-mode"
-            checked={authMode === "email"}
-            onCheckedChange={(checked) => setAuthMode(checked ? "email" : "phone")}
-          />
-          <Label
-            htmlFor="auth-mode"
-            className={`text-sm ${authMode === "email" ? "font-medium" : "text-muted-foreground"}`}
-          >
-            邮箱登录
-          </Label>
+            <GoogleIcon className="w-5 h-5" />
+            <span>通过 Google 登录</span>
+          </Button>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                或者使用邮箱
+              </span>
+            </div>
+          </div>
         </div>
 
-        {authMode === "phone" ? (
-          <PhoneSignin onSuccess={handleSuccess} />
-        ) : (
+        <div className="mt-6">
           <EmailLogin onSuccess={handleSuccess} />
-        )}
+        </div>
+
+
       </CardContent>
       {isModal && (
         <CardFooter>

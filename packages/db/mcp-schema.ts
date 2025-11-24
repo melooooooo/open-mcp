@@ -14,7 +14,8 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
-import { users } from "./auth-schema";
+// Better Auth 基础用户表导入为 users，便于复用现有关系命名
+import { user as users } from "./auth-schema";
 
 export const rolesEnumArray = ["user", "admin", "member"] as const;
 

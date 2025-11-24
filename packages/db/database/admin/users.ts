@@ -1,6 +1,6 @@
 import { and, asc, desc, eq, like, or, sql } from "drizzle-orm";
 import { db } from "../../index";
-import { accounts, users } from "../../schema";
+import { account, users } from "../../schema";
 import { createId } from "@paralleldrive/cuid2"
 
 import { zCreateUserSchema, zUpdateUserSchema, zSearchUsersSchema } from "../../types";

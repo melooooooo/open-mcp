@@ -1,6 +1,6 @@
 import { and, eq, sql } from "drizzle-orm";
 import { db } from "../../index";
-import { activities, ads, apps, claims, payments, suggestions, users } from "../../schema";
+import { activities, ads, apps, claims, payments, suggestions, user } from "../../schema";
 
 export const dashboardDataAccess = {
   getDashboardStats: async () => {
@@ -10,7 +10,7 @@ export const dashboardDataAccess = {
       adsCount,
       revenueResult
     ] = await Promise.all([
-      db.select({ count: sql<number>`count(*)` }).from(users).execute(),
+      db.select({ count: sql<number>`count(*)` }).from(user).execute(),
       db.select({ count: sql<number>`count(*)` }).from(apps).execute(),
       db.select({ count: sql<number>`count(*)` }).from(ads).where(eq(ads.status, "active")).execute(),
       db.select({ total: sql<number>`sum(amount)` }).from(payments).where(eq(payments.status, "completed")).execute()
@@ -28,11 +28,11 @@ export const dashboardDataAccess = {
     ] = await Promise.all([
       // 用户增长
       db.select({ count: sql<number>`count(*)` })
-        .from(users)
+        .from(user)
         .where(sql`created_at >= ${lastMonth.toISOString()}`)
         .execute(),
       db.select({ count: sql<number>`count(*)` })
-        .from(users)
+        .from(user)
         .where(and(
           sql`created_at >= ${twoMonthsAgo.toISOString()}`,
           sql`created_at < ${lastMonth.toISOString()}`

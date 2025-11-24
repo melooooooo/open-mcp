@@ -27,13 +27,6 @@ export const zUpdateUserSchema = z.object({
   email: z.string().email(),
   phone: z.string().optional(),
   image: z.string().optional(),
-  location: z.string().optional(),
-  bio: z.string().optional(),
-  company: z.string().optional(),
-  position: z.string().optional(),
-  website: z.string().url("请输入有效的网址").optional().or(z.literal("")),
-  github: z.string().url("请输入有效的GitHub地址").optional().or(z.literal("")),
-  twitter: z.string().url("请输入有效的Twitter地址").optional().or(z.literal("")),
   role: zUserRoleEnum,
   banned: z.boolean(),
 });

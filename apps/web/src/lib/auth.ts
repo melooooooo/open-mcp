@@ -10,20 +10,45 @@ import * as tencentcloud from "tencentcloud-sdk-nodejs"
 
 const isProd = process.env.NODE_ENV === "production"
 
+// 供社交登录回调使用，未配置时回落到 Better Auth 默认逻辑
+const authBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.AUTH_BASE_URL || process.env.BETTER_AUTH_BASE_URL
+const resolvedAuthBaseUrl = authBaseUrl
+  ? new URL('/api/auth', authBaseUrl).toString().replace(/\/$/, '')
+  : undefined
+
 export const auth = betterAuth({
+  baseURL: resolvedAuthBaseUrl,
   database: drizzleAdapter(db, {
     provider: "pg",
-    usePlural: true,
+    usePlural: false,
     schema
   }),
   emailAndPassword: {
     enabled: true
+  },
+  account: {
+    accountLinking: {
+      enabled: true,
+      trustedProviders: ["google"],
+    },
   },
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
     updateAge: 24 * 60 * 60, // 24 hours
   },
+  socialProviders: (() => {
+    const providers: Record<string, { clientId: string; clientSecret: string }> = {}
+
+    if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+      providers.google = {
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      }
+    }
+
+    return providers as any
+  })(),
   plugins: [
     admin(),
     phoneNumber({
