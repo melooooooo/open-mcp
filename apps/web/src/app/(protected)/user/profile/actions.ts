@@ -2,7 +2,7 @@
 
 import { auth } from "@/lib/auth"
 import { db } from "@repo/db"
-import { user, userCollections, userLikes } from "@repo/db/schema"
+import { user, userCollections, userJobListingCollections, userExperienceLikes } from "@repo/db/schema"
 import { eq, and } from "drizzle-orm"
 import { headers } from "next/headers"
 import { revalidatePath } from "next/cache"
@@ -70,7 +70,7 @@ export async function toggleCollection(jobId: string) {
   }
 }
 
-export async function toggleLike(jobId: string) {
+export async function toggleJobListingCollection(jobListingId: string) {
   const session = await auth.api.getSession({
     headers: await headers()
   })
@@ -82,26 +82,64 @@ export async function toggleLike(jobId: string) {
   const userId = session.user.id
 
   const existing = await db.select()
-    .from(userLikes)
+    .from(userJobListingCollections)
     .where(and(
-      eq(userLikes.userId, userId),
-      eq(userLikes.jobId, jobId)
+      eq(userJobListingCollections.userId, userId),
+      eq(userJobListingCollections.jobListingId, jobListingId)
     ))
     .limit(1)
 
   if (existing.length > 0) {
-    await db.delete(userLikes)
+    await db.delete(userJobListingCollections)
       .where(and(
-        eq(userLikes.userId, userId),
-        eq(userLikes.jobId, jobId)
+        eq(userJobListingCollections.userId, userId),
+        eq(userJobListingCollections.jobListingId, jobListingId)
+      ))
+    revalidatePath("/user/profile")
+    return { collected: false }
+  } else {
+    await db.insert(userJobListingCollections)
+      .values({
+        userId,
+        jobListingId
+      })
+    revalidatePath("/user/profile")
+    return { collected: true }
+  }
+}
+
+export async function toggleExperienceLike(experienceId: string) {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+
+  if (!session) {
+    throw new Error("Unauthorized")
+  }
+
+  const userId = session.user.id
+
+  const existing = await db.select()
+    .from(userExperienceLikes)
+    .where(and(
+      eq(userExperienceLikes.userId, userId),
+      eq(userExperienceLikes.experienceId, experienceId)
+    ))
+    .limit(1)
+
+  if (existing.length > 0) {
+    await db.delete(userExperienceLikes)
+      .where(and(
+        eq(userExperienceLikes.userId, userId),
+        eq(userExperienceLikes.experienceId, experienceId)
       ))
     revalidatePath("/user/profile")
     return { liked: false }
   } else {
-    await db.insert(userLikes)
+    await db.insert(userExperienceLikes)
       .values({
         userId,
-        jobId
+        experienceId
       })
     revalidatePath("/user/profile")
     return { liked: true }

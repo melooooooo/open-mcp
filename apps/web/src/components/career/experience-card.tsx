@@ -7,6 +7,10 @@ import { Badge } from "@repo/ui/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
 import { cn } from "@repo/ui/lib/utils"
 
+import { useState } from "react"
+import { toggleExperienceLike } from "@/app/actions/interactions"
+import { toast } from "sonner"
+
 interface ExperienceCardProps {
   experience: {
     id: string
@@ -36,6 +40,7 @@ interface ExperienceCardProps {
     isPinned?: boolean
     isHot?: boolean
     cover_asset_path?: string // 封面图片URL
+    isLiked?: boolean
   }
   variant?: "default" | "compact" | "detailed" | "list"
   className?: string
@@ -87,6 +92,47 @@ const DifficultyStars = ({ level }: { level: number }) => {
 
 export function ExperienceCard({ experience, variant = "default", className, onClick, onLike }: ExperienceCardProps) {
   const TypeIcon = typeConfig[experience.type].icon
+  const [isLiked, setIsLiked] = useState(experience.isLiked || false)
+  const [likeCount, setLikeCount] = useState(experience.likeCount || 0)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleLike = async (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (isLoading) return
+
+    // Optimistic update
+    const newIsLiked = !isLiked
+    setIsLiked(newIsLiked)
+    setLikeCount(prev => newIsLiked ? prev + 1 : prev - 1)
+    setIsLoading(true)
+
+    try {
+      const result = await toggleExperienceLike(experience.id)
+      if (result.error) {
+        // Revert on error
+        setIsLiked(!newIsLiked)
+        setLikeCount(prev => !newIsLiked ? prev + 1 : prev - 1)
+        if (result.error === "Unauthorized") {
+          toast.error("请先登录")
+        } else {
+          toast.error("操作失败，请重试")
+        }
+      } else {
+        // Sync with server result just in case
+        if (result.isLiked !== undefined) {
+          setIsLiked(result.isLiked)
+        }
+        onLike?.()
+      }
+    } catch (error) {
+      // Revert on error
+      setIsLiked(!newIsLiked)
+      setLikeCount(prev => !newIsLiked ? prev + 1 : prev - 1)
+      toast.error("网络错误，请重试")
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -135,12 +181,16 @@ export function ExperienceCard({ experience, variant = "default", className, onC
                   {experience.viewCount}
                 </span>
               )}
-              {experience.likeCount !== undefined && (
-                <span className="flex items-center gap-1">
-                  <ThumbsUp className="h-3 w-3" />
-                  {experience.likeCount}
-                </span>
-              )}
+              <button
+                className={cn(
+                  "flex items-center gap-1 transition-colors",
+                  isLiked ? "text-red-500" : "hover:text-blue-600 dark:hover:text-blue-400"
+                )}
+                onClick={handleLike}
+              >
+                <ThumbsUp className={cn("h-3 w-3", isLiked && "fill-current")} />
+                {likeCount}
+              </button>
             </div>
           </div>
         </CardContent>
@@ -246,12 +296,16 @@ export function ExperienceCard({ experience, variant = "default", className, onC
                       <span>{experience.viewCount}</span>
                     </span>
                   )}
-                  {typeof experience.likeCount === "number" && (
-                    <span className="flex items-center gap-1.5">
-                      <ThumbsUp className="w-3.5 h-3.5" />
-                      <span>{experience.likeCount}</span>
-                    </span>
-                  )}
+                  <button
+                    className={cn(
+                      "flex items-center gap-1.5 transition-colors",
+                      isLiked ? "text-red-500" : "hover:text-blue-600 dark:hover:text-blue-400"
+                    )}
+                    onClick={handleLike}
+                  >
+                    <ThumbsUp className={cn("w-3.5 h-3.5", isLiked && "fill-current")} />
+                    <span>{likeCount}</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -415,18 +469,16 @@ export function ExperienceCard({ experience, variant = "default", className, onC
                 {experience.viewCount > 1000 ? `${(experience.viewCount / 1000).toFixed(1)}k` : experience.viewCount}
               </span>
             )}
-            {experience.likeCount !== undefined && (
-              <button
-                className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onLike?.()
-                }}
-              >
-                <ThumbsUp className="h-3.5 w-3.5" />
-                {experience.likeCount}
-              </button>
-            )}
+            <button
+              className={cn(
+                "flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400 transition-colors",
+                isLiked ? "text-red-500" : ""
+              )}
+              onClick={handleLike}
+            >
+              <ThumbsUp className={cn("h-3.5 w-3.5", isLiked && "fill-current")} />
+              {likeCount}
+            </button>
             {experience.commentCount !== undefined && (
               <span className="flex items-center gap-1">
                 <MessageSquare className="h-3.5 w-3.5" />

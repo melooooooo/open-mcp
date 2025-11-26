@@ -9,11 +9,13 @@ import { getJobListings, getFilterOptions, type JobListing, COMPANY_TYPES, INDUS
 import { JobItem } from "./job-item"
 import { useDebounce } from "@/hooks/use-debounce"
 import { Container } from "@/components/web/container"
+import { getJobCollectionStatus } from "@/app/actions/interactions"
 
 export function JobList() {
   const [jobs, setJobs] = useState<JobListing[]>([])
   const [loading, setLoading] = useState(true)
   const [total, setTotal] = useState(0)
+  const [collectionStatus, setCollectionStatus] = useState<Record<string, boolean>>({})
 
   // Filters
   const [query, setQuery] = useState("")
@@ -62,6 +64,15 @@ export function JobList() {
 
       setJobs(res.data)
       setTotal(res.count)
+
+      // Fetch collection status
+      if (res.data.length > 0) {
+        const status = await getJobCollectionStatus(res.data.map(j => j.id))
+        setCollectionStatus(status)
+      } else {
+        setCollectionStatus({})
+      }
+
       setLoading(false)
     }
 
@@ -161,7 +172,11 @@ export function JobList() {
       ) : jobs.length > 0 ? (
         <div className="flex flex-col gap-4">
           {jobs.map(job => (
-            <JobItem key={job.id} job={job} />
+            <JobItem
+              key={job.id}
+              job={job}
+              isCollected={collectionStatus[job.id]}
+            />
           ))}
         </div>
       ) : (
@@ -208,3 +223,4 @@ export function JobList() {
     </Container>
   )
 }
+

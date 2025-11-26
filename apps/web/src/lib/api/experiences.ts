@@ -1,4 +1,9 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server"
+import { headers } from "next/headers"
+import { auth } from "@/lib/auth"
+import { db } from "@repo/db"
+import { userExperienceLikes } from "@repo/db/schema"
+import { eq, inArray, and } from "drizzle-orm"
 
 type ExperienceListOptions = {
   limit?: number
@@ -73,6 +78,27 @@ export async function getExperiencesList(options: ExperienceListOptions = {}) {
     return { items: [], total: 0 }
   }
 
+  // Fetch like status for current user
+  let likedExperienceIds = new Set<string>()
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+  const userId = session?.user?.id
+
+  if (userId && data && data.length > 0) {
+    const ids = data.map(item => item.id)
+    const likes = await db.query.userExperienceLikes.findMany({
+      where: and(
+        eq(userExperienceLikes.userId, userId),
+        inArray(userExperienceLikes.experienceId, ids)
+      ),
+      columns: {
+        experienceId: true
+      }
+    })
+    likes.forEach(like => likedExperienceIds.add(like.experienceId))
+  }
+
   return {
     items: (data || []).map((item) => ({
       id: item.id,
@@ -99,6 +125,7 @@ export async function getExperiencesList(options: ExperienceListOptions = {}) {
       summary: item.summary,
       cover_asset_path: item.cover_asset_path,
       industry: item.industry || undefined,
+      isLiked: likedExperienceIds.has(item.id),
     })),
     total: count || 0,
   }
@@ -118,5 +145,22 @@ export async function getExperienceBySlug(slug: string) {
     return null
   }
 
-  return data
+  // Fetch like status
+  let isLiked = false
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+  const userId = session?.user?.id
+
+  if (userId && data) {
+    const like = await db.query.userExperienceLikes.findFirst({
+      where: and(
+        eq(userExperienceLikes.userId, userId),
+        eq(userExperienceLikes.experienceId, data.id)
+      )
+    })
+    if (like) isLiked = true
+  }
+
+  return { ...data, isLiked }
 }

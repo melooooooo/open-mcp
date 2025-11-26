@@ -54,22 +54,10 @@ export const userCollections = pgTable("user_collections", {
   uniqueIndex("user_collections_unique_idx").on(table.userId, table.jobId),
 ]);
 
-// 用户点赞表
-export const userLikes = pgTable("user_likes", {
-  id: text("id").primaryKey().notNull().$defaultFn(() => createId()),
-  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
-  jobId: uuid("job_id").notNull().references(() => scrapedJobs.id, { onDelete: "cascade" }),
-  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
-}, (table) => [
-  index("user_likes_user_id_idx").on(table.userId),
-  index("user_likes_job_id_idx").on(table.jobId),
-  uniqueIndex("user_likes_unique_idx").on(table.userId, table.jobId),
-]);
 
 // Relations
 export const scrapedJobsRelations = relations(scrapedJobs, ({ many }) => ({
   collections: many(userCollections),
-  likes: many(userLikes),
 }));
 
 export const userCollectionsRelations = relations(userCollections, ({ one }) => ({
@@ -83,13 +71,71 @@ export const userCollectionsRelations = relations(userCollections, ({ one }) => 
   }),
 }));
 
-export const userLikesRelations = relations(userLikes, ({ one }) => ({
+
+// 招聘职位表 (引用现有表)
+export const jobListings = pgTable("job_listings", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  // 只定义 ID 用于外键关联
+});
+
+// 经验分享表 (引用现有表)
+export const financeExperiences = pgTable("finance_experiences", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  likeCount: integer("like_count").default(0),
+  // 只定义 ID 和 likeCount
+});
+
+// 招聘职位收藏表
+export const userJobListingCollections = pgTable("user_job_listing_collections", {
+  id: text("id").primaryKey().notNull().$defaultFn(() => createId()),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  jobListingId: uuid("job_listing_id").notNull().references(() => jobListings.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+}, (table) => [
+  index("user_job_listing_collections_user_id_idx").on(table.userId),
+  index("user_job_listing_collections_job_id_idx").on(table.jobListingId),
+  uniqueIndex("user_job_listing_collections_unique_idx").on(table.userId, table.jobListingId),
+]);
+
+// 经验分享点赞表
+export const userExperienceLikes = pgTable("user_experience_likes", {
+  id: text("id").primaryKey().notNull().$defaultFn(() => createId()),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  experienceId: uuid("experience_id").notNull().references(() => financeExperiences.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+}, (table) => [
+  index("user_experience_likes_user_id_idx").on(table.userId),
+  index("user_experience_likes_experience_id_idx").on(table.experienceId),
+  uniqueIndex("user_experience_likes_unique_idx").on(table.userId, table.experienceId),
+]);
+
+// New Relations
+export const jobListingsRelations = relations(jobListings, ({ many }) => ({
+  collections: many(userJobListingCollections),
+}));
+
+export const financeExperiencesRelations = relations(financeExperiences, ({ many }) => ({
+  likes: many(userExperienceLikes),
+}));
+
+export const userJobListingCollectionsRelations = relations(userJobListingCollections, ({ one }) => ({
   user: one(user, {
-    fields: [userLikes.userId],
+    fields: [userJobListingCollections.userId],
     references: [user.id],
   }),
-  job: one(scrapedJobs, {
-    fields: [userLikes.jobId],
-    references: [scrapedJobs.id],
+  jobListing: one(jobListings, {
+    fields: [userJobListingCollections.jobListingId],
+    references: [jobListings.id],
+  }),
+}));
+
+export const userExperienceLikesRelations = relations(userExperienceLikes, ({ one }) => ({
+  user: one(user, {
+    fields: [userExperienceLikes.userId],
+    references: [user.id],
+  }),
+  experience: one(financeExperiences, {
+    fields: [userExperienceLikes.experienceId],
+    references: [financeExperiences.id],
   }),
 }));

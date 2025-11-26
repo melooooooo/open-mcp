@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avat
 import { Separator } from "@repo/ui/components/ui/separator"
 import { Calendar, MapPin, Eye, ArrowLeft, Briefcase, Building2 } from "lucide-react"
 import { ShareButton } from "@/components/career/share-button"
+import { ExperienceLikeButton } from "@/components/career/experience-like-button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@repo/ui/components/ui/accordion"
 import { MarkdownReadonly } from "@repo/ui/components/markdown/markdown-readonly"
 
@@ -247,6 +248,21 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
                     </div>
                   </>
                 )}
+                {experience.like_count !== undefined && (
+                  <>
+                    <Separator orientation="vertical" className="h-4" />
+                    <div className="flex items-center gap-1.5">
+                      <ExperienceLikeButton
+                        experienceId={experience.id}
+                        initialIsLiked={experience.isLiked || false}
+                        initialLikeCount={experience.like_count}
+                        variant="ghost"
+                        size="sm"
+                        className="h-auto p-0 hover:bg-transparent text-muted-foreground hover:text-blue-600"
+                      />
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -388,6 +404,14 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
               分享给更多正在准备面试的朋友，帮助他们少走弯路。
             </p>
             <ShareButton title={experience.title} />
+            <div className="pt-2 border-t">
+              <ExperienceLikeButton
+                experienceId={experience.id}
+                initialIsLiked={experience.isLiked || false}
+                initialLikeCount={experience.like_count || 0}
+                className="w-full justify-center"
+              />
+            </div>
           </div>
         </aside>
       </Container>

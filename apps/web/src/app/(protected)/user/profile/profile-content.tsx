@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui
 import { MapPin, Phone, User, Bookmark, Heart, Calendar, Building2, FileText, Clock, Eye, Sparkles, Briefcase } from "lucide-react"
 import { useSearchParams } from "next/navigation"
 import { EditProfileDialog } from "./edit-profile-dialog"
-import { toggleCollection, toggleLike } from "./actions"
+import { toggleCollection, toggleJobListingCollection, toggleExperienceLike } from "./actions"
 import { useRouter } from "next/navigation"
 import { useTransition } from "react"
 import { cn } from "@repo/ui/lib/utils"
@@ -15,11 +15,13 @@ import { cn } from "@repo/ui/lib/utils"
 export function UserProfileContent({
   user,
   collectedJobs = [],
-  likedJobs = []
+  collectedJobListings = [],
+  likedExperiences = []
 }: {
   user: any,
   collectedJobs?: any[],
-  likedJobs?: any[]
+  collectedJobListings?: any[],
+  likedExperiences?: any[]
 }) {
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -73,14 +75,97 @@ export function UserProfileContent({
     }
   }
 
-  const displayCollected = collectedJobs.map(j => processJob(j, 'collection'))
-  const displayLiked = likedJobs.map(j => processJob(j, 'like'))
+  // Process job listings (Recruitment)
+  const processJobListing = (job: any) => {
+    const timestamp = job.collectedAt
+    const timeStr = timestamp ? new Date(timestamp).toLocaleDateString() : ""
 
-  const handleLike = async (e: React.MouseEvent, jobId: string) => {
+    return {
+      id: job.id,
+      type: 'recruitment',
+      title: `${job.jobTitle} - ${job.companyName}`,
+      company: job.companyName,
+      location: job.workLocation,
+      salary: "薪资面议",
+      timeLabel: "收藏于",
+      time: timeStr,
+      iconColor: "bg-green-50 text-green-600",
+      icon: Briefcase,
+      tag: "校招",
+      session: job.session,
+      degree: job.degreeRequirement,
+      author: "",
+      views: 0,
+      likes: 0,
+      isLiked: false,
+      isCollected: true
+    }
+  }
+
+  // Process liked experiences
+  const processExperience = (exp: any) => {
+    const timestamp = exp.likedAt
+    const timeStr = timestamp ? new Date(timestamp).toLocaleDateString() : ""
+
+    return {
+      id: exp.id,
+      type: 'experience',
+      title: exp.title,
+      company: exp.organizationName || "未知公司",
+      location: "",
+      salary: "",
+      timeLabel: "点赞于",
+      time: timeStr,
+      iconColor: "bg-purple-50 text-purple-600",
+      icon: FileText,
+      tag: exp.articleType === 'interview' ? '面经' : exp.articleType === 'guide' ? '攻略' : '点评',
+      slug: exp.slug,
+      tags: exp.tags,
+      summary: exp.summary,
+      author: exp.authorName || "",
+      views: 0,
+      likes: exp.likeCount || 0,
+      isLiked: true,
+      isCollected: false
+    }
+  }
+
+  const displayCollected = [
+    ...collectedJobs.map(j => processJob(j, 'collection')),
+    ...collectedJobListings.map(processJobListing)
+  ].sort((a, b) => {
+    const timeA = a.time ? new Date(a.time).getTime() : 0
+    const timeB = b.time ? new Date(b.time).getTime() : 0
+    return timeB - timeA
+  })
+
+  const displayLiked = likedExperiences.map(processExperience).sort((a, b) => {
+    const timeA = a.time ? new Date(a.time).getTime() : 0
+    const timeB = b.time ? new Date(b.time).getTime() : 0
+    return timeB - timeA
+  })
+
+  const handleCollectScrapedJob = async (e: React.MouseEvent, jobId: string) => {
     e.preventDefault()
     e.stopPropagation()
     startTransition(async () => {
-      await toggleLike(jobId)
+      await toggleCollection(jobId)
+    })
+  }
+
+  const handleCollectJobListing = async (e: React.MouseEvent, listingId: string) => {
+    e.preventDefault()
+    e.stopPropagation()
+    startTransition(async () => {
+      await toggleJobListingCollection(listingId)
+    })
+  }
+
+  const handleLikeExperience = async (e: React.MouseEvent, experienceId: string) => {
+    e.preventDefault()
+    e.stopPropagation()
+    startTransition(async () => {
+      await toggleExperienceLike(experienceId)
     })
   }
 
@@ -269,13 +354,17 @@ export function UserProfileContent({
                                 {item.timeLabel} {item.time}
                               </span>
                               <button
-                                onClick={(e) => handleLike(e, item.id)}
-                                className={cn(
-                                  "w-8 h-8 flex items-center justify-center rounded-full transition-all active:scale-90 hover:bg-blue-50",
-                                  item.isLiked ? 'text-blue-600 bg-blue-50/70' : 'text-slate-300 hover:text-blue-500'
-                                )}
+                                onClick={(e) => {
+                                  if (item.type === 'job') {
+                                    handleCollectScrapedJob(e, item.id)
+                                  } else if (item.type === 'recruitment') {
+                                    handleCollectJobListing(e, item.id)
+                                  }
+                                }}
+                                className="w-8 h-8 flex items-center justify-center rounded-full transition-all active:scale-90 hover:bg-blue-50 text-blue-600 bg-blue-50/70"
+                                title="取消收藏"
                               >
-                                <Heart className={cn("w-4 h-4 transition-all", item.isLiked ? 'fill-current scale-110' : '')} />
+                                <Bookmark className="w-4 h-4 fill-current" />
                               </button>
                             </div>
                           </div>
@@ -321,8 +410,8 @@ export function UserProfileContent({
                     </div>
                     <h3 className="text-slate-900 font-semibold mb-1">暂无点赞内容</h3>
                     <p className="text-slate-500 text-sm max-w-xs mx-auto">遇到喜欢的内容不要吝啬您的赞美，点赞后将在此处显示。</p>
-                    <Button variant="outline" className="mt-6 rounded-full" onClick={() => router.push('/jobs')}>
-                      去逛逛职位
+                    <Button variant="outline" className="mt-6 rounded-full" onClick={() => router.push('/experiences')}>
+                      去看看经验分享
                     </Button>
                   </div>
                 ) : (
@@ -346,13 +435,11 @@ export function UserProfileContent({
                                 {item.timeLabel} {item.time}
                               </span>
                               <button
-                                onClick={(e) => handleLike(e, item.id)}
-                                className={cn(
-                                  "w-8 h-8 flex items-center justify-center rounded-full transition-all active:scale-90 hover:bg-blue-50",
-                                  item.isLiked ? 'text-blue-600 bg-blue-50/70' : 'text-slate-300 hover:text-blue-500'
-                                )}
+                                onClick={(e) => handleLikeExperience(e, item.id)}
+                                className="w-8 h-8 flex items-center justify-center rounded-full transition-all active:scale-90 hover:bg-blue-50 text-blue-600 bg-blue-50/70"
+                                title="取消点赞"
                               >
-                                <Heart className={cn("w-4 h-4 transition-all", item.isLiked ? 'fill-current scale-110' : '')} />
+                                <Heart className="w-4 h-4 fill-current scale-110" />
                               </button>
                             </div>
                           </div>
