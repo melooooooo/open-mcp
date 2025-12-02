@@ -58,13 +58,13 @@ export function Header() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-100 bg-white/80 backdrop-blur-md supports-[backdrop-filter]:bg-white/60 dark:bg-slate-950/80 dark:backdrop-blur-xl dark:border-slate-800/50">
       <Container>
         <div className="flex h-16 items-center">
           <div className="mr-4 flex">
-            <Link href="/" className="flex items-center space-x-2 text-blue-600" aria-label="返回首页">
-              <LogoIcon type="openmcp" className="text-blue-600" />
-              <span className="font-bold hidden sm:inline-block text-blue-600">职启航</span>
+            <Link href="/" className="flex items-center space-x-2 text-blue-600 group" aria-label="返回首页">
+              <LogoIcon type="openmcp" className="text-blue-600 dark:text-blue-500 transition-transform group-hover:scale-110" />
+              <span className="font-bold hidden sm:inline-block text-blue-600 dark:text-white">职启航</span>
             </Link>
           </div>
           <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
@@ -73,7 +73,7 @@ export function Header() {
                 <Link
                   key={route.href}
                   href={route.href}
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 relative py-2 ${route.active ? "text-blue-600" : "text-muted-foreground"
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 dark:hover:text-blue-400 relative py-2 ${route.active ? "text-blue-600 dark:text-blue-400" : "text-slate-600 dark:text-slate-400 dark:hover:text-white"
                     }`}
                 >
                   {route.label}
@@ -87,7 +87,7 @@ export function Header() {
               {session ? (
                 <UserNav user={session.user} />
               ) : (
-                <Button variant="outline" size="sm" className="rounded-full border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300" asChild>
+                <Button size="sm" className="rounded-full bg-slate-900 text-white hover:bg-slate-800 shadow-sm transition-colors dark:bg-blue-600 dark:text-white dark:hover:bg-blue-500 dark:shadow-blue-600/20" asChild>
                   <Link href="/auth/sign-in">
                     <User className="h-4 w-4 mr-2" />
                     登录

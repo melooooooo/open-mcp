@@ -119,14 +119,43 @@ export async function getJobListings(params: JobListingParams) {
 
   const { data, count, error } = await dbQuery
     .order('source_updated_at', { ascending: false })
-    .range(from, to)
+  return { data: data as JobListing[], count: count || 0, error: null }
+}
+
+// Get latest job listings for homepage
+export async function getLatestJobListings(limit = 6) {
+  const supabase = createClient()
+
+  const { data, error } = await supabase
+    .from('job_listings')
+    .select('*')
+    .order('source_updated_at', { ascending: false })
+    .limit(limit)
 
   if (error) {
-    console.error('Error fetching job listings:', error)
-    return { data: [], count: 0, error }
+    console.error('Error fetching latest job listings:', error)
+    return []
   }
 
-  return { data: data as JobListing[], count: count || 0, error: null }
+  return data as JobListing[]
+}
+
+// Get single job listing by ID
+export async function getJobListingById(id: string) {
+  const supabase = createClient()
+
+  const { data, error } = await supabase
+    .from('job_listings')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    console.error('Error fetching job listing:', error)
+    return null
+  }
+
+  return data as JobListing
 }
 
 // Get unique values for filters

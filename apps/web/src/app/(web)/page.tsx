@@ -1,5 +1,5 @@
-import { HomeDataWrapper } from "@/components/career/home-data-wrapper"
+import { HomeDataWrapperNew } from "@/components/career/home-data-wrapper-new"
 
 export default function Home() {
-  return <HomeDataWrapper />
+  return <HomeDataWrapperNew />
 }
