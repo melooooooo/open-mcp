@@ -12,8 +12,9 @@ const pool = new Pool({
 const dbVercel = drizzle(sql, { schema, logger: true });
 const dbNode = drizzleNode(pool, { logger: true, schema });
 
-// Export the appropriate database instance based on environment
-export const db = process.env.DATABASE_URL ? dbNode : dbVercel;
+// Always use dbNode (Pool) which works with DATABASE_URL
+// dbVercel requires POSTGRES_URL which is typically only set in Vercel deployments
+export const db = dbNode;
 
 // Export utils functions
 export { slugifyText, generateSlug, generateUniqueString } from "./utils/generate-string";

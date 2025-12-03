@@ -26,7 +26,7 @@ export default function ShareExperiencePage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground">
-              立即登录或注册职启航账号，系统会自动为你的分享生成草稿，你可随时补充完善再发布。
+              立即登录或注册银行帮账号，系统会自动为你的分享生成草稿，你可随时补充完善再发布。
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button asChild className="flex-1">

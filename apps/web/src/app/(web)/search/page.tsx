@@ -5,12 +5,10 @@ import { Button } from "@repo/ui/components/ui/button";
 import { Skeleton } from "@repo/ui/components/ui/skeleton";
 import { AlertCircle, RefreshCw } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
 import { SearchBar } from "@/components/search-bar";
-import { AppGrid } from "@/components/web/app-grid";
+import { ComprehensiveSearchResults } from "@/components/web/comprehensive-search-results";
 import { Container } from "@/components/web/container";
-import { LoadMoreButton } from "@/components/web/load-more-button";
 import { trpc } from "@/lib/trpc/client";
 
 export default function SearchPage() {
@@ -19,19 +17,15 @@ export default function SearchPage() {
   const query = searchParams.get("q") || "";
   const category = searchParams.get("category") || "all";
 
-  const [visibleCount, setVisibleCount] = useState(12);
-
   // 使用tRPC进行搜索查询
   const {
     data: searchResults,
     isLoading,
     error,
     refetch,
-  } = trpc.mcpSearch.searchApps.useQuery(
+  } = trpc.mcpSearch.searchAll.useQuery(
     {
       query,
-      category: category === "all" ? undefined : category,
-      limit: 100, // 获取较多结果，前端分页显示
     },
     {
       // 禁用自动重新获取，因为这是基于用户输入的搜索
@@ -41,39 +35,38 @@ export default function SearchPage() {
     }
   );
 
-  // 重置可见数量当搜索参数变化时
-  useEffect(() => {
-    setVisibleCount(12);
-  }, [query, category]);
-
-  const loadMore = () => {
-    setVisibleCount((prev) => prev + 12);
-  };
-
-  // 显示的应用
-  const visibleApps = searchResults?.slice(0, visibleCount) || [];
+  const hasResults = searchResults && (
+    searchResults.jobListings.length > 0 ||
+    searchResults.experiences.length > 0 ||
+    searchResults.jobSites.length > 0
+  );
 
   return (
     <Container className="py-10">
       <h1 className="text-3xl font-bold mb-6">搜索结果</h1>
 
       <div className="mb-8">
-        <SearchBar defaultValue={query} defaultCategory={category} />
+        <SearchBar defaultValue={query} />
       </div>
 
       <div className="space-y-2 mb-6">
         <p className="text-muted-foreground">
           {query ? `搜索 "${query}" 的结果` : "所有结果"}
-          {category !== "all" ? ` - 分类: ${category}` : ""}
-          {searchResults && ` (共 ${searchResults.length} 个)`}
         </p>
       </div>
 
       {/* 加载状态 */}
       {isLoading && (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-[300px] rounded-lg" />
+        <div className="space-y-10">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="space-y-4">
+              <Skeleton className="h-8 w-48" />
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {[1, 2, 3].map((j) => (
+                  <Skeleton key={j} className="h-[200px] rounded-lg" />
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       )}
@@ -94,7 +87,7 @@ export default function SearchPage() {
       )}
 
       {/* 空结果状态 */}
-      {!isLoading && !error && searchResults && searchResults.length === 0 && (
+      {!isLoading && !error && searchResults && !hasResults && (
         <div className="text-center py-12">
           <h3 className="text-lg font-medium">没有找到相关结果</h3>
           <p className="text-muted-foreground mt-2">尝试使用不同的关键词或浏览分类</p>
@@ -105,12 +98,8 @@ export default function SearchPage() {
       )}
 
       {/* 结果列表 */}
-      {!isLoading && !error && searchResults && searchResults.length > 0 && (
-        <>
-          {/* @ts-expect-error */}
-          <AppGrid apps={visibleApps} />
-          {visibleCount < searchResults.length && <LoadMoreButton onClick={loadMore} />}
-        </>
+      {!isLoading && !error && searchResults && hasResults && (
+        <ComprehensiveSearchResults data={searchResults} />
       )}
     </Container>
   );

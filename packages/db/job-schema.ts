@@ -72,17 +72,66 @@ export const userCollectionsRelations = relations(userCollections, ({ one }) => 
 }));
 
 
-// 招聘职位表 (引用现有表)
+// 招聘职位表
 export const jobListings = pgTable("job_listings", {
   id: uuid("id").primaryKey().defaultRandom(),
-  // 只定义 ID 用于外键关联
+  jobTitle: text("job_title"),
+  companyName: text("company_name"),
+  workLocation: text("work_location"),
+  deadline: text("deadline"),
+  sourceUpdatedAt: text("source_updated_at"),
+  companyType: text("company_type"),
+  industryCategory: text("industry_category"),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
-// 经验分享表 (引用现有表)
+// 经验分享表
 export const financeExperiences = pgTable("finance_experiences", {
   id: uuid("id").primaryKey().defaultRandom(),
+  slug: text("slug"),
+  title: text("title").notNull(),
+  authorName: text("author_name"),
+  organizationName: text("organization_name"),
+  articleType: text("article_type"),
+  jobTitle: text("job_title"),
+  tags: text("tags").array(),
+  difficulty: text("difficulty"),
+  readTimeMinutes: integer("read_time_minutes"),
+  viewCount: integer("view_count").default(0),
   likeCount: integer("like_count").default(0),
-  // 只定义 ID 和 likeCount
+  commentCount: integer("comment_count").default(0),
+  isPinned: boolean("is_pinned").default(false),
+  isHot: boolean("is_hot").default(false),
+  publishTime: timestamp("publish_time", { mode: "date" }),
+  coverAssetPath: text("cover_asset_path"),
+  summary: text("summary"),
+  industry: text("industry"),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
+// 求职导航表
+export const cpJobSites = pgTable("cp_job_sites", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  title: text("title").notNull(),
+  companyName: text("company_name"),
+  companyLogo: text("company_logo"),
+  companySize: text("company_size"),
+  department: text("department"),
+  location: text("location").array(), // Based on ["全国"]
+  salaryMin: integer("salary_min"),
+  salaryMax: integer("salary_max"),
+  jobType: text("job_type"),
+  educationRequirement: text("education_requirement"),
+  tags: text("tags").array(),
+  applicationDeadline: timestamp("application_deadline", { mode: "date" }),
+  viewCount: integer("view_count").default(0),
+  applicationCount: integer("application_count").default(0),
+  isHot: boolean("is_hot").default(false),
+  isNew: boolean("is_new").default(false),
+  hasReferral: boolean("has_referral").default(false),
+  websiteUrl: text("website_url"),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
 });
 
 // 招聘职位收藏表

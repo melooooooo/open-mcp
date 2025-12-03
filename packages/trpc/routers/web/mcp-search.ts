@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { publicProcedure, router } from "../../trpc";
 
-import { mcpAppsDataAccess } from "@repo/db/database/web";
+import { mcpAppsDataAccess, searchDataAccess } from "@repo/db/database/web";
 
 export const mcpSearchRouter = router({
   searchApps: publicProcedure
@@ -23,6 +23,12 @@ export const mcpSearchRouter = router({
         query: input.query,
       })
       return apps;
+    }),
+
+  searchAll: publicProcedure
+    .input(z.object({ query: z.string() }))
+    .query(async ({ input }) => {
+      return await searchDataAccess.searchAll(input.query);
     }),
 
   getAppById: publicProcedure

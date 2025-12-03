@@ -41,7 +41,7 @@ export default function CompaniesPage() {
           <div className="rounded-xl border bg-card p-6">
             <h2 className="text-lg font-semibold">校友口碑</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              聚合职启航校友的真实评价，涵盖导师带教、团队氛围、晋升路径等关键信息。
+              聚合银行帮校友的真实评价，涵盖导师带教、团队氛围、晋升路径等关键信息。
             </p>
           </div>
           <div className="rounded-xl border bg-card p-6">

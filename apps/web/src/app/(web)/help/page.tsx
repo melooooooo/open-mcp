@@ -1,8 +1,12 @@
+"use client"
+
 import { Container } from "@/components/web/container"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@repo/ui/components/ui/accordion"
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
 import { Button } from "@repo/ui/components/ui/button"
 import Link from "next/link"
+import { useState } from "react"
+import { WechatQRCodeDialog } from "@/components/wechat-qrcode-dialog"
 
 const faqs = [
   {
@@ -28,6 +32,8 @@ const faqs = [
 ]
 
 export default function HelpPage() {
+  const [isContactDialogOpen, setIsContactDialogOpen] = useState(false)
+
   return (
     <main className="bg-background pb-16">
       <section className="border-b bg-muted/20">
@@ -80,17 +86,19 @@ export default function HelpPage() {
                 <CardTitle>联系客服</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-sm text-muted-foreground">
-                <p>在职启航企业微信中，我们会提供 1v1 答疑与活动通知。</p>
+                <p>在银行帮企业微信中，我们会提供 1v1 答疑与活动通知。</p>
                 <Button variant="outline" asChild>
-                  <Link href="#" onClick={(event) => event.preventDefault()}>
+                  <button onClick={() => setIsContactDialogOpen(true)} className="w-full">
                     打开企业微信二维码
-                  </Link>
+                  </button>
                 </Button>
               </CardContent>
             </Card>
           </div>
         </Container>
       </section>
+
+      <WechatQRCodeDialog open={isContactDialogOpen} onOpenChange={setIsContactDialogOpen} />
     </main>
   )
 }

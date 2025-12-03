@@ -64,7 +64,7 @@ export function Header() {
           <div className="mr-4 flex">
             <Link href="/" className="flex items-center space-x-2 text-blue-600 group" aria-label="返回首页">
               <LogoIcon type="openmcp" className="text-blue-600 dark:text-blue-500 transition-transform group-hover:scale-110" />
-              <span className="font-bold hidden sm:inline-block text-blue-600 dark:text-white">职启航</span>
+              <span className="font-bold hidden sm:inline-block text-blue-600 dark:text-white">银行帮</span>
             </Link>
           </div>
           <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
