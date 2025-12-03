@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react"
 import { Button } from "@repo/ui/components/ui/button"
-import { Badge } from "@repo/ui/components/ui/badge"
 import { Separator } from "@repo/ui/components/ui/separator"
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/ui/alert"
 import { AlertCircle, Clock, Flame, GraduationCap, BriefcaseBusiness, Baby, Compass } from "lucide-react"
@@ -19,15 +18,6 @@ const quickFilters = [
   { key: "intern", label: "实习", icon: Baby },
 ]
 
-const defaultPlatforms = [
-  "牛客网",
-  "北邮人导航",
-  "智联招聘",
-  "BOSS直聘",
-  "拉勾",
-  "实习僧",
-]
-
 interface JobSourcesClientProps {
   sources: JobSource[]
   isFallback: boolean
@@ -35,19 +25,13 @@ interface JobSourcesClientProps {
 
 export function JobSourcesClient({ sources, isFallback }: JobSourcesClientProps) {
   const [activeFilter, setActiveFilter] = useState<string>("all")
-  const [activePlatform, setActivePlatform] = useState<string>("全部平台")
-
-  const platformNames = sources.length
-    ? Array.from(new Set(sources.map((s) => s.name)))
-    : defaultPlatforms
 
   const filtered = useMemo(() => {
     return sources.filter((s) => {
       const byFilter = activeFilter === "all" || s.tags?.includes(activeFilter)
-      const byPlatform = activePlatform === "全部平台" || s.name.includes(activePlatform)
-      return byFilter && byPlatform
+      return byFilter
     })
-  }, [sources, activeFilter, activePlatform])
+  }, [sources, activeFilter])
 
   return (
     <div className="min-h-screen bg-background">
@@ -84,30 +68,6 @@ export function JobSourcesClient({ sources, isFallback }: JobSourcesClientProps)
               {label}
             </Button>
           ))}
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm text-muted-foreground">平台</span>
-          <div className="flex flex-wrap gap-2">
-            <Badge
-              key="全部平台"
-              variant={activePlatform === "全部平台" ? "default" : "outline"}
-              className="cursor-pointer rounded-full px-3 py-1"
-              onClick={() => setActivePlatform("全部平台")}
-            >
-              全部平台
-            </Badge>
-            {platformNames.map((name) => (
-              <Badge
-                key={name}
-                variant={activePlatform === name ? "default" : "outline"}
-                className="cursor-pointer rounded-full px-3 py-1"
-                onClick={() => setActivePlatform(name)}
-              >
-                {name}
-              </Badge>
-            ))}
-          </div>
         </div>
 
         <Separator />
