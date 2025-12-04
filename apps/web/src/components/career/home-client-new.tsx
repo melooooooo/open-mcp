@@ -13,7 +13,9 @@ import {
   ExternalLink,
   TrendingUp,
   Building2,
-  Users
+
+  Users,
+  Gift
 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -47,13 +49,25 @@ interface Experience {
   likeCount?: number
   createdAt?: string
   industry?: string
+
   isHot?: boolean
+}
+
+interface ReferralJob {
+  id: string
+  title: string
+  link: string | null
+  publish_date: string | null
+  reply_count: number | null
+  source: string | null
+  company_name: string | null
 }
 
 interface HomeClientNewProps {
   jobSites: JobSite[]
   experiences: Experience[]
   latestJobListings: JobListing[]
+  referrals: ReferralJob[]
   stats: {
     totalJobSites: number
     totalExperiences: number
@@ -61,7 +75,7 @@ interface HomeClientNewProps {
   }
 }
 
-export function HomeClientNew({ jobSites, experiences, latestJobListings, stats }: HomeClientNewProps) {
+export function HomeClientNew({ jobSites, experiences, latestJobListings, referrals, stats }: HomeClientNewProps) {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
 
@@ -171,7 +185,7 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, stats 
                     onClick={handleSearch}
                     className="h-full px-8 rounded-full dark:rounded-xl bg-blue-600 dark:bg-gradient-to-r dark:from-blue-600 dark:to-blue-500 hover:bg-blue-700 dark:hover:from-blue-500 dark:hover:to-blue-400 text-white font-bold text-base shadow-md dark:shadow-lg dark:shadow-blue-600/20 transition-all hover:shadow-lg dark:hover:shadow-blue-500/30"
                   >
-                    搜索职位 <ChevronRight className="w-4 h-4 ml-1" />
+                    搜索 <ChevronRight className="w-4 h-4 ml-1" />
                   </Button>
                 </div>
               </div>
@@ -273,71 +287,6 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, stats 
             )}
           </section>
 
-          {/* 最新招聘动态 Section */}
-          <section>
-            <div className="flex items-center gap-4 mb-6 dark:mb-10">
-              <div className="bg-blue-100 dark:bg-gradient-to-br dark:from-orange-600/20 dark:to-amber-600/20 p-2 dark:p-3 rounded-lg dark:rounded-2xl dark:border dark:border-orange-500/20">
-                <Newspaper className="w-6 h-6 text-blue-600 dark:text-orange-400" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-slate-800 dark:text-white">最新招聘动态</h2>
-                <p className="text-slate-500 text-sm mt-0.5">实时更新各行招聘信息，掌握第一手资讯</p>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-slate-900/30 rounded-2xl shadow-sm dark:shadow-none border border-slate-100 dark:border-slate-800/50 divide-y divide-slate-50 dark:divide-slate-800/50 overflow-hidden dark:backdrop-blur-sm">
-              {latestJobListings.slice(0, 5).map((job) => {
-                const date = formatDate(job.source_updated_at || job.created_at)
-                // Check if job is new (within 3 days)
-                const isNew = new Date(job.source_updated_at || job.created_at).getTime() > Date.now() - 3 * 24 * 60 * 60 * 1000
-
-                return (
-                  <Link
-                    key={job.id}
-                    href={`/jobs/${job.id}`}
-                    className="block p-6 flex gap-6 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group cursor-pointer"
-                  >
-                    <div className="flex-shrink-0 w-16 h-16 bg-blue-50 dark:bg-gradient-to-br dark:from-slate-800 dark:to-slate-800/50 rounded-xl flex flex-col items-center justify-center border border-blue-100/50 dark:border-slate-700/50 text-blue-600 dark:text-white dark:group-hover:border-blue-500/30 transition-colors">
-                      <span className="text-2xl font-bold leading-none dark:text-white">{date.day}</span>
-                      <span className="text-xs font-medium uppercase mt-1 text-blue-400 dark:text-slate-500">{date.month}</span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex justify-between items-start">
-                        <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
-                          {job.job_title}
-                        </h3>
-                        {isNew && (
-                          <span className="bg-orange-50 dark:bg-gradient-to-r dark:from-orange-500/20 dark:to-amber-500/20 text-orange-600 dark:text-orange-400 px-2 py-0.5 rounded text-xs font-bold border border-orange-100 dark:border-orange-500/30 flex-shrink-0 ml-2">
-                            NEW
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-slate-500 text-sm mb-3 line-clamp-1 leading-relaxed">
-                        {job.company_name}
-                        {job.work_location && ` · ${job.work_location}`}
-                        {job.industry_category && ` · ${job.industry_category}`}
-                      </p>
-                      <div className="flex items-center gap-4 text-xs text-slate-400 dark:text-slate-600">
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" /> {formatTimeAgo(job.source_updated_at || job.created_at)}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Building2 className="w-3 h-3" /> {job.company_type || '企业'}
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
-
-            {latestJobListings.length === 0 && (
-              <div className="text-center py-12 text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900/30 rounded-2xl border border-slate-100 dark:border-slate-800/50">
-                暂无最新招聘信息
-              </div>
-            )}
-          </section>
-
           {/* 经验分享 Section */}
           <section>
             <div className="flex items-center justify-between mb-6 dark:mb-10">
@@ -408,6 +357,145 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, stats 
             {experiences.length === 0 && (
               <div className="text-center py-12 text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900/30 rounded-2xl border border-slate-100 dark:border-slate-800/50">
                 暂无经验分享
+              </div>
+            )}
+          </section>
+
+          {/* 内推信息 Section */}
+          <section>
+            <div className="flex items-center justify-between mb-8 dark:mb-10">
+              <div className="flex items-center gap-4">
+                <div className="bg-blue-50 dark:bg-gradient-to-br dark:from-blue-600/20 dark:to-cyan-600/20 p-3 rounded-2xl border border-blue-100 dark:border-blue-500/20">
+                  <Gift className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-slate-800 dark:text-white">内推信息</h2>
+                  <p className="text-slate-500 text-sm mt-1">最新内推机会，直达面试官</p>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                className="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-xl dark:border dark:border-transparent dark:hover:border-blue-500/20"
+                asChild
+              >
+                <Link href="/referrals">
+                  查看更多 <ChevronRight className="w-4 h-4 ml-1" />
+                </Link>
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {referrals.slice(0, 8).map((job) => {
+                // 处理显示名称：优先使用公司名，否则处理标题去除【】等符号
+                const displayName = job.company_name
+                  ? job.company_name.slice(0, 2)
+                  : job.title.replace(/[【\[].*?[】\]]/g, '').trim().slice(0, 2) || '内推'
+
+                return (
+                  <Link
+                    key={job.id}
+                    href={`/referrals/${job.id}`}
+                    className="group relative flex flex-col p-4 bg-slate-50/50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/50 rounded-2xl hover:shadow-md dark:hover:shadow-none hover:border-blue-200 dark:hover:border-blue-500/30 hover:bg-white dark:hover:bg-slate-800/50 transition-all cursor-pointer overflow-hidden h-full"
+                  >
+                    {/* Dark mode glow effect */}
+                    <div className="hidden dark:block absolute inset-0 bg-gradient-to-br from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="relative w-12 h-12 rounded-xl bg-white dark:bg-slate-800 flex-shrink-0 flex items-center justify-center overflow-hidden border border-slate-100 dark:border-slate-700 group-hover:border-blue-100 dark:group-hover:border-blue-500/30 transition-colors shadow-sm dark:shadow-none">
+                        <Building2 className="w-6 h-6 text-slate-300 dark:text-slate-600 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+                      </div>
+                      <span className="text-[10px] font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10 px-2 py-0.5 rounded-md border border-blue-100 dark:border-blue-500/20 whitespace-nowrap">
+                        内推
+                      </span>
+                    </div>
+
+                    <h4 className="font-bold text-slate-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 mb-2 flex-1">
+                      {job.title}
+                    </h4>
+
+                    <div className="flex items-center justify-between text-xs text-slate-400 dark:text-slate-600 mt-auto">
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" /> {job.publish_date || '近期'}
+                      </span>
+                      {job.reply_count !== null && (
+                        <span className="flex items-center gap-1">
+                          <MessageSquarePlus className="w-3 h-3" /> {job.reply_count}
+                        </span>
+                      )}
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+
+            {referrals.length === 0 && (
+              <div className="text-center py-12 text-slate-500 dark:text-slate-400">
+                暂无内推信息
+              </div>
+            )}
+          </section>
+
+          {/* 最新招聘动态 Section */}
+          <section>
+            <div className="flex items-center gap-4 mb-6 dark:mb-10">
+              <div className="bg-blue-100 dark:bg-gradient-to-br dark:from-orange-600/20 dark:to-amber-600/20 p-2 dark:p-3 rounded-lg dark:rounded-2xl dark:border dark:border-orange-500/20">
+                <Newspaper className="w-6 h-6 text-blue-600 dark:text-orange-400" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-slate-800 dark:text-white">最新招聘动态</h2>
+                <p className="text-slate-500 text-sm mt-0.5">实时更新各行招聘信息，掌握第一手资讯</p>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-slate-900/30 rounded-2xl shadow-sm dark:shadow-none border border-slate-100 dark:border-slate-800/50 divide-y divide-slate-50 dark:divide-slate-800/50 overflow-hidden dark:backdrop-blur-sm">
+              {latestJobListings.slice(0, 5).map((job) => {
+                const date = formatDate(job.source_updated_at || job.created_at)
+                // Check if job is new (within 3 days)
+                const isNew = new Date(job.source_updated_at || job.created_at).getTime() > Date.now() - 3 * 24 * 60 * 60 * 1000
+
+                return (
+                  <Link
+                    key={job.id}
+                    href={`/jobs/${job.id}`}
+                    className="block p-6 flex gap-6 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group cursor-pointer"
+                  >
+                    <div className="flex-shrink-0 w-16 h-16 bg-blue-50 dark:bg-gradient-to-br dark:from-slate-800 dark:to-slate-800/50 rounded-xl flex flex-col items-center justify-center border border-blue-100/50 dark:border-slate-700/50 text-blue-600 dark:text-white dark:group-hover:border-blue-500/30 transition-colors">
+                      <span className="text-2xl font-bold leading-none dark:text-white">{date.day}</span>
+                      <span className="text-xs font-medium uppercase mt-1 text-blue-400 dark:text-slate-500">{date.month}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-start">
+                        <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
+                          {job.job_title}
+                        </h3>
+                        {isNew && (
+                          <span className="bg-orange-50 dark:bg-gradient-to-r dark:from-orange-500/20 dark:to-amber-500/20 text-orange-600 dark:text-orange-400 px-2 py-0.5 rounded text-xs font-bold border border-orange-100 dark:border-orange-500/30 flex-shrink-0 ml-2">
+                            NEW
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-slate-500 text-sm mb-3 line-clamp-1 leading-relaxed">
+                        {job.company_name}
+                        {job.work_location && ` · ${job.work_location}`}
+                        {job.industry_category && ` · ${job.industry_category}`}
+                      </p>
+                      <div className="flex items-center gap-4 text-xs text-slate-400 dark:text-slate-600">
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3 h-3" /> {formatTimeAgo(job.source_updated_at || job.created_at)}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Building2 className="w-3 h-3" /> {job.company_type || '企业'}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+
+            {latestJobListings.length === 0 && (
+              <div className="text-center py-12 text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900/30 rounded-2xl border border-slate-100 dark:border-slate-800/50">
+                暂无最新招聘信息
               </div>
             )}
           </section>

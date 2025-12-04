@@ -110,9 +110,11 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
       ? experience.metadata.markdown_source.content
         // 删除封面图片 markdown (必须在删除标题之前)
         .replace(/^\s*!\[cover_image\]\([^)]+\)\s*\n?/m, '')
-        // 删除 Markdown 开头的 H1 标题,避免与页面标题重复
-        .replace(/^#\s+.+$/m, '')  // 删除 # 格式的 H1
-        .replace(/^.+\n=+$/m, '')  // 删除 === 格式的 H1
+        .trim()
+        // 只删除最开头的 H1 标题（如果有的话），避免与页面标题重复
+        // 但保留后续所有标题（无论级别）
+        .replace(/^#\s+.+$(\n|$)/m, '')  // 删除开头的 # 格式的 H1
+        .replace(/^.+\n=+$(\n|$)/m, '')  // 删除 === 格式的 H1
         .trim()
       : null
   const hasMarkdown = Boolean(markdownSource && markdownSource.trim().length > 0)

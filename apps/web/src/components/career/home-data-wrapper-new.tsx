@@ -1,6 +1,7 @@
 import { getJobs } from "@/lib/api/jobs"
 import { getLatestJobListings } from "@/lib/api/job-listings"
 import { getExperiencesList } from "@/lib/api/experiences"
+import { getReferrals } from "@/lib/api/referrals"
 import { HomeClientNew } from "./home-client-new"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 
@@ -13,6 +14,9 @@ export async function HomeDataWrapperNew() {
 
   // 获取最新招聘信息
   const latestJobListings = await getLatestJobListings(5)
+
+  // 获取内推信息
+  const referrals = await getReferrals(8)
 
   // 获取统计数据
   const supabase = await createServerSupabaseClient()
@@ -43,6 +47,7 @@ export async function HomeDataWrapperNew() {
       jobSites={jobSites}
       experiences={experiences}
       latestJobListings={latestJobListings}
+      referrals={referrals}
       stats={stats}
     />
   )
