@@ -151,6 +151,7 @@ export const experiencesRouter = router({
           slug: true,
           title: true,
           markdownContent: true,
+          metadata: true,
           authorUserId: true,
           lastEditedBy: true,
           lastEditedAt: true,
@@ -178,11 +179,24 @@ export const experiencesRouter = router({
         });
       }
 
+      // 获取可编辑的 Markdown 内容
+      // 优先使用已编辑的 markdownContent，否则使用原始的 markdown_source
+      let editableContent = experience.markdownContent || "";
+      if (!editableContent && experience.metadata) {
+        const metadata = experience.metadata as Record<string, unknown>;
+        const markdownSource = metadata.markdown_source as
+          | Record<string, unknown>
+          | undefined;
+        if (markdownSource?.content) {
+          editableContent = markdownSource.content as string;
+        }
+      }
+
       return {
         id: experience.id,
         slug: experience.slug,
         title: experience.title,
-        markdownContent: experience.markdownContent || "",
+        markdownContent: editableContent,
         lastEditedBy: experience.lastEditedBy,
         lastEditedAt: experience.lastEditedAt,
       };

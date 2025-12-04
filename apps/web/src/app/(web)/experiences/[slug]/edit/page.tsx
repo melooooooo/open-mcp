@@ -39,11 +39,15 @@ export default function ExperienceEditPage({ params }: PageProps) {
     { slug },
     {
       enabled: !!slug,
-      onSuccess: (data) => {
-        setMarkdownContent(data.markdownContent);
-      },
     }
   );
+
+  // 当数据加载完成时，设置初始内容
+  useEffect(() => {
+    if (experience?.markdownContent) {
+      setMarkdownContent(experience.markdownContent);
+    }
+  }, [experience?.markdownContent]);
 
   // 更新内容 mutation
   const updateMutation = trpc.experiences.updateContent.useMutation({
