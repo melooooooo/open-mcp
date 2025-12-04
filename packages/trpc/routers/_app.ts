@@ -34,6 +34,7 @@ import { categoriesRouter } from "./admin/categories";
 import { mcpSubscriptionsRouter } from "./web/mcp-subscriptions";
 import { mcpRankingsRouter } from "./web/mcp-rankings";
 import { mcpSnapshotsRouter } from "./web/mcp-snapshots";
+import { experiencesRouter } from "./web/experiences";
 
 export const appRouter = router({
   apiKeys: apiKeysAppRouter,
@@ -74,6 +75,7 @@ export const appRouter = router({
   mcpRankings: mcpRankingsRouter,
   mcpSubscriptions: mcpSubscriptionsRouter,
   mcpSnapshots: mcpSnapshotsRouter,
+  experiences: experiencesRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -724,12 +724,21 @@ importers:
       dinero.js:
         specifier: 2.0.0-alpha.14
         version: 2.0.0-alpha.14
+      drizzle-orm:
+        specifier: ^0.44.2
+        version: 0.44.2(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(@vercel/postgres@0.10.0)(gel@2.1.1)(kysely@0.28.2)(pg@8.16.3)(postgres@3.4.7)
       fs-extra:
         specifier: ^11.3.0
         version: 11.3.0
       inngest:
         specifier: ^3.35.0
         version: 3.40.1(express@5.1.0)(next@15.3.5(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.2)
+      marked:
+        specifier: ^17.0.0
+        version: 17.0.0
+      sanitize-html:
+        specifier: ^2.17.0
+        version: 2.17.0
       superjson:
         specifier: ^2.2.2
         version: 2.2.2
@@ -743,6 +752,9 @@ importers:
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
+      '@types/sanitize-html':
+        specifier: ^2.16.0
+        version: 2.16.0
       typescript:
         specifier: ^5.7.3
         version: 5.8.2
@@ -4592,6 +4604,9 @@ packages:
   '@types/react@19.1.2':
     resolution: {integrity: sha512-oxLPMytKchWGbnQM9O7D67uPa9paTNxO7jVoNMXgkkErULBPhPARCfkKL9ytcIJJRGjbsVwW4ugJzyFFvm/Tiw==}
 
+  '@types/sanitize-html@2.16.0':
+    resolution: {integrity: sha512-l6rX1MUXje5ztPT0cAFtUayXF06DqPhRyfVXareEN5gGCFaP/iwsxIyKODr9XDhfxPpN6vXUFNfo5kZMXCxBtw==}
+
   '@types/shimmer@1.2.0':
     resolution: {integrity: sha512-UE7oxhQLLd9gub6JKIAhDq06T0F6FnztwMNRvYgjeQSBeMc1ZG/tA47EwfduvkuQS8apbkM/lpLpWsaCeYsXVg==}
 
@@ -7683,6 +7698,7 @@ packages:
   next@15.3.5:
     resolution: {integrity: sha512-RkazLBMMDJSJ4XZQ81kolSpwiCt907l0xcgcpF4xC2Vml6QVcPNXW0NQRwQ80FFtSn7UM52XN0anaw8TEJXaiw==}
     engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
+    deprecated: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/CVE-2025-66478 for more details.
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
@@ -14340,6 +14356,10 @@ snapshots:
   '@types/react@19.1.2':
     dependencies:
       csstype: 3.1.3
+
+  '@types/sanitize-html@2.16.0':
+    dependencies:
+      htmlparser2: 8.0.2
 
   '@types/shimmer@1.2.0': {}
 

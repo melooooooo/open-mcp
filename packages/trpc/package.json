@@ -9,6 +9,7 @@
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@types/fs-extra": "^11.0.4",
+    "@types/sanitize-html": "^2.16.0",
     "typescript": "^5.7.3"
   },
   "dependencies": {
@@ -23,8 +24,11 @@
     "@trpc/server": "^11.0.4",
     "better-auth": "1.2.12",
     "dinero.js": "2.0.0-alpha.14",
+    "drizzle-orm": "^0.44.2",
     "fs-extra": "^11.3.0",
     "inngest": "^3.35.0",
+    "marked": "^17.0.0",
+    "sanitize-html": "^2.17.0",
     "superjson": "^2.2.2",
     "zod": "^3.23.8"
   },

@@ -10,6 +10,7 @@ import {
   boolean,
   uniqueIndex,
   uuid,
+  jsonb,
 } from "drizzle-orm/pg-core";
 import { user } from "./auth-schema";
 
@@ -106,7 +107,19 @@ export const financeExperiences = pgTable("finance_experiences", {
   coverAssetPath: text("cover_asset_path"),
   summary: text("summary"),
   industry: text("industry"),
+
+  // 补充已存在但未映射的字段
+  metadata: jsonb("metadata"),
+  contentHtml: text("content_html"),
+
+  // 新增编辑相关字段
+  markdownContent: text("markdown_content"),
+  authorUserId: text("author_user_id").references(() => user.id, { onDelete: "set null" }),
+  lastEditedBy: text("last_edited_by").references(() => user.id, { onDelete: "set null" }),
+  lastEditedAt: timestamp("last_edited_at", { mode: "date" }),
+
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull().$onUpdate(() => new Date()),
 });
 
 // 求职导航表

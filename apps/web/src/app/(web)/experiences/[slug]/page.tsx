@@ -9,6 +9,7 @@ import { Separator } from "@repo/ui/components/ui/separator"
 import { Calendar, MapPin, Eye, ArrowLeft, Briefcase, Building2 } from "lucide-react"
 import { ShareButton } from "@/components/career/share-button"
 import { ExperienceLikeButton } from "@/components/career/experience-like-button"
+import { ExperienceEditButton } from "@/components/career/experience-edit-button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@repo/ui/components/ui/accordion"
 import { MarkdownReadonly } from "@repo/ui/components/markdown/markdown-readonly"
 
@@ -105,18 +106,26 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
   }
 
   const sections = Array.isArray(experience.sections) ? experience.sections : []
-  const markdownSource =
-    typeof experience.metadata?.markdown_source?.content === "string"
-      ? experience.metadata.markdown_source.content
-        // 删除封面图片 markdown (必须在删除标题之前)
-        .replace(/^\s*!\[cover_image\]\([^)]+\)\s*\n?/m, '')
-        .trim()
-        // 只删除最开头的 H1 标题（如果有的话），避免与页面标题重复
-        // 但保留后续所有标题（无论级别）
-        .replace(/^#\s+.+$(\n|$)/m, '')  // 删除开头的 # 格式的 H1
-        .replace(/^.+\n=+$(\n|$)/m, '')  // 删除 === 格式的 H1
-        .trim()
-      : null
+
+  // 优先使用 markdown_content，其次使用 metadata.markdown_source.content
+  let markdownSource: string | null = null
+  if (experience.markdown_content) {
+    markdownSource = experience.markdown_content
+      // 删除封面图片 markdown (必须在删除标题之前)
+      .replace(/^\s*!\[cover_image\]\([^)]+\)\s*\n?/m, '')
+      .trim()
+      // 只删除最开头的 H1 标题（如果有的话），避免与页面标题重复
+      .replace(/^#\s+.+$(\n|$)/m, '')  // 删除开头的 # 格式的 H1
+      .replace(/^.+\n=+$(\n|$)/m, '')  // 删除 === 格式的 H1
+      .trim()
+  } else if (typeof experience.metadata?.markdown_source?.content === "string") {
+    markdownSource = experience.metadata.markdown_source.content
+      .replace(/^\s*!\[cover_image\]\([^)]+\)\s*\n?/m, '')
+      .trim()
+      .replace(/^#\s+.+$(\n|$)/m, '')
+      .replace(/^.+\n=+$(\n|$)/m, '')
+      .trim()
+  }
   const hasMarkdown = Boolean(markdownSource && markdownSource.trim().length > 0)
   const sectionsWithAnchors = sections.map((section: any, index: number) => {
     // Generate anchor from title if missing, or fallback to index
@@ -224,9 +233,12 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
                 ))}
               </div>
 
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-tight">
-                {experience.title}
-              </h1>
+              <div className="flex items-start justify-between gap-4">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-tight flex-1">
+                  {experience.title}
+                </h1>
+                <ExperienceEditButton slug={experience.slug || decodedSlug} />
+              </div>
 
               <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground pt-2">
                 <div className="flex items-center gap-2">
@@ -292,8 +304,15 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
           )}
 
           {/* Content Sections */}
+          {/* 渲染优先级：markdown_content > sections > content_html */}
           <div className="space-y-6">
-            {sections.length > 0 && showSections ? (
+            {hasMarkdown ? (
+              <div className="rounded-2xl border bg-card p-6 sm:p-8 shadow-sm">
+                <MarkdownReadonly className="prose prose-neutral dark:prose-invert" headingAnchors={sectionAnchors}>
+                  {markdownSource || ""}
+                </MarkdownReadonly>
+              </div>
+            ) : sections.length > 0 && showSections ? (
               <div className="space-y-6">
                 {sectionsWithAnchors.map((section: any, index: number) => {
                   // Clean content before sanitizing
@@ -325,21 +344,15 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
                   )
                 })}
               </div>
-            ) : hasMarkdown ? (
-              <div className="rounded-2xl border bg-card p-6 sm:p-8 shadow-sm">
-                <MarkdownReadonly className="prose prose-neutral dark:prose-invert" headingAnchors={sectionAnchors}>
-                  {markdownSource}
-                </MarkdownReadonly>
-              </div>
             ) : (
               <div className="rounded-2xl border bg-card p-6 sm:p-8 shadow-sm">
                 <div
-                  className="prose prose-neutral dark:prose-invert max-w-none 
+                  className="prose prose-neutral dark:prose-invert max-w-none
                              prose-p:leading-loose prose-p:text-muted-foreground prose-p:mb-4
                              prose-headings:font-bold prose-headings:text-2xl prose-headings:mb-6 prose-headings:mt-12
                              prose-strong:text-xl prose-strong:font-bold prose-strong:text-gray-900 prose-strong:block prose-strong:mb-4
-                             prose-a:text-blue-600 hover:prose-a:underline 
-                             prose-img:rounded-xl prose-img:object-contain prose-img:w-full prose-img:h-auto prose-li:leading-loose 
+                             prose-a:text-blue-600 hover:prose-a:underline
+                             prose-img:rounded-xl prose-img:object-contain prose-img:w-full prose-img:h-auto prose-li:leading-loose
                              break-words whitespace-pre-line
                              [&_section]:mb-8 [&_section]:space-y-4"
                   dangerouslySetInnerHTML={{
