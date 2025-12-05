@@ -454,9 +454,11 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
                     href={`/jobs/${job.id}`}
                     className="block p-6 flex gap-6 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group cursor-pointer"
                   >
-                    <div className="flex-shrink-0 w-16 h-16 bg-blue-50 dark:bg-gradient-to-br dark:from-slate-800 dark:to-slate-800/50 rounded-xl flex flex-col items-center justify-center border border-blue-100/50 dark:border-slate-700/50 text-blue-600 dark:text-white dark:group-hover:border-blue-500/30 transition-colors">
-                      <span className="text-2xl font-bold leading-none dark:text-white">{date.day}</span>
-                      <span className="text-xs font-medium uppercase mt-1 text-blue-400 dark:text-slate-500">{date.month}</span>
+                    <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-50 to-white shadow-sm border border-slate-200 flex flex-col items-center justify-center text-blue-600 transition-colors dark:bg-gradient-to-br dark:from-slate-800 dark:to-slate-900 dark:border-slate-700/70 dark:shadow-[0_14px_40px_-18px_rgba(15,23,42,0.8)]">
+                      <span className="text-2xl font-black leading-none text-slate-900 dark:text-white">{date.day}</span>
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.16em] mt-1 text-blue-600 dark:text-slate-300/80">
+                        {date.month}
+                      </span>
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-start">
