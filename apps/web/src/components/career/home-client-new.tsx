@@ -134,15 +134,10 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 font-sans selection:bg-blue-100 dark:selection:bg-blue-500/30">
+    <div className="min-h-screen font-sans selection:bg-blue-100 dark:selection:bg-blue-500/30">
       <main className="flex-1">
         {/* Hero Section */}
-        <div className="relative pt-16 pb-12 overflow-hidden dark:bg-gradient-to-b dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-          {/* Dark mode background effects */}
-          <div className="hidden dark:block absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-blue-600/10 rounded-full blur-[120px]"></div>
-          <div className="hidden dark:block absolute top-20 right-0 w-[400px] h-[400px] bg-cyan-500/5 rounded-full blur-[100px]"></div>
-          <div className="hidden dark:block absolute inset-0 bg-[linear-gradient(rgba(30,41,59,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(30,41,59,0.5)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,black_40%,transparent_100%)]"></div>
-
+        <div className="relative pt-16 pb-12 overflow-hidden">
           <div className="container mx-auto px-4 relative z-10 text-center max-w-5xl">
             {/* Top Tag */}
             <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 dark:bg-gradient-to-r dark:from-blue-600/20 dark:to-cyan-600/20 border border-blue-100 dark:border-blue-500/30 text-blue-700 dark:text-blue-400 text-xs font-bold mb-8 shadow-sm dark:shadow-none">
