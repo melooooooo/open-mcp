@@ -66,7 +66,7 @@ export function SearchBar({ defaultValue = "" }: SearchBarProps) {
   return (
     <div className="w-full max-w-xl mx-auto">
       <div className="relative flex flex-col justify-start items-center">
-        <div className="w-full sticky top-0 bg-background z-10 pt-4 pb-1">
+        <div className="w-full sticky top-0 bg-transparent z-10 pt-4 pb-1">
           <form onSubmit={handleSearch} className="relative">
             <div className="flex items-center">
               <div className="relative flex-1">
@@ -78,7 +78,7 @@ export function SearchBar({ defaultValue = "" }: SearchBarProps) {
                   onChange={(e) => setQuery(e.target.value)}
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
-                  className="pl-9 pr-3 py-1.5 h-10 text-sm rounded-lg focus-visible:ring-offset-0"
+                  className="pl-9 pr-3 py-1.5 h-10 text-sm rounded-lg focus-visible:ring-offset-0 bg-white/95 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700/70 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 shadow-sm dark:shadow-[0_18px_60px_-45px_rgba(15,23,42,0.9)] backdrop-blur"
                 />
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400">
                   <Search className="h-4 w-4" />
@@ -102,7 +102,7 @@ export function SearchBar({ defaultValue = "" }: SearchBarProps) {
               <button
                 type="submit"
                 disabled={isPending}
-                className="ml-2 px-4 py-2 h-10 text-sm bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                className="ml-2 px-4 py-2 h-10 text-sm bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors shadow-sm dark:shadow-[0_10px_40px_-30px_rgba(59,130,246,0.8)]"
               >
                 {isPending ? "搜索中..." : "搜索"}
               </button>

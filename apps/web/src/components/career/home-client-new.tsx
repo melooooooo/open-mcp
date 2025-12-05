@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@repo/ui/components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
 import {
   Search,
   MapPin,
@@ -27,6 +28,8 @@ interface JobSite {
   title: string
   description?: string
   website_url?: string
+  logo?: string | null
+  company_logo?: string | null
   tags?: string[]
   location?: string[]
   view_count?: number
@@ -242,11 +245,12 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
                   {/* Dark mode glow effect */}
                   <div className="hidden dark:block absolute inset-0 bg-gradient-to-br from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
-                  <div className="relative w-12 h-12 rounded-xl bg-white dark:bg-slate-800 flex-shrink-0 flex items-center justify-center overflow-hidden border border-slate-100 dark:border-slate-700 group-hover:border-blue-100 dark:group-hover:border-blue-500/30 transition-colors shadow-sm dark:shadow-none">
-                    <span className="text-sm font-bold text-slate-600 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  <Avatar className="h-12 w-12 flex-shrink-0 rounded-xl border border-slate-100 dark:border-slate-700 group-hover:border-blue-100 dark:group-hover:border-blue-500/30 transition-colors shadow-sm dark:shadow-none bg-white dark:bg-slate-800">
+                    <AvatarImage src={site.company_logo || site.logo || undefined} alt={site.title} className="object-contain" />
+                    <AvatarFallback className="text-sm font-bold text-slate-600 dark:text-slate-400 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900">
                       {site.title.slice(0, 2)}
-                    </span>
-                  </div>
+                    </AvatarFallback>
+                  </Avatar>
                   <div className="relative ml-4 flex-1 min-w-0">
                     <div className="flex justify-between items-start mb-1">
                       <h4 className="font-bold text-slate-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate pr-2">

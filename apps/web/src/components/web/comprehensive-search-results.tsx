@@ -28,7 +28,10 @@ export function ComprehensiveSearchResults({ data }: ComprehensiveSearchResultsP
         {jobListings.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {jobListings.map((job) => (
-              <Card key={job.id} className="hover:shadow-lg hover:border-primary/50 transition-all duration-300 group">
+              <Card
+                key={job.id}
+                className="hover:shadow-lg hover:border-primary/50 transition-all duration-300 group bg-white/95 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800/70 backdrop-blur dark:shadow-[0_18px_70px_-45px_rgba(15,23,42,0.9)]"
+              >
                 <CardHeader>
                   <CardTitle className="text-lg line-clamp-1 group-hover:text-primary transition-colors">{job.jobTitle}</CardTitle>
                   <CardDescription>{job.companyName}</CardDescription>
@@ -79,7 +82,7 @@ export function ComprehensiveSearchResults({ data }: ComprehensiveSearchResultsP
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {experiences.map((exp) => (
               <Link key={exp.id} href={`/experiences/${exp.slug}`} className="block h-full">
-                <Card className="hover:shadow-lg hover:border-primary/50 transition-all duration-300 h-full cursor-pointer group">
+                <Card className="hover:shadow-lg hover:border-primary/50 transition-all duration-300 h-full cursor-pointer group bg-white/95 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800/70 backdrop-blur dark:shadow-[0_18px_70px_-45px_rgba(15,23,42,0.9)]">
                   <CardHeader>
                     <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">{exp.title}</CardTitle>
                     {exp.organizationName && (
@@ -119,7 +122,7 @@ export function ComprehensiveSearchResults({ data }: ComprehensiveSearchResultsP
         {jobSites.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {jobSites.map((site) => (
-              <Card key={site.id} className="hover:shadow-lg hover:border-primary/50 transition-all duration-300 group">
+              <Card key={site.id} className="hover:shadow-lg hover:border-primary/50 transition-all duration-300 group bg-white/95 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800/70 backdrop-blur dark:shadow-[0_18px_70px_-45px_rgba(15,23,42,0.9)]">
                 <CardHeader>
                   <CardTitle className="text-lg group-hover:text-primary transition-colors line-clamp-2">{site.title}</CardTitle>
                   {site.companyName && (
