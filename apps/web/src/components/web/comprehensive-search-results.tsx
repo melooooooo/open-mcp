@@ -109,11 +109,11 @@ export function ComprehensiveSearchResults({ data }: ComprehensiveSearchResultsP
         )}
       </section>
 
-      {/* Job Sites */}
+      {/* Referrals (Internal Recommendations) */}
       <section>
         <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
           <Globe className="h-6 w-6 text-primary" />
-          求职导航
+          内推信息
           <Badge variant="secondary" className="ml-2">{jobSites.length}</Badge>
         </h2>
         {jobSites.length > 0 ? (
@@ -142,7 +142,7 @@ export function ComprehensiveSearchResults({ data }: ComprehensiveSearchResultsP
         ) : (
           <div className="flex flex-col items-center justify-center py-12 bg-muted/30 rounded-lg border border-dashed">
             <Inbox className="h-10 w-10 text-muted-foreground mb-3" />
-            <p className="text-muted-foreground">暂无相关求职导航</p>
+            <p className="text-muted-foreground">暂无相关内推信息</p>
           </div>
         )}
       </section>
