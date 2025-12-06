@@ -11,6 +11,31 @@ export async function JobsDataWrapper() {
   
   // 处理数据格式
   const jobs = jobSource.map(job => normalizeJobRecord(job))
+
+  // 首页同样的主推站点优先顺序，先保证优先站点排前，再按热度
+  const preferredSites = [
+    "BOSS直聘",
+    "智联招聘",
+    "拉勾招聘",
+    "前程无忧",
+    "猎聘",
+    "牛客网招聘",
+    "实习僧",
+    "国聘网"
+  ]
+  const preferredIndex = (title: string) => {
+    const idx = preferredSites.findIndex((name) => title.includes(name))
+    return idx === -1 ? Infinity : idx
+  }
+  const sortedJobs = [...jobs].sort((a, b) => {
+    const pa = preferredIndex(a.title)
+    const pb = preferredIndex(b.title)
+    if (pa !== pb) return pa - pb
+    const va = a.viewCount || 0
+    const vb = b.viewCount || 0
+    if (va !== vb) return vb - va
+    return a.title.localeCompare(b.title)
+  })
   
-  return <JobsClient jobs={jobs} isFallback={isFallback} />
+  return <JobsClient jobs={sortedJobs} isFallback={isFallback} />
 }

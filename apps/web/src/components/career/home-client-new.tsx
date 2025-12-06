@@ -82,6 +82,34 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
 
+  // 主流站点优先列表（名称匹配，按顺序靠前）
+  const preferredSites = [
+    "BOSS直聘",
+    "智联招聘",
+    "拉勾招聘",
+    "前程无忧",
+    "猎聘",
+    "牛客网招聘",
+    "实习僧",
+    "国聘网"
+  ]
+  const preferredIndex = (title: string) => {
+    const idx = preferredSites.findIndex((name) => title.includes(name))
+    return idx === -1 ? Infinity : idx
+  }
+
+  const sortedJobSites = [...jobSites].sort((a, b) => {
+    const pa = preferredIndex(a.title)
+    const pb = preferredIndex(b.title)
+    if (pa !== pb) return pa - pb
+    const va = a.view_count || 0
+    const vb = b.view_count || 0
+    if (va !== vb) return vb - va
+    const da = a.created_at || ""
+    const db = b.created_at || ""
+    return db.localeCompare(da)
+  })
+
   const handleSearch = () => {
     if (searchQuery.trim()) {
       router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
@@ -235,7 +263,7 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {jobSites.slice(0, 8).map((site) => (
+              {sortedJobSites.slice(0, 8).map((site) => (
                 <Link
                   key={site.id}
                   href={site.website_url || `/jobs/${site.id}`}
