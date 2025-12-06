@@ -44,9 +44,6 @@ export function JobSourceCard({ source, className }: JobSourceCardProps) {
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <h3 className="font-semibold text-base truncate">{source.name}</h3>
-                    {source.updatesToday && source.updatesToday > 0 && (
-                      <Badge className="bg-emerald-500 text-white border-0 h-5">今日{source.updatesToday}条</Badge>
-                    )}
                   </div>
                   <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
                     {source.description}
@@ -61,11 +58,6 @@ export function JobSourceCard({ source, className }: JobSourceCardProps) {
                       {t}
                     </Badge>
                   ))}
-                  {source.totalItems ? (
-                    <Badge variant="secondary" className="text-[11px] rounded-full">
-                      {source.totalItems} 职位
-                    </Badge>
-                  ) : null}
                 </div>
               )}
             </div>
@@ -75,4 +67,3 @@ export function JobSourceCard({ source, className }: JobSourceCardProps) {
     </a>
   )
 }
-
