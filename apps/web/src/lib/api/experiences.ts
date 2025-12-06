@@ -42,7 +42,7 @@ export async function getExperiencesList(options: ExperienceListOptions = {}) {
         summary,
         industry
       `,
-      { count: "exact" }
+      { count: "estimated" }
     )
 
   const keyword = tag?.trim()

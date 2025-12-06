@@ -3,6 +3,10 @@ import { getExperiencesList } from "@/lib/api/experiences"
 import { Container } from "@/components/web/container"
 import { Button } from "@repo/ui/components/ui/button"
 import { ExperienceCard } from "@/components/career/experience-card"
+import {
+  ExperienceFiltersDesktop,
+  ExperienceFiltersMobile,
+} from "@/components/career/experience-filters"
 
 const INDUSTRY_OPTIONS = [
   { label: "全部行业", value: "" },
@@ -12,13 +16,6 @@ const INDUSTRY_OPTIONS = [
   { label: "运营商", value: "operator" },
   { label: "科技/研发", value: "technology" },
   { label: "其他行业", value: "other" },
-]
-
-const TYPE_OPTIONS = [
-  { label: "全部类型", value: "" },
-  { label: "攻略", value: "guide" },
-  { label: "面经", value: "interview" },
-  { label: "点评", value: "review" },
 ]
 
 const PAGE_SIZE = 12
@@ -50,14 +47,12 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
   const currentPage = Math.max(parseInt(getParamValue(resolvedParams.page) || "1", 10), 1)
   const tagFilter = getParamValue(resolvedParams.tag)
   const industryFilter = getParamValue(resolvedParams.industry)
-  const typeFilter = getParamValue(resolvedParams.type)
 
   const { items: experiences, total } = await getExperiencesList({
     limit: PAGE_SIZE,
     page: currentPage,
     tag: tagFilter || undefined,
     industry: industryFilter || undefined,
-    type: typeFilter || undefined,
   })
 
   const totalPages = Math.ceil(total / PAGE_SIZE) || 1
@@ -97,69 +92,11 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
                 <h2 className="font-semibold">筛选条件</h2>
               </div>
 
-              <form className="space-y-5" method="get" action="/experiences">
-                <input type="hidden" name="page" value="1" />
-
-                <div className="space-y-2">
-                  <label htmlFor="tag" className="text-sm font-medium text-muted-foreground">
-                    标签关键词
-                  </label>
-                  <input
-                    id="tag"
-                    name="tag"
-                    placeholder="如：薪资待遇"
-                    defaultValue={tagFilter}
-                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="industry" className="text-sm font-medium text-muted-foreground">
-                    行业分类
-                  </label>
-                  <select
-                    id="industry"
-                    name="industry"
-                    defaultValue={industryFilter}
-                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                  >
-                    {INDUSTRY_OPTIONS.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="type" className="text-sm font-medium text-muted-foreground">
-                    内容类型
-                  </label>
-                  <select
-                    id="type"
-                    name="type"
-                    defaultValue={typeFilter}
-                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                  >
-                    {TYPE_OPTIONS.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="pt-2 space-y-2">
-                  <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/20">
-                    应用筛选
-                  </Button>
-                  {(tagFilter || industryFilter || typeFilter) && (
-                    <Button variant="ghost" asChild className="w-full text-muted-foreground hover:text-blue-600 hover:bg-blue-50">
-                      <Link href="/experiences">重置所有条件</Link>
-                    </Button>
-                  )}
-                </div>
-              </form>
+              <ExperienceFiltersDesktop
+                initialTag={tagFilter}
+                initialIndustry={industryFilter}
+                industryOptions={INDUSTRY_OPTIONS}
+              />
             </div>
 
             {/* Popular Tags Sidebar */}
@@ -174,7 +111,6 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
                       buildQueryString({
                         tag,
                         industry: industryFilter || undefined,
-                        type: typeFilter || undefined,
                         page: 1,
                       })
                     }
@@ -192,46 +128,20 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
         <div className="lg:col-span-3 space-y-6">
           {/* Mobile Filters */}
           <div className="lg:hidden rounded-xl border bg-card p-4 shadow-sm">
-            <form className="grid gap-4 sm:grid-cols-3" method="get" action="/experiences">
-              <input type="hidden" name="page" value="1" />
-              <input
-                name="tag"
-                placeholder="搜索标签..."
-                defaultValue={tagFilter}
-                className="rounded-md border border-input bg-background px-3 py-2 text-sm"
-              />
-              <select
-                name="industry"
-                defaultValue={industryFilter}
-                className="rounded-md border border-input bg-background px-3 py-2 text-sm"
-              >
-                {INDUSTRY_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>{option.label}</option>
-                ))}
-              </select>
-              <div className="flex gap-2">
-                <Button type="submit" className="flex-1">筛选</Button>
-                {(tagFilter || industryFilter || typeFilter) && (
-                  <Button variant="outline" asChild className="px-3">
-                    <Link href="/experiences">重置</Link>
-                  </Button>
-                )}
-              </div>
-            </form>
+            <ExperienceFiltersMobile
+              initialTag={tagFilter}
+              initialIndustry={industryFilter}
+              industryOptions={INDUSTRY_OPTIONS}
+            />
           </div>
 
           {/* Active Filters Display */}
-          {(tagFilter || industryFilter || typeFilter) && (
+          {(tagFilter || industryFilter) && (
             <div className="flex flex-wrap items-center gap-2 text-sm">
               <span className="text-muted-foreground">当前筛选:</span>
               {industryFilter && (
                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-medium border border-blue-100">
                   行业: {INDUSTRY_OPTIONS.find(opt => opt.value === industryFilter)?.label}
-                </span>
-              )}
-              {typeFilter && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-medium border border-blue-100">
-                  类型: {TYPE_OPTIONS.find(opt => opt.value === typeFilter)?.label}
                 </span>
               )}
               {tagFilter && (
@@ -298,7 +208,6 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
                         buildQueryString({
                           tag: tagFilter || undefined,
                           industry: industryFilter || undefined,
-                          type: typeFilter || undefined,
                           page: currentPage - 1,
                         })
                       }
@@ -332,7 +241,6 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
                             buildQueryString({
                               tag: tagFilter || undefined,
                               industry: industryFilter || undefined,
-                              type: typeFilter || undefined,
                               page: p,
                             })
                           }
@@ -357,7 +265,6 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
                         buildQueryString({
                           tag: tagFilter || undefined,
                           industry: industryFilter || undefined,
-                          type: typeFilter || undefined,
                           page: currentPage + 1,
                         })
                       }
