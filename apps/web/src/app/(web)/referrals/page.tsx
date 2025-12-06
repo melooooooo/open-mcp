@@ -1,7 +1,8 @@
-import { createClient } from "@/lib/supabase/client"
+import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { Container } from "@/components/web/container"
 import { Section } from "@/components/web/section"
 import { ReferralList } from "@/components/referral/referral-list"
+import { getScrapedJobCollectionStatus } from "@/app/actions/interactions"
 
 export const metadata = {
   title: "内推广场 - 银行帮",
@@ -9,13 +10,17 @@ export const metadata = {
 }
 
 export default async function ReferralPage() {
-  const supabase = createClient()
+  const supabase = await createServerSupabaseClient()
 
   const { data: jobs } = await supabase
     .from("scraped_jobs")
     .select("id, title, link, publish_date, reply_count, source")
     .order("publish_date", { ascending: false })
     .limit(50)
+
+  // 获取用户收藏状态
+  const jobIds = jobs?.map(j => j.id) || []
+  const collectionStatus = await getScrapedJobCollectionStatus(jobIds)
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -34,7 +39,7 @@ export default async function ReferralPage() {
 
       <Section>
         <Container>
-          <ReferralList jobs={jobs || []} />
+          <ReferralList jobs={jobs || []} collectionStatus={collectionStatus} />
         </Container>
       </Section>
     </div>

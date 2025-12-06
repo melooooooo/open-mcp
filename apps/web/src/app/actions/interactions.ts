@@ -7,7 +7,8 @@ import { db } from "@repo/db"
 import {
   userJobListingCollections,
   userExperienceLikes,
-  financeExperiences
+  financeExperiences,
+  userCollections
 } from "@repo/db/schema"
 import { eq, and, sql, inArray } from "drizzle-orm"
 
@@ -147,6 +148,85 @@ export async function getJobCollectionStatus(jobIds: string[]) {
     return statusMap
   } catch (error) {
     console.error("Error fetching job collection status:", error)
+    return {}
+  }
+}
+
+// ============ Scraped Jobs (内推) Collection ============
+
+export async function toggleScrapedJobCollection(jobId: string) {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+  if (!session?.user?.id) {
+    return { error: "Unauthorized" }
+  }
+
+  const userId = session.user.id
+
+  try {
+    const existing = await db.query.userCollections.findFirst({
+      where: and(
+        eq(userCollections.userId, userId),
+        eq(userCollections.jobId, jobId)
+      ),
+    })
+
+    if (existing) {
+      await db
+        .delete(userCollections)
+        .where(
+          and(
+            eq(userCollections.userId, userId),
+            eq(userCollections.jobId, jobId)
+          )
+        )
+      return { isCollected: false }
+    } else {
+      await db.insert(userCollections).values({
+        userId,
+        jobId,
+      })
+      return { isCollected: true }
+    }
+  } catch (error) {
+    console.error("Error toggling scraped job collection:", error)
+    return { error: "Failed to toggle collection" }
+  } finally {
+    revalidatePath("/referrals")
+    revalidatePath("/user/profile")
+  }
+}
+
+export async function getScrapedJobCollectionStatus(jobIds: string[]) {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+  if (!session?.user?.id || jobIds.length === 0) {
+    return {}
+  }
+
+  const userId = session.user.id
+
+  try {
+    const collections = await db.query.userCollections.findMany({
+      where: and(
+        eq(userCollections.userId, userId),
+        inArray(userCollections.jobId, jobIds)
+      ),
+      columns: {
+        jobId: true
+      }
+    })
+
+    const statusMap: Record<string, boolean> = {}
+    collections.forEach(c => {
+      statusMap[c.jobId] = true
+    })
+
+    return statusMap
+  } catch (error) {
+    console.error("Error fetching scraped job collection status:", error)
     return {}
   }
 }

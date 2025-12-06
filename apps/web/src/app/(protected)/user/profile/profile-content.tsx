@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Container } from "@/components/web/container"
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
 import { Button } from "@repo/ui/components/ui/button"
@@ -331,74 +332,85 @@ export function UserProfileContent({
                     </Button>
                   </div>
                 ) : (
-                  displayCollected.map((item) => (
-                    <div key={item.id} className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-lg hover:border-blue-200/60 transition-all duration-300 hover:-translate-y-0.5 group relative overflow-hidden">
-                      <div className="flex items-start gap-5 relative z-10">
-                        {/* Icon */}
-                        <div className={cn(
-                          "w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm transition-transform group-hover:scale-105 border border-white/50",
-                          item.iconColor
-                        )}>
-                          <item.icon className="w-7 h-7" />
-                        </div>
+                  displayCollected.map((item) => {
+                    // 根据类型确定跳转链接
+                    const href = item.type === 'job'
+                      ? `/referrals/${item.id}`
+                      : item.type === 'recruitment'
+                        ? `/recruitment`
+                        : '#'
 
-                        {/* Content */}
-                        <div className="flex-1 min-w-0 pt-0.5">
-                          <div className="flex justify-between items-start mb-3">
-                            <h3 className="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors truncate pr-8 leading-tight">
-                              {item.title}
-                            </h3>
-                            <div className="flex items-center gap-3 text-xs font-medium text-slate-400 flex-shrink-0">
-                              <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-md">
-                                <Clock className="w-3 h-3" />
-                                {item.timeLabel} {item.time}
-                              </span>
-                              <button
-                                onClick={(e) => {
-                                  if (item.type === 'job') {
-                                    handleCollectScrapedJob(e, item.id)
-                                  } else if (item.type === 'recruitment') {
-                                    handleCollectJobListing(e, item.id)
-                                  }
-                                }}
-                                className="w-8 h-8 flex items-center justify-center rounded-full transition-all active:scale-90 hover:bg-blue-50 text-blue-600 bg-blue-50/70"
-                                title="取消收藏"
-                              >
-                                <Bookmark className="w-4 h-4 fill-current" />
-                              </button>
+                    return (
+                      <Link key={item.id} href={href} className="block">
+                        <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-lg hover:border-blue-200/60 transition-all duration-300 hover:-translate-y-0.5 group relative overflow-hidden cursor-pointer">
+                          <div className="flex items-start gap-5 relative z-10">
+                            {/* Icon */}
+                            <div className={cn(
+                              "w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm transition-transform group-hover:scale-105 border border-white/50",
+                              item.iconColor
+                            )}>
+                              <item.icon className="w-7 h-7" />
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1 min-w-0 pt-0.5">
+                              <div className="flex justify-between items-start mb-3">
+                                <h3 className="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors truncate pr-8 leading-tight">
+                                  {item.title}
+                                </h3>
+                                <div className="flex items-center gap-3 text-xs font-medium text-slate-400 flex-shrink-0">
+                                  <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-md">
+                                    <Clock className="w-3 h-3" />
+                                    {item.timeLabel} {item.time}
+                                  </span>
+                                  <button
+                                    onClick={(e) => {
+                                      if (item.type === 'job') {
+                                        handleCollectScrapedJob(e, item.id)
+                                      } else if (item.type === 'recruitment') {
+                                        handleCollectJobListing(e, item.id)
+                                      }
+                                    }}
+                                    className="w-8 h-8 flex items-center justify-center rounded-full transition-all active:scale-90 hover:bg-blue-50 text-blue-600 bg-blue-50/70"
+                                    title="取消收藏"
+                                  >
+                                    <Bookmark className="w-4 h-4 fill-current" />
+                                  </button>
+                                </div>
+                              </div>
+
+                              {/* Meta Info */}
+                              {item.type === 'job' ? (
+                                <div className="flex items-center flex-wrap gap-3 text-sm text-slate-500">
+                                  <span className="flex items-center gap-1.5 bg-slate-50 px-3 py-1 rounded-full border border-slate-100 group-hover:border-blue-100 group-hover:bg-blue-50/30 transition-colors">
+                                    <Building2 className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-400" />
+                                    {item.company}
+                                  </span>
+                                  <span className="flex items-center gap-1.5 bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
+                                    <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                                    {item.location}
+                                  </span>
+                                  <span className="flex items-center gap-1.5 font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                                    {item.salary}
+                                  </span>
+                                </div>
+                              ) : (
+                                <div className="flex items-center flex-wrap gap-3 text-sm text-slate-500">
+                                  <span className="flex items-center gap-1.5 bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
+                                    <User className="w-3.5 h-3.5 text-slate-400" />
+                                    {item.author}
+                                  </span>
+                                  <span className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full border border-blue-100">
+                                    {item.tag}
+                                  </span>
+                                </div>
+                              )}
                             </div>
                           </div>
-
-                          {/* Meta Info */}
-                          {item.type === 'job' ? (
-                            <div className="flex items-center flex-wrap gap-3 text-sm text-slate-500">
-                              <span className="flex items-center gap-1.5 bg-slate-50 px-3 py-1 rounded-full border border-slate-100 group-hover:border-blue-100 group-hover:bg-blue-50/30 transition-colors">
-                                <Building2 className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-400" />
-                                {item.company}
-                              </span>
-                              <span className="flex items-center gap-1.5 bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
-                                <MapPin className="w-3.5 h-3.5 text-slate-400" />
-                                {item.location}
-                              </span>
-                              <span className="flex items-center gap-1.5 font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                                {item.salary}
-                              </span>
-                            </div>
-                          ) : (
-                            <div className="flex items-center flex-wrap gap-3 text-sm text-slate-500">
-                              <span className="flex items-center gap-1.5 bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
-                                <User className="w-3.5 h-3.5 text-slate-400" />
-                                {item.author}
-                              </span>
-                              <span className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full border border-blue-100">
-                                {item.tag}
-                              </span>
-                            </div>
-                          )}
                         </div>
-                      </div>
-                    </div>
-                  ))
+                      </Link>
+                    )
+                  })
                 )}
               </TabsContent>
 

@@ -6,7 +6,10 @@ import VerifySubscriptionEmail from "./emails/verify-subscription";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
-// 开发环境使用 MailHog
+// 检查是否配置了真实邮件服务
+const hasRealMailConfig = process.env.MAIL_HOST && process.env.MAIL_USER && process.env.MAIL_PASSWORD;
+
+// 开发环境使用 MailHog（如果没有配置真实邮件服务）
 const devTransporter: Transporter = nodemailer.createTransport({
   host: "localhost",
   port: 1025,
@@ -27,6 +30,9 @@ const prodTransporter: Transporter = nodemailer.createTransport({
     pass: process.env.MAIL_PASSWORD,
   },
 });
+
+// 如果开发环境配置了真实邮件服务，则使用真实邮件服务
+const useRealMailInDev = isDevelopment && hasRealMailConfig;
 
 interface SendMagicLinkParams {
   to: string;
@@ -174,9 +180,11 @@ export async function sendMagicCodeEmail(params: {
 
   const emailHtml = await render(AWSVerifyEmail({ verificationCode: code, subject }));
 
-  const transporter = isDevelopment ? devTransporter : prodTransporter;
+  // 开发环境如果配置了真实邮件服务，则使用真实邮件服务
+  const transporter = (isDevelopment && !useRealMailInDev) ? devTransporter : prodTransporter;
 
   try {
+    console.info(`[sendMagicCodeEmail] 发送验证码到 ${to}, 使用 ${(isDevelopment && !useRealMailInDev) ? 'MailHog' : '真实邮件服务'}`);
     await transporter.sendMail({
       from: process.env.MAIL_FROM || "OpenMCP <noreply@julianshuke.com>",
       to,
