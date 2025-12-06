@@ -18,6 +18,12 @@ interface JobItemProps {
 export function JobItem({ job, isCollected = false }: JobItemProps) {
   const isUrl = job.application_method.startsWith("http") || job.application_method.startsWith("www")
   const isEmail = job.application_method.includes("@")
+  const titleText = job.job_title.length > 120 ? `${job.job_title.slice(0, 120)}…` : job.job_title
+  const tags = job.batch
+    ? job.batch.split(/[,，、]/).map(tag => tag.trim()).filter(Boolean)
+    : []
+  const visibleTags = tags.slice(0, 6)
+  const hiddenCount = tags.length - visibleTags.length
 
   const [collected, setCollected] = useState(isCollected)
   const [isLoading, setIsLoading] = useState(false)
@@ -67,10 +73,10 @@ export function JobItem({ job, isCollected = false }: JobItemProps) {
   return (
     <div className="group flex flex-col md:flex-row gap-4 p-6 bg-card hover:bg-muted/50 border rounded-xl transition-all hover:border-blue-200 hover:shadow-md relative">
       {/* Main Content */}
-      <div className="flex-1 space-y-3">
+      <div className="flex-1 space-y-3 min-w-0">
         {/* Header: Company & Date */}
-        <div className="flex flex-wrap items-center gap-3">
-          <h3 className="text-xl font-bold text-blue-700">
+        <div className="flex flex-wrap items-center gap-3 min-w-0">
+          <h3 className="text-xl font-bold text-blue-700 break-words line-clamp-1">
             {job.company_name}
           </h3>
           <Badge variant="secondary" className="font-normal">
@@ -83,32 +89,35 @@ export function JobItem({ job, isCollected = false }: JobItemProps) {
         </div>
 
         {/* Job Title */}
-        <div className="font-medium text-lg text-foreground/90">
-          {job.job_title}
+        <div className="font-medium text-lg text-foreground/90 line-clamp-3 break-words min-w-0" title={job.job_title}>
+          {titleText}
         </div>
 
         {/* Metadata */}
-        <div className="flex flex-wrap gap-y-2 gap-x-4 text-sm text-muted-foreground">
+        <div className="flex flex-wrap gap-y-2 gap-x-4 text-sm text-muted-foreground min-w-0">
           <div className="flex items-center">
             <MapPin className="w-4 h-4 mr-1.5 shrink-0 text-blue-500" />
-            <span>{job.work_location}</span>
+            <span className="line-clamp-1 break-words max-w-[280px]" title={job.work_location}>{job.work_location}</span>
           </div>
           <div className="flex items-center">
             <GraduationCap className="w-4 h-4 mr-1.5 shrink-0 text-blue-500" />
-            <span>{job.degree_requirement}</span>
+            <span className="line-clamp-1 break-words max-w-[240px]" title={job.degree_requirement}>{job.degree_requirement}</span>
           </div>
           <div className="flex items-center px-2 py-0.5 bg-muted rounded text-xs font-medium">
             {job.session}
           </div>
-          {job.batch && (
-            <div className="flex gap-2">
-              {job.batch.split(/[,，、]/).map((tag, i) => (
-                tag.trim() && (
-                  <span key={i} className="px-2 py-0.5 bg-muted rounded text-xs">
-                    {tag.trim()}
-                  </span>
-                )
+          {visibleTags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {visibleTags.map((tag, i) => (
+                <span key={i} className="px-2 py-0.5 bg-muted rounded text-xs line-clamp-1 max-w-[200px] break-words" title={tag}>
+                  {tag}
+                </span>
               ))}
+              {hiddenCount > 0 && (
+                <span className="px-2 py-0.5 bg-muted rounded text-xs text-muted-foreground">
+                  +{hiddenCount}
+                </span>
+              )}
             </div>
           )}
         </div>
@@ -160,4 +169,3 @@ export function JobItem({ job, isCollected = false }: JobItemProps) {
     </div>
   )
 }
-

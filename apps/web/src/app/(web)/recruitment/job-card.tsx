@@ -12,6 +12,7 @@ interface JobCardProps {
 export function JobCard({ job }: JobCardProps) {
   const isUrl = job.application_method.startsWith("http") || job.application_method.startsWith("www")
   const isEmail = job.application_method.includes("@")
+  const titleText = job.job_title.length > 120 ? `${job.job_title.slice(0, 120)}…` : job.job_title
 
   let applyLink = "#"
   if (isUrl) {
@@ -29,8 +30,8 @@ export function JobCard({ job }: JobCardProps) {
       <CardHeader className="p-4 pb-2">
         <div className="flex justify-between items-start gap-2">
           <div className="space-y-1">
-            <h3 className="font-semibold text-lg line-clamp-2 leading-tight" title={job.job_title}>
-              {job.job_title}
+            <h3 className="font-semibold text-lg line-clamp-2 leading-tight break-words" title={job.job_title}>
+              {titleText}
             </h3>
             <div className="flex items-center text-muted-foreground text-sm">
               <Building2 className="w-3.5 h-3.5 mr-1" />

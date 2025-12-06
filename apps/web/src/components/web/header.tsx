@@ -22,7 +22,7 @@ export function Header() {
     },
     {
       href: "/jobs",
-      label: "职位",
+      label: "导航",
       active: pathname?.startsWith("/jobs"),
     },
     {

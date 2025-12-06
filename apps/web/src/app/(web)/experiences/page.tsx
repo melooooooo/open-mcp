@@ -71,44 +71,18 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
       <section className="relative border-b bg-muted/30 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent opacity-50" />
         <Container className="relative py-12 sm:py-16">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
-            <div className="max-w-2xl space-y-6">
-              <div className="space-y-2">
-                <span className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">
-                  Interview Stories
-                </span>
-                <h1 className="text-4xl font-bold tracking-tight sm:text-5xl text-foreground">
-                  面经与攻略库
-                </h1>
-              </div>
-              <p className="text-muted-foreground text-lg leading-relaxed max-w-xl">
-                汇总各行业学长学姐的真实面试经历、备考策略与求职心法。按公司、岗位和难度快速筛选，让准备更有方向。
-              </p>
-
-              <div className="flex flex-wrap gap-4 text-xs font-medium text-muted-foreground pt-2">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-background/50 border border-border/50 backdrop-blur-sm">
-                  <span className="text-lg font-bold text-foreground">{total}</span>
-                  <span>真实经验</span>
-                </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-background/50 border border-border/50 backdrop-blur-sm">
-                  <span className="text-lg font-bold text-foreground">{selectedTags.length}</span>
-                  <span>热门标签</span>
-                </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-background/50 border border-border/50 backdrop-blur-sm">
-                  <span className="text-lg font-bold text-foreground">{INDUSTRY_OPTIONS.length - 1}</span>
-                  <span>覆盖行业</span>
-                </div>
-              </div>
+          <div className="max-w-2xl space-y-6">
+            <div className="space-y-2">
+              <span className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">
+                Interview Stories
+              </span>
+              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl text-foreground">
+                面经与攻略库
+              </h1>
             </div>
-
-            <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-              <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all">
-                <Link href="/experiences/share">分享我的经验</Link>
-              </Button>
-              <Button variant="outline" size="lg" asChild className="bg-background/50 backdrop-blur-sm">
-                <Link href="/jobs">查看职位合集</Link>
-              </Button>
-            </div>
+            <p className="text-muted-foreground text-lg leading-relaxed">
+              汇总各行业学长学姐的真实面试经历、备考策略与求职心法。按公司、岗位和难度快速筛选，让准备更有方向。
+            </p>
           </div>
         </Container>
       </section>

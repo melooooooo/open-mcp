@@ -27,8 +27,8 @@ export type JobListingParams = {
   pageSize?: number
   query?: string
   location?: string
-  industry?: string
-  companyType?: string
+  industry?: string | string[]
+  companyType?: string | string[]
   session?: string
 }
 
@@ -44,8 +44,11 @@ export const COMPANY_TYPES = [
   '其他'
 ]
 
+// 将金融业置顶，并将“通信/电子/半导体”紧跟在 IT 之后
 export const INDUSTRY_CATEGORIES = [
+  '金融业',
   'IT/互联网/游戏',
+  '通信/电子/半导体',
   '专利/商标/知识产权',
   '交通/物流/仓储',
   '人力资源服务',
@@ -70,8 +73,6 @@ export const INDUSTRY_CATEGORIES = [
   '能源/化工/环保',
   '财务/审计/税务',
   '贸易/批发/零售',
-  '通信/电子/半导体',
-  '金融业'
 ]
 
 export const SESSION_OPTIONS = [
@@ -101,11 +102,19 @@ export async function getJobListings(params: JobListingParams) {
   }
 
   if (industry) {
-    dbQuery = dbQuery.eq('industry_category', industry)
+    if (Array.isArray(industry)) {
+      dbQuery = dbQuery.in('industry_category', industry)
+    } else {
+      dbQuery = dbQuery.eq('industry_category', industry)
+    }
   }
 
   if (companyType) {
-    dbQuery = dbQuery.eq('company_type', companyType)
+    if (Array.isArray(companyType)) {
+      dbQuery = dbQuery.in('company_type', companyType)
+    } else {
+      dbQuery = dbQuery.eq('company_type', companyType)
+    }
   }
 
   if (session) {
@@ -119,6 +128,7 @@ export async function getJobListings(params: JobListingParams) {
 
   const { data, count, error } = await dbQuery
     .order('source_updated_at', { ascending: false })
+    .range(from, to)
   return { data: data as JobListing[], count: count || 0, error: null }
 }
 
