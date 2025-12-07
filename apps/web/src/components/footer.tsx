@@ -39,16 +39,18 @@ export function Footer() {
                   面经与攻略
                 </Link>
               </li>
-              <li>
+              {/* TODO: 公司页面暂未完善，暂时隐藏 */}
+              {/* <li>
                 <Link href="/companies" className="hover:text-blue-400 transition-colors">
                   企业库
                 </Link>
-              </li>
-              <li>
+              </li> */}
+              {/* TODO: 薪酬页面暂未完善，暂时隐藏 */}
+              {/* <li>
                 <Link href="/salary" className="hover:text-blue-400 transition-colors">
                   薪酬洞察
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 

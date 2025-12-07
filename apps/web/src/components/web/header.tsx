@@ -40,16 +40,18 @@ export function Header() {
       label: "内推",
       active: pathname?.startsWith("/referrals"),
     },
-    {
-      href: "/companies",
-      label: "公司",
-      active: pathname?.startsWith("/companies"),
-    },
-    {
-      href: "/salary",
-      label: "薪酬",
-      active: pathname?.startsWith("/salary"),
-    },
+    // TODO: 公司页面暂未完善，暂时隐藏
+    // {
+    //   href: "/companies",
+    //   label: "公司",
+    //   active: pathname?.startsWith("/companies"),
+    // },
+    // TODO: 薪酬页面暂未完善，暂时隐藏
+    // {
+    //   href: "/salary",
+    //   label: "薪酬",
+    //   active: pathname?.startsWith("/salary"),
+    // },
     {
       href: "/help",
       label: "帮助中心",
