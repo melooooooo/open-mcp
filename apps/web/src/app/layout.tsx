@@ -14,6 +14,8 @@ export const metadata: Metadata = {
   description: "专注银行招聘，汇聚各大银行校招、社招信息与面试经验，助力银行求职。"
 };
 
+import { FeedbackButton } from "@/components/feedback/feedback-button"
+
 export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
@@ -40,6 +42,7 @@ export default function RootLayout({
           <div className="flex min-h-svh flex-col">
             {children}
           </div>
+          <FeedbackButton />
         </Providers>
       </body>
     </html>

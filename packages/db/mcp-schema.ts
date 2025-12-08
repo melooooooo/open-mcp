@@ -995,3 +995,35 @@ export const hallOfFameRelations = relations(hallOfFame, ({ many }) => ({
   hallOfFameToRepos: many(hallOfFameToRepos),
   repos: many(repos),
 }));
+
+// 网站反馈表
+export const siteFeedbacks = pgTable(
+  "site_feedbacks",
+  {
+    id: text("id")
+      .primaryKey()
+      .notNull()
+      .$defaultFn(() => createId()),
+    userId: text("user_id"), // 可选，未登录用户也可以反馈
+    userName: varchar("user_name", { length: 255 }),
+    userEmail: varchar("user_email", { length: 255 }),
+    title: varchar("title", { length: 255 }).notNull(),
+    description: text("description").notNull(),
+    type: varchar("type", { length: 20, enum: ["feature", "bug", "improvement", "other"] }).notNull(),
+    status: varchar("status", { length: 20, enum: ["pending", "reviewing", "accepted", "implemented", "rejected", "duplicate"] })
+      .notNull()
+      .default("pending"),
+    attachmentUrl: text("attachment_url"),
+    adminRemarks: text("admin_remarks"),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [index("site_feedbacks_user_id_idx").on(table.userId), index("site_feedbacks_status_idx").on(table.status)]
+);
+
+export const siteFeedbacksRelations = relations(siteFeedbacks, ({ one }) => ({
+  user: one(users, {
+    fields: [siteFeedbacks.userId],
+    references: [users.id],
+  }),
+}));

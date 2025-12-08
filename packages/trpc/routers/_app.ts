@@ -34,6 +34,7 @@ import { categoriesRouter } from "./admin/categories";
 import { mcpSubscriptionsRouter } from "./web/mcp-subscriptions";
 import { mcpRankingsRouter } from "./web/mcp-rankings";
 import { mcpSnapshotsRouter } from "./web/mcp-snapshots";
+import { siteFeedbacksRouter } from "./web/site-feedbacks";
 import { experiencesRouter } from "./web/experiences";
 
 export const appRouter = router({
@@ -75,6 +76,7 @@ export const appRouter = router({
   mcpRankings: mcpRankingsRouter,
   mcpSubscriptions: mcpSubscriptionsRouter,
   mcpSnapshots: mcpSnapshotsRouter,
+  siteFeedbacks: siteFeedbacksRouter,
   experiences: experiencesRouter,
 });
 

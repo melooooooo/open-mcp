@@ -18,6 +18,7 @@
     "bcrypt": "^5.1.1",
     "crypto-js": "^4.2.0",
     "drizzle-orm": "^0.44.2",
+    "drizzle-zod": "0.8.3",
     "pg": "^8.16.3",
     "pinyin": "4.0.0-alpha.2",
     "postgres": "^3.4.7",

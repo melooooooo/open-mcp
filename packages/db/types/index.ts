@@ -20,3 +20,4 @@ export * from "./zod/related-apps";
 export * from "./zod/rankings";
 export * from "./zod/rankings-records";
 export * from "./zod/snapshots";
+export * from "./zod/site-feedbacks";
