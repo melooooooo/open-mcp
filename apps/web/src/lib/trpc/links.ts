@@ -15,7 +15,7 @@ export const trpcLinks = [
   }),
   httpBatchLink({
     // TODO: Change this to be a full URL exposed as a client side setting
-    url: `${process.env.NEXT_PUBLIC_API_URL}/api/trpc`,
+    url: "/api/trpc",
     maxURLLength: 14000,
     transformer: superjson,
     headers: async () => {

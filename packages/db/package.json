@@ -60,6 +60,9 @@
     "./types": [
       "./types/index.ts",
       "./types/index.js"
+    ],
+    "./mcp-schema": [
+      "./mcp-schema.ts"
     ]
   }
 }

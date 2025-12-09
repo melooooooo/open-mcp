@@ -1,7 +1,8 @@
 
-import { siteFeedbacks } from "@repo/db/mcp-schema";
+import { siteFeedbacks } from "@repo/db/schema";
 import { zCreateSiteFeedback } from "@repo/db/types";
 import { db } from "@repo/db";
+
 
 import { publicProcedure, router } from "../../trpc";
 
