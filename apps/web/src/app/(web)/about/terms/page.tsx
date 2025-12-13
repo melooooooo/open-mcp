@@ -52,7 +52,7 @@ export default function PrivacyPolicyPage() {
           <section className="space-y-3">
             <h2 className="text-xl font-semibold">更新与联系</h2>
             <p>
-              政策若有变更，我们会在本站公布。对隐私有任何疑问或请求，可随时联系我们：support@yinghangbang.com。
+              政策若有变更，我们会在本站公布。对隐私有任何疑问或请求，可随时联系我们：support@yinhangbang.com。
             </p>
             <p className="text-muted-foreground">最后更新日期：2025 年 5 月 1 日</p>
           </section>

@@ -1,13 +1,13 @@
 "use client"
 
 import Image from "next/image"
-import { Star, Eye, ThumbsUp, MessageSquare, BookOpen, FileText, Briefcase, Clock } from "lucide-react"
+import { Star, Eye, ThumbsUp, MessageSquare, BookOpen, FileText, Briefcase, Clock, ImageOff } from "lucide-react"
 import { Card, CardContent, CardFooter, CardHeader } from "@repo/ui/components/ui/card"
 import { Badge } from "@repo/ui/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
 import { cn } from "@repo/ui/lib/utils"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { toggleExperienceLike } from "@/app/actions/interactions"
 import { toast } from "sonner"
 
@@ -95,6 +95,11 @@ export function ExperienceCard({ experience, variant = "default", className, onC
   const [isLiked, setIsLiked] = useState(experience.isLiked || false)
   const [likeCount, setLikeCount] = useState(experience.likeCount || 0)
   const [isLoading, setIsLoading] = useState(false)
+  const [imageError, setImageError] = useState(false)
+
+  const handleImageError = useCallback(() => {
+    setImageError(true)
+  }, [])
 
   const handleLike = async (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -200,32 +205,38 @@ export function ExperienceCard({ experience, variant = "default", className, onC
 
   // 列表样式：标题、作者、发布时间/公司
   if (variant === "list") {
-    const TypeIcon = typeConfig[experience.type].icon
+    const hasCoverImage = typeof experience.cover_asset_path === 'string' && experience.cover_asset_path && !imageError
+
     return (
       <Card className={cn("group cursor-pointer hover:bg-muted/50 transition-all duration-300 border-0 bg-transparent", className)} onClick={onClick}>
         <CardContent className="p-3 sm:p-4">
           <div className="flex items-start gap-4">
             {/* 封面图片 OR 图标区域 */}
-            {typeof experience.cover_asset_path === 'string' && experience.cover_asset_path ? (
+            {hasCoverImage ? (
               <div className="hidden sm:block shrink-0">
                 <div className="relative w-[160px] h-[100px] rounded-lg overflow-hidden bg-muted/50 border border-border/50 shadow-sm group-hover:shadow-md transition-all duration-300">
                   <Image
-                    src={experience.cover_asset_path}
+                    src={experience.cover_asset_path!}
                     alt={experience.title}
                     fill
                     sizes="(max-width: 640px) 0vw, 160px"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    onError={handleImageError}
                   />
                 </div>
               </div>
             ) : (
-              /* 无封面图时显示图标 */
-              <div className="flex flex-col items-center gap-2 pt-1 shrink-0">
+              /* 无封面图或图片加载失败时显示图标 */
+              <div className="hidden sm:flex flex-col items-center gap-2 pt-1 shrink-0">
                 <div className={cn(
-                  "flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 group-hover:scale-110 group-hover:shadow-md",
-                  typeConfig[experience.type].color
+                  "flex items-center justify-center w-[160px] h-[100px] rounded-lg transition-all duration-300 group-hover:shadow-md border border-border/50",
+                  imageError ? "bg-muted/30" : typeConfig[experience.type].color
                 )}>
-                  <TypeIcon className="w-6 h-6" />
+                  {imageError ? (
+                    <ImageOff className="w-8 h-8 text-muted-foreground/50" />
+                  ) : (
+                    <TypeIcon className="w-10 h-10" />
+                  )}
                 </div>
               </div>
             )}

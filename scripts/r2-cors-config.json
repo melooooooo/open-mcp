@@ -1,0 +1,26 @@
+{
+  "CORSRules": [
+    {
+      "AllowedOrigins": [
+        "http://localhost:30001",
+        "http://localhost:3000",
+        "https://yinhangbang.com",
+        "https://www.yinhangbang.com"
+      ],
+      "AllowedMethods": [
+        "GET",
+        "PUT",
+        "POST",
+        "DELETE",
+        "HEAD"
+      ],
+      "AllowedHeaders": [
+        "*"
+      ],
+      "ExposeHeaders": [
+        "ETag"
+      ],
+      "MaxAgeSeconds": 3600
+    }
+  ]
+}

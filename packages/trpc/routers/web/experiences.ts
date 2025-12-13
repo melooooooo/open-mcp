@@ -155,6 +155,7 @@ export const experiencesRouter = router({
           authorUserId: true,
           lastEditedBy: true,
           lastEditedAt: true,
+          coverAssetPath: true,
         },
       });
 
@@ -199,6 +200,7 @@ export const experiencesRouter = router({
         markdownContent: editableContent,
         lastEditedBy: experience.lastEditedBy,
         lastEditedAt: experience.lastEditedAt,
+        coverAssetPath: experience.coverAssetPath,
       };
     }),
 
@@ -261,6 +263,104 @@ export const experiencesRouter = router({
       return {
         success: true,
         message: "内容已更新",
+      };
+    }),
+
+  /**
+   * 更新封面图片
+   */
+  updateCoverImage: protectedProcedure
+    .input(
+      z.object({
+        experienceId: z.string().uuid(),
+        coverAssetPath: z.string().url().nullable(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // 查询经验分享
+      const experience = await db.query.financeExperiences.findFirst({
+        where: eq(financeExperiences.id, input.experienceId),
+        columns: {
+          id: true,
+          authorUserId: true,
+        },
+      });
+
+      if (!experience) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "经验分享不存在",
+        });
+      }
+
+      // 检查权限
+      const hasPermission = canEditExperience(
+        ctx.user.id,
+        ctx.user.role,
+        experience
+      );
+
+      if (!hasPermission) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "您没有权限编辑此内容",
+        });
+      }
+
+      // 更新封面图片
+      await db
+        .update(financeExperiences)
+        .set({
+          coverAssetPath: input.coverAssetPath,
+          lastEditedBy: ctx.user.id,
+          lastEditedAt: new Date(),
+          updatedAt: new Date(),
+        })
+        .where(eq(financeExperiences.id, input.experienceId));
+
+      return {
+        success: true,
+        message: "封面图片已更新",
+      };
+    }),
+
+  /**
+   * 获取经验分享的封面图片
+   */
+  getCoverImage: publicProcedure
+    .input(
+      z.object({
+        experienceId: z.string().uuid().optional(),
+        slug: z.string().optional(),
+      })
+    )
+    .query(async ({ input }) => {
+      if (!input.experienceId && !input.slug) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "必须提供 experienceId 或 slug",
+        });
+      }
+
+      const experience = await db.query.financeExperiences.findFirst({
+        where: input.experienceId
+          ? eq(financeExperiences.id, input.experienceId)
+          : eq(financeExperiences.slug, input.slug!),
+        columns: {
+          id: true,
+          coverAssetPath: true,
+        },
+      });
+
+      if (!experience) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "经验分享不存在",
+        });
+      }
+
+      return {
+        coverAssetPath: experience.coverAssetPath,
       };
     }),
 });

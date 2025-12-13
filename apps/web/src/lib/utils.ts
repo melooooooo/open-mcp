@@ -378,4 +378,146 @@ export function clearFormData(key: string = 'submit-form-data') {
   }
 }
 
+/**
+ * R2 上传结果接口
+ */
+export interface R2UploadResult {
+  success: boolean;
+  assetId?: string;
+  url?: string;
+  error?: string;
+}
+
+/**
+ * 上传文件到 Cloudflare R2
+ */
+export async function uploadToR2(
+  file: File,
+  assetType?: string
+): Promise<R2UploadResult> {
+  try {
+    // 第一步：获取R2预签名上传URL
+    const credentialResponse = await fetch("/api/assets/r2", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fileName: file.name,
+        fileType: file.type,
+        fileSize: file.size,
+        assetType,
+      }),
+    });
+
+    if (!credentialResponse.ok) {
+      const errorData = await credentialResponse.json();
+      throw new Error(errorData.error || "获取上传凭证失败");
+    }
+
+    const credentialData = await credentialResponse.json();
+    const { uploadUrl, assetId, publicUrl } = credentialData;
+
+    // 第二步：直接上传文件到R2
+    const uploadResponse = await fetch(uploadUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": file.type,
+      },
+      body: file,
+    });
+
+    if (!uploadResponse.ok) {
+      throw new Error("文件上传到R2失败");
+    }
+
+    return {
+      success: true,
+      assetId,
+      url: publicUrl,
+    };
+  } catch (error) {
+    console.error("R2上传失败:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "上传失败",
+    };
+  }
+}
+
+/**
+ * 带进度跟踪的R2上传（使用XMLHttpRequest）
+ */
+export function uploadToR2WithProgress(
+  file: File,
+  assetType?: string,
+  onProgress?: (progress: number) => void
+): Promise<R2UploadResult> {
+  return new Promise(async (resolve) => {
+    try {
+      // 第一步：获取R2预签名上传URL
+      const credentialResponse = await fetch("/api/assets/r2", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fileName: file.name,
+          fileType: file.type,
+          fileSize: file.size,
+          assetType,
+        }),
+      });
+
+      if (!credentialResponse.ok) {
+        const errorData = await credentialResponse.json();
+        throw new Error(errorData.error || "获取上传凭证失败");
+      }
+
+      const credentialData = await credentialResponse.json();
+      const { uploadUrl, assetId, publicUrl } = credentialData;
+
+      // 第二步：使用XMLHttpRequest上传文件到R2（带进度跟踪）
+      const xhr = new XMLHttpRequest();
+
+      xhr.upload.addEventListener("progress", (event) => {
+        if (event.lengthComputable && onProgress) {
+          const progress = Math.round((event.loaded / event.total) * 100);
+          onProgress(progress);
+        }
+      });
+
+      xhr.addEventListener("load", async () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve({
+            success: true,
+            assetId,
+            url: publicUrl,
+          });
+        } else {
+          resolve({
+            success: false,
+            error: `上传失败: ${xhr.status}`,
+          });
+        }
+      });
+
+      xhr.addEventListener("error", () => {
+        resolve({
+          success: false,
+          error: "网络错误",
+        });
+      });
+
+      xhr.open("PUT", uploadUrl);
+      xhr.setRequestHeader("Content-Type", file.type);
+      xhr.send(file);
+    } catch (error) {
+      resolve({
+        success: false,
+        error: error instanceof Error ? error.message : "上传失败",
+      });
+    }
+  });
+}
 

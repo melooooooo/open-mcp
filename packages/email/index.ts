@@ -50,6 +50,14 @@ export async function sendAwsVerificationEmail(params: SendAwsVerificationEmailP
   const { to, verificationCode } = params;
   const subject = "OpenMCP 账户验证";
 
+  // 开发环境打印验证码到控制台
+  if (isDevelopment) {
+    console.log(`\n========================================`);
+    console.log(`📧 验证码发送到: ${to}`);
+    console.log(`🔑 验证码: ${verificationCode}`);
+    console.log(`========================================\n`);
+  }
+
   const emailHtml = await render(AWSVerifyEmail({ verificationCode }));
   const emailText = `您的 OpenMCP 验证码是：${verificationCode}。此验证码将在 10 分钟后过期。`;
 
@@ -65,6 +73,12 @@ export async function sendAwsVerificationEmail(params: SendAwsVerificationEmailP
     });
     return { success: true };
   } catch (error) {
+    // 开发环境中如果邮件发送失败（如 MailHog 未运行），仍然返回成功
+    // 验证码已经打印到控制台
+    if (isDevelopment) {
+      console.warn("开发环境邮件发送失败（MailHog 可能未运行），但验证码已打印到控制台");
+      return { success: true };
+    }
     console.error(`${isDevelopment ? "开发" : "生产"}环境发送验证邮件失败:`, error);
     throw new Error("发送验证邮件失败");
   }

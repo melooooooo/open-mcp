@@ -1,14 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc/client";
 import { MarkdownEditor } from "@repo/ui/components/markdown/markdown-editor";
 import { Button } from "@repo/ui/components/ui/button";
 import { Skeleton } from "@repo/ui/components/ui/skeleton";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, ImagePlus, X, Upload } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+import { uploadToR2 } from "@/lib/utils";
 
 interface PageProps {
   params: Promise<{
@@ -20,6 +22,10 @@ export default function ExperienceEditPage({ params }: PageProps) {
   const router = useRouter();
   const [slug, setSlug] = useState<string>("");
   const [markdownContent, setMarkdownContent] = useState<string>("");
+  const [coverImage, setCoverImage] = useState<string | null>(null);
+  const [isUploadingCover, setIsUploadingCover] = useState(false);
+  const [coverImageError, setCoverImageError] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 解析 params，并解码 URL 编码的 slug
   useEffect(() => {
@@ -47,7 +53,11 @@ export default function ExperienceEditPage({ params }: PageProps) {
     if (experience?.markdownContent) {
       setMarkdownContent(experience.markdownContent);
     }
-  }, [experience?.markdownContent]);
+    if (experience?.coverAssetPath) {
+      setCoverImage(experience.coverAssetPath);
+      setCoverImageError(false); // 重置错误状态
+    }
+  }, [experience?.markdownContent, experience?.coverAssetPath]);
 
   // 更新内容 mutation
   const updateMutation = trpc.experiences.updateContent.useMutation({
@@ -63,6 +73,70 @@ export default function ExperienceEditPage({ params }: PageProps) {
       });
     },
   });
+
+  // 更新封面图片 mutation
+  const updateCoverMutation = trpc.experiences.updateCoverImage.useMutation({
+    onSuccess: () => {
+      toast.success("封面图片已更新");
+    },
+    onError: (error) => {
+      toast.error("更新封面失败", {
+        description: error.message || "更新封面图片时发生错误",
+      });
+    },
+  });
+
+  // 处理封面图片上传
+  const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !experience?.id) return;
+
+    // 验证文件类型
+    if (!file.type.startsWith("image/")) {
+      toast.error("请选择图片文件");
+      return;
+    }
+
+    // 验证文件大小 (最大 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("图片大小不能超过 5MB");
+      return;
+    }
+
+    setIsUploadingCover(true);
+    try {
+      const result = await uploadToR2(file, "experience-covers");
+      if (result.success && result.url) {
+        setCoverImage(result.url);
+        setCoverImageError(false); // 重置错误状态
+        // 保存到数据库
+        updateCoverMutation.mutate({
+          experienceId: experience.id,
+          coverAssetPath: result.url,
+        });
+      } else {
+        toast.error(result.error || "上传失败");
+      }
+    } catch (error) {
+      toast.error("上传失败，请重试");
+    } finally {
+      setIsUploadingCover(false);
+      // 清空 input 以便可以再次选择同一文件
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  // 删除封面图片
+  const handleRemoveCover = () => {
+    if (!experience?.id) return;
+    setCoverImage(null);
+    updateCoverMutation.mutate({
+      experienceId: experience.id,
+      coverAssetPath: null,
+    });
+  };
 
   const handleSave = () => {
     if (!experience?.id) return;
@@ -152,6 +226,78 @@ export default function ExperienceEditPage({ params }: PageProps) {
             </p>
           )}
         </div>
+      </div>
+
+      {/* 封面图片上传区域 */}
+      <div className="mb-6 rounded-lg border bg-card p-4">
+        <h3 className="mb-3 font-semibold flex items-center gap-2">
+          <ImagePlus className="h-5 w-5 text-muted-foreground" />
+          文章封面图片
+        </h3>
+        <p className="mb-4 text-sm text-muted-foreground">
+          上传一张封面图片，将在文章列表中展示。推荐尺寸：800×500 像素，最大 5MB。
+        </p>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleCoverUpload}
+          className="hidden"
+        />
+
+        {coverImage && !coverImageError ? (
+          <div className="relative group">
+            <div className="relative w-full max-w-md aspect-[16/10] rounded-lg overflow-hidden border bg-muted">
+              <Image
+                src={coverImage}
+                alt="封面图片"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 400px"
+                onError={() => setCoverImageError(true)}
+              />
+            </div>
+            <div className="absolute inset-0 max-w-md aspect-[16/10] bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isUploadingCover}
+              >
+                <Upload className="h-4 w-4 mr-1" />
+                更换
+              </Button>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={handleRemoveCover}
+                disabled={isUploadingCover || updateCoverMutation.isPending}
+              >
+                <X className="h-4 w-4 mr-1" />
+                删除
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div
+            onClick={() => !isUploadingCover && fileInputRef.current?.click()}
+            className="w-full max-w-md aspect-[16/10] rounded-lg border-2 border-dashed border-muted-foreground/25 hover:border-primary/50 transition-colors cursor-pointer flex flex-col items-center justify-center gap-2 bg-muted/30"
+          >
+            {isUploadingCover ? (
+              <>
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">上传中...</span>
+              </>
+            ) : (
+              <>
+                <ImagePlus className="h-8 w-8 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">点击上传封面图片</span>
+                <span className="text-xs text-muted-foreground/70">支持 JPG、PNG、GIF 格式</span>
+              </>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Markdown 编辑器 */}
