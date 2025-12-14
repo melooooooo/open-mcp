@@ -1,7 +1,7 @@
 import { generateOGImage } from "@/components/og-image";
 
 // Image metadata
-export const alt = "聚链科技";
+export const alt = "OpenMCP";
 export const size = {
   width: 1200,
   height: 630,

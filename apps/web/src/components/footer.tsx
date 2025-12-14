@@ -97,7 +97,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-slate-800">
           <div className="flex flex-col items-center gap-4 text-center">
-            <p className="text-sm text-slate-500">Copyright ©2025-2027 天津聚链科技有限公司版权所有</p>
+            <p className="text-sm text-slate-500">Copyright ©2025-2027 银行帮版权所有</p>
             <div className="text-xs text-slate-600 flex items-center gap-2">
               <Link href="https://beian.miit.gov.cn/" target="_blank" className="hover:text-slate-400 transition-colors">
                 津ICP备2023007973号-1

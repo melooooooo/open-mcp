@@ -21,7 +21,7 @@ export const baseOptions: BaseLayoutProps = {
           src="/avatar.png"
           width={28}
           height={28}
-          alt="聚链科技"
+          alt="OpenMCP"
           className="rounded-full"
         />{" "}
         OpenMCP

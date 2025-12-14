@@ -35,7 +35,7 @@ export const blogConstants: BlogConstants = {
   blogTitle: "Blog",
   blogDescription: "AI, Open Source, and Thoughts",
   siteName: "OpenMCP",
-  defaultAuthorName: "聚链科技",
+  defaultAuthorName: "OpenMCP",
   xUsername: "@juliankeji",
   // Pagination
   paginationTitle: (page: number) => `Blog - Page ${page}`,

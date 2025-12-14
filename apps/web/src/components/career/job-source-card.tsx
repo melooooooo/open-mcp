@@ -5,6 +5,7 @@ import { Badge } from "@repo/ui/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
 import { ExternalLink } from "lucide-react"
 import { cn } from "@repo/ui/lib/utils"
+import { getTagLabel } from "@/config/tag-labels"
 
 export interface JobSource {
   id: string
@@ -55,7 +56,7 @@ export function JobSourceCard({ source, className }: JobSourceCardProps) {
                 <div className="flex flex-wrap gap-1.5 mt-3">
                   {source.tags.slice(0, 4).map((t) => (
                     <Badge key={t} variant="outline" className="text-[11px] rounded-full">
-                      {t}
+                      {getTagLabel(t)}
                     </Badge>
                   ))}
                 </div>

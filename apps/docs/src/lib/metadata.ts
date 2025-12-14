@@ -5,7 +5,7 @@ export function createMetadata(override: Metadata): Metadata {
     ...override,
     authors: [
       {
-        name: "聚链科技",
+        name: "OpenMCP",
         url: "https://docs.julianshuke.top",
       },
     ],

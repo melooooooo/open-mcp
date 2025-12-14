@@ -66,7 +66,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         company={footerNavigation.company}
         legal={footerNavigation.legal}
         // social={footerNavigation.social}
-        companyName="聚链科技"
+        companyName="OpenMCP"
         companyDescription="OpenMCP 是一个一站式 AI 全聚合平台，专注于 MCP 生态的构建和发展，推动AI技术创新和应用落地。"
       />
     </HomeLayout>
