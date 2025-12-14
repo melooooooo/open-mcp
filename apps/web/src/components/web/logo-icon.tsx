@@ -1,6 +1,5 @@
 import { cn } from "@repo/ui/lib/utils"
-
-import { OpenMCPLogo, OpenMCPStudioLogo } from "@/components/icons"
+import Image from "next/image"
 
 interface LogoIconProps {
   type: "openmcp" | "studio"
@@ -9,15 +8,23 @@ interface LogoIconProps {
 }
 
 export function LogoIcon({ type, size = "md", className }: LogoIconProps) {
-  const sizeClasses = {
-    sm: "h-5 w-5",
-    md: "h-6 w-6",
-    lg: "h-8 w-8",
-    xl: "h-12 w-12",
+  const sizeMap = {
+    sm: 24,
+    md: 28,
+    lg: 36,
+    xl: 52,
   }
 
-  const Logo = type === "openmcp" ? OpenMCPLogo : OpenMCPStudioLogo
+  const pixelSize = sizeMap[size]
 
-  return <Logo className={cn("text-primary", sizeClasses[size], className)} />
+  return (
+    <Image
+      src="/android-chrome-192x192.png"
+      alt="银行帮"
+      width={pixelSize}
+      height={pixelSize}
+      className={cn("rounded-sm", className)}
+    />
+  )
 }
 
