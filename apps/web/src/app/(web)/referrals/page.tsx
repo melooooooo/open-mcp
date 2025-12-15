@@ -2,6 +2,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { Container } from "@/components/web/container"
 import { Section } from "@/components/web/section"
 import { ReferralList } from "@/components/referral/referral-list"
+import { ReferralPagination } from "@/components/referral/referral-pagination"
 import { getScrapedJobCollectionStatus } from "@/app/actions/interactions"
 
 export const metadata = {
@@ -9,13 +10,22 @@ export const metadata = {
   description: "最新银行与互联网大厂内推机会，直达面试官。",
 }
 
-export default async function ReferralPage() {
-  const supabase = await createServerSupabaseClient()
+const PAGE_SIZE = 30
 
-  const { data: jobs } = await supabase
+export default async function ReferralPage({ searchParams }: { searchParams?: { page?: string } }) {
+  const supabase = await createServerSupabaseClient()
+  const page = Math.max(1, Number(searchParams?.page) || 1)
+  const from = (page - 1) * PAGE_SIZE
+  const to = from + PAGE_SIZE - 1
+
+  const { data: jobs, count } = await supabase
     .from("scraped_jobs")
-    .select("id, title, link, publish_date, reply_count, source")
+    .select("id, title, link, publish_date, reply_count, source", { count: "exact" })
     .order("publish_date", { ascending: false })
+    .range(from, to)
+
+  const totalCount = count || 0
+  const totalPages = totalCount > 0 ? Math.ceil(totalCount / PAGE_SIZE) : 1
 
   // 获取用户收藏状态
   const jobIds = jobs?.map(j => j.id) || []
@@ -37,8 +47,9 @@ export default async function ReferralPage() {
       </Section>
 
       <Section>
-        <Container>
+        <Container className="space-y-6">
           <ReferralList jobs={jobs || []} collectionStatus={collectionStatus} />
+          <ReferralPagination page={page} totalPages={totalPages} totalCount={totalCount} pageSize={PAGE_SIZE} />
         </Container>
       </Section>
     </div>
