@@ -7,6 +7,7 @@
     "build": "turbo build",
     "build:web": "turbo run @repo/ui#build web#build",
     "dev": "turbo dev",
+    "dev:web": "turbo dev --filter=web",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "mcp:supabase": "SUPABASE_ACCESS_TOKEN=sbp_ff366281db25d755234613382246ea7afe37bd42 npx mcp-server-supabase"
