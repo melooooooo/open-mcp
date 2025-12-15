@@ -13,8 +13,7 @@ export function MainNav() {
       <div className="flex h-14 items-center justify-between space-x-2 md:justify-end p-4">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <LogoIcon type="openmcp" className="h-6 w-6" />
-            <span className="hidden font-bold sm:inline-block">Open MCP</span>
+            <LogoIcon type="openmcp" size="sm" />
           </Link>
         </div>
         <div className='ml-auto px-3 flex items-center space-x-4 gap-2'>

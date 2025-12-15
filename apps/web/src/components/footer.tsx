@@ -19,7 +19,6 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <LogoIcon type="openmcp" className="text-white" />
-              <span className="font-bold text-slate-100 text-lg">银行帮</span>
             </div>
             <p className="text-sm leading-relaxed">
               银行帮专注服务银行求职者，整合各大银行招聘信息、面经与薪酬情报，帮助你自信踏出职场第一步。

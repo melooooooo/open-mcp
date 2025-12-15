@@ -285,7 +285,7 @@ export function AdminSidebar() {
       <div className="flex h-14 items-center border-b px-4">
         <Link href="/admin" className="flex items-center gap-2 font-semibold">
           <LogoIcon type="openmcp" />
-          <span>OpenMCP 管理后台</span>
+          <span>管理后台</span>
         </Link>
       </div>
       <ScrollArea className="flex-1 py-2">

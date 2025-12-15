@@ -15,7 +15,6 @@ import {
   Tags,
 } from "lucide-react";
 import {
-  GalleryVerticalEnd,
   Lightbulb,
   Package,
   Shield,
@@ -32,6 +31,7 @@ import type { IAppSidebarProps } from "@/components/admin/app-sidebar/sidebar";
 import { UserNav } from "@/components/admin/user-nav";
 import { ThemeProvider } from "@/components/theme-provider";
 import { auth } from "@/lib/auth";
+import { LogoIcon } from "@/components/web/logo-icon";
 
 // 模拟管理员认证检查
 async function isAuthenticated() {
@@ -43,9 +43,9 @@ async function isAuthenticated() {
 }
 
 const defaultAppSidebarProps: IAppSidebarProps = {
-  title: "OpenMCP",
-  logo: <GalleryVerticalEnd className="size-5" />,
-  description: "管理系统",
+  title: "银行帮",
+  logo: <LogoIcon type="openmcp" size="sm" />,
+  description: "管理后台",
   navItemList: [
     {
       title: "仪表盘",

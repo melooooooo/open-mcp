@@ -42,7 +42,7 @@ export function AppSidebar(props: IAppSidebarProps) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="/">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                <div className="flex items-center justify-center rounded-lg text-sidebar-primary-foreground">
                   {logo}
                 </div>
                 <div className="flex flex-col gap-2 leading-none">

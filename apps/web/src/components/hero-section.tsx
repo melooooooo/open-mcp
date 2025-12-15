@@ -23,7 +23,6 @@ export function HeroSection() {
             <CountBadge />
             <div className="flex items-center gap-2 mb-4">
               <LogoIcon type="openmcp" size="xl" />
-              <span className="text-3xl font-bold">银行帮</span>
             </div>
             <div className="space-y-2">
               <h1 className="text-xl font-bold tracking-tighter sm:text-2xl xl:text-3xl/none bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">

@@ -16,7 +16,6 @@ export default async function ReferralPage() {
     .from("scraped_jobs")
     .select("id, title, link, publish_date, reply_count, source")
     .order("publish_date", { ascending: false })
-    .limit(50)
 
   // 获取用户收藏状态
   const jobIds = jobs?.map(j => j.id) || []

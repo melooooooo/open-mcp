@@ -1,5 +1,5 @@
 import { cn } from "@repo/ui/lib/utils"
-import Image from "next/image"
+
 
 interface LogoIconProps {
   type: "openmcp" | "studio"
@@ -18,12 +18,11 @@ export function LogoIcon({ type, size = "md", className }: LogoIconProps) {
   const pixelSize = sizeMap[size]
 
   return (
-    <Image
-      src="/android-chrome-192x192.png"
+    <img
+      src="/icon-192.png"
       alt="银行帮"
-      width={pixelSize}
-      height={pixelSize}
-      className={cn("rounded-sm", className)}
+      className={cn("w-auto", className)}
+      style={{ height: `${pixelSize}px` }}
     />
   )
 }

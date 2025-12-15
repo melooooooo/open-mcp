@@ -13,8 +13,7 @@ const PreviewHeader = () => (
     <div className="container mx-auto px-4 h-16 flex items-center justify-between">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2">
-        <LogoIcon type="openmcp" className="text-blue-600 w-8 h-8" />
-        <span className="font-bold text-xl text-blue-600 tracking-tight">银行帮</span>
+        <LogoIcon type="openmcp" className="text-blue-600" />
       </Link>
 
       {/* Nav Links */}

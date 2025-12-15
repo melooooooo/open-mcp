@@ -10,10 +10,9 @@ const DarkHeader = () => (
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2 group">
         <div className="relative">
-          <LogoIcon type="openmcp" className="text-blue-500 w-8 h-8 transition-transform group-hover:scale-110" />
+          <LogoIcon type="openmcp" className="text-blue-500 transition-transform group-hover:scale-110" />
           <div className="absolute inset-0 bg-blue-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
         </div>
-        <span className="font-bold text-xl text-white tracking-tight">银行帮</span>
       </Link>
 
       {/* Nav Links */}
