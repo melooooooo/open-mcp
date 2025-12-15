@@ -16,7 +16,7 @@ export const user = pgTable("user", {
   contactPhone: text("contact_phone"),
   role: varchar("role", { length: 64, enum: ["admin", "user", "member"] }).default("user"),
   banned: boolean("banned").notNull().default(false),
-  bannedReason: text("banned_reason"),
+  bannedReason: text("ban_reason"),
   banExpires: timestamp("ban_expires"),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
