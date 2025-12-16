@@ -180,9 +180,7 @@ export async function sendMagicLinkEmail(params: SendMagicLinkEmailParams) {
 }
 
 /**
- * 只发送验证码的邮件
- * @param params 
- * @returns 
+ * 只发送验证码的邮件（Resend 优先，当前不做其他回退）
  */
 export async function sendMagicCodeEmail(params: {
   to: string;
@@ -190,26 +188,42 @@ export async function sendMagicCodeEmail(params: {
   subject: string;
 }) {
   const { to, code, subject } = params;
-  // const subject = "OpenMCP 一键登录";
-
   const emailHtml = await render(AWSVerifyEmail({ verificationCode: code, subject }));
 
-  // 开发环境如果配置了真实邮件服务，则使用真实邮件服务
-  const transporter = (isDevelopment && !useRealMailInDev) ? devTransporter : prodTransporter;
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM;
+
+  if (!apiKey || !from) {
+    throw new Error("Resend 未配置：请设置 RESEND_API_KEY 和 RESEND_FROM");
+  }
 
   try {
-    console.info(`[sendMagicCodeEmail] 发送验证码到 ${to}, 使用 ${(isDevelopment && !useRealMailInDev) ? 'MailHog' : '真实邮件服务'}`);
-    await transporter.sendMail({
-      from: process.env.MAIL_FROM || "OpenMCP <noreply@julianshuke.com>",
-      to,
-      subject,
-      html: emailHtml,
-      text: emailHtml,
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        from,
+        to,
+        subject,
+        html: emailHtml,
+        text: emailHtml,
+      }),
     });
+
+    const data = await res.json();
+    if (!res.ok || data?.error) {
+      const message = data?.error?.message || `Resend 发送失败: HTTP ${res.status}`;
+      throw new Error(message);
+    }
+
+    console.info(`[sendMagicCodeEmail] 通过 Resend 发送验证码到 ${to}，消息ID: ${data?.id || "unknown"}`);
     return { success: true };
   } catch (error) {
-    console.error(`${isDevelopment ? "开发" : "生产"}环境发送魔法链接邮件失败:`, error);
-    throw new Error("发送魔法链接邮件失败");
+    console.error("Resend 发送验证码失败:", error);
+    throw new Error("发送验证邮件失败，请稍后重试");
   }
 }
 

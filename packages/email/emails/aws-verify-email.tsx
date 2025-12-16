@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   Body,
   Container,
@@ -5,7 +6,6 @@ import {
   Heading,
   Hr,
   Html,
-  Img,
   Link,
   Preview,
   Section,
@@ -19,12 +19,8 @@ interface AWSVerifyEmailProps {
   magicLink?: string;
 }
 
-const baseUrl = process.env.BETTER_AUTH_URL
-  ? `${process.env.BETTER_AUTH_URL}`
-  : '';
-
 export default function AWSVerifyEmail({
-  subject = "OpenMCP 账户验证",
+  subject = "银行帮邮箱验证",
   verificationCode,
   magicLink,
 }: AWSVerifyEmailProps) {
@@ -35,18 +31,10 @@ export default function AWSVerifyEmail({
       <Body style={main}>
         <Container style={container}>
           <Section style={coverSection}>
-            <Section style={imageSection}>
-              <Img
-                src={`${baseUrl}/static/logo.png`}
-                width="75"
-                height="75"
-                alt="OpenMCP Logo"
-              />
-            </Section>
             <Section style={upperSection}>
               <Heading style={h1}>验证您的邮箱地址</Heading>
               <Text style={mainText}>
-                感谢您开始创建 OpenMCP 账户。为了确保是您本人在进行操作，
+                感谢您使用银行帮。为确保是您本人操作，
                 {magicLink ? "请点击下方按钮登录。" : "请在提示时输入以下验证码。"}
               </Text>
               {magicLink ? (
@@ -58,7 +46,7 @@ export default function AWSVerifyEmail({
                     (此链接有效期为10分钟)
                   </Text>
                   <Text style={mainText}>
-                    或者复制以下链接到浏览器中：{" "}
+                    或复制以下链接到浏览器：{" "}
                     <Link href={magicLink} style={link}>
                       {magicLink}
                     </Link>
@@ -69,7 +57,7 @@ export default function AWSVerifyEmail({
                   <Text style={verifyText}>验证码</Text>
                   <Text style={codeText}>{verificationCode}</Text>
                   <Text style={validityText}>
-                    (此验证码有效期为10分钟)
+                    (验证码有效期为10分钟)
                   </Text>
                 </Section>
               )}
@@ -77,12 +65,12 @@ export default function AWSVerifyEmail({
             <Hr style={hrStyle} />
             <Section style={lowerSection}>
               <Text style={cautionText}>
-                OpenMCP 绝不会通过邮件要求您透露或验证您的密码、信用卡或银行账户信息。
+                银行帮不会通过邮件索取您的密码、验证码或银行卡信息。
               </Text>
             </Section>
           </Section>
           <Text style={footerText}>
-            此邮件由 OpenMCP 系统自动发送。© {new Date().getFullYear()} OpenMCP。保留所有权利。
+            此邮件由银行帮系统自动发送。© {new Date().getFullYear()} 银行帮。保留所有权利。
             查看我们的{" "}
             <Link href="https://openmcp.com/privacy" target="_blank" style={link}>
               隐私政策
