@@ -85,6 +85,16 @@ export function LoginForm({ onSuccess, onCancel, isModal = false }: LoginFormPro
           <EmailLogin onSuccess={handleSuccess} />
         </div>
 
+        <div className="mt-4 text-center text-sm text-muted-foreground">
+          还没有账号？
+          <Button
+            variant="link"
+            className="p-1 h-auto align-baseline"
+            onClick={() => router.push(`/auth/sign-up?redirectTo=${encodeURIComponent(redirectTo)}`)}
+          >
+            注册银行帮
+          </Button>
+        </div>
 
       </CardContent>
       {isModal && (
