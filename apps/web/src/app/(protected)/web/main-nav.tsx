@@ -2,7 +2,6 @@
 
 import { UserButton } from "@daveyplate/better-auth-ui"
 import { Button } from "@repo/ui/components/ui/button"
-import { ShieldCheck } from "lucide-react"
 import Link from "next/link"
 
 import { LogoIcon } from "@/components/web/logo-icon"
@@ -17,12 +16,6 @@ export function MainNav() {
           </Link>
         </div>
         <div className='ml-auto px-3 flex items-center space-x-4 gap-2'>
-          <Button variant="outline" size="sm" className="rounded-full" asChild>
-            <Link href="/web/dashboard">
-              <ShieldCheck className="h-4 w-4 mr-1" />
-              控制台
-            </Link>
-          </Button>
           <UserButton
             classNames={{
               trigger: {
@@ -47,4 +40,3 @@ export function MainNav() {
     </header>
   )
 }
-

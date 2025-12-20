@@ -18,7 +18,7 @@ import {
 import { authClient } from "@/lib/auth-client"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { User, Heart, Bookmark, LayoutDashboard, LogOut } from "lucide-react"
+import { User, Heart, Bookmark, LogOut } from "lucide-react"
 
 interface UserNavProps {
   user: {
@@ -76,13 +76,6 @@ export function UserNav({ user }: UserNavProps) {
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/web/dashboard" className="cursor-pointer">
-            <LayoutDashboard className="mr-2 h-4 w-4" />
-            <span>控制台</span>
-          </Link>
-        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
           <LogOut className="mr-2 h-4 w-4" />
