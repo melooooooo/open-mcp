@@ -3,6 +3,11 @@ import { createClient } from '@supabase/supabase-js';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+
+// Fix for __dirname in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -16,7 +21,7 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const FILE_PATH = path.resolve(__dirname, '../职位列表.xlsx');
+const FILE_PATH = path.resolve(__dirname, '../秋招信息.xlsx');
 
 interface JobRow {
   serial_number: string | null;
@@ -37,6 +42,7 @@ interface JobRow {
   has_written_test: string | null;
   referral_code: string | null;
 }
+
 if (!value || value === '/' || value.trim() === '') {
   return null;
 }
@@ -58,7 +64,7 @@ function parseRow(rowString: string): JobRow | null {
   // Remove leading/trailing spaces and split
   const tokens = rowString.trim().split(/\s+/);
 
-  if (tokens.length < 10) {
+  if (tokens.length < 5) {
     console.warn('Skipping row with too few tokens:', rowString.substring(0, 50));
     return null;
   }
@@ -76,23 +82,53 @@ function parseRow(rowString: string): JobRow | null {
     '能源/化工/环保', '财务/审计/税务', '贸易/批发/零售', '通信/电子/半导体', '金融业'
   ];
 
+  // --- Adjust for missing serial number ---
+  // If first token is a date (YYYY/MM/DD or similar), assume serial number is missing.
+  // Original format: [SerialNumber] [Date] [CompanyName...] [CompanyType] [Industry] ...
+  // New format (potential): [Date] [CompanyName...] [CompanyType] [Industry] ...
+
+  let isDateFirst = false;
+  // Simple check for date: 2024/11/11, 2025-01-01, etc.
+  if (/^\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2}$/.test(tokens[0])) {
+    isDateFirst = true;
+  }
+
+  let serial_number: string | null = null;
+  let source_updated_at = '';
+  let company_name_start_index = 0;
+
+  if (isDateFirst) {
+    // Missing serial number
+    serial_number = null; // Generate or leave null? DB schema check needed. Assuming null is fine or auto-gen.
+    source_updated_at = tokens[0];
+    company_name_start_index = 1;
+  } else {
+    // Assume standard format
+    serial_number = tokens[0];
+    source_updated_at = tokens[1];
+    company_name_start_index = 2;
+  }
+
+
   // 1. Find Anchor: Delivery (starts with "http" or looks like a link/email)
   // Expanded to include www, @ (email), and common domains
-  let idxDelivery = tokens.findIndex(t =>
-    t.startsWith('http') ||
-    t.startsWith('www.') ||
-    t.includes('@') ||
-    t.includes('.com') ||
-    t.includes('.cn') ||
-    t.includes('.net') ||
-    t.includes('.org') ||
-    t.includes('.edu')
+  let idxDelivery = tokens.findIndex((t, i) =>
+    i > company_name_start_index && (
+      t.startsWith('http') ||
+      t.startsWith('www.') ||
+      t.includes('@') ||
+      t.includes('.com') ||
+      t.includes('.cn') ||
+      t.includes('.net') ||
+      t.includes('.org') ||
+      t.includes('.edu')
+    )
   );
 
   // Fallback if no URL found
   if (idxDelivery === -1) {
     // Try to find "投递" keyword, but exclude "尽快投递" (which is usually deadline)
-    idxDelivery = tokens.findIndex(t => t.includes('投递') && !t.includes('尽快投递'));
+    idxDelivery = tokens.findIndex((t, i) => i > company_name_start_index && t.includes('投递') && !t.includes('尽快投递'));
 
     // If still not found, use heuristic based on end of string
     if (idxDelivery === -1) {
@@ -108,7 +144,7 @@ function parseRow(rowString: string): JobRow | null {
   let searchEnd = idxDelivery !== -1 ? idxDelivery : tokens.length - 1;
   let idxSession = -1;
 
-  for (let i = searchEnd - 1; i >= 0; i--) {
+  for (let i = searchEnd - 1; i >= company_name_start_index; i--) {
     const token = tokens[i];
     if (!token) continue;
 
@@ -125,16 +161,17 @@ function parseRow(rowString: string): JobRow | null {
 
   if (idxSession === -1) {
     // Fallback: search forward
-    idxSession = tokens.findIndex(t => t.includes('届') && (/^\d/.test(t) || t.length < 8));
+    idxSession = tokens.findIndex((t, i) => i > company_name_start_index && t.includes('届') && (/^\d/.test(t) || t.length < 8));
   }
 
   // If strict check failed, try loose check as last resort
   if (idxSession === -1) {
-    idxSession = tokens.findIndex(t => t.includes('届'));
+    idxSession = tokens.findIndex((t, i) => i > company_name_start_index && t.includes('届'));
   }
 
   if (idxSession === -1) {
-    console.warn('Skipping row: Could not find "届" anchor:', rowString.substring(0, 50));
+    // console.warn('Skipping row: Could not find "届" anchor:', rowString.substring(0, 50));
+    // Optional: Return partial data or null
     return null;
   }
 
@@ -142,13 +179,6 @@ function parseRow(rowString: string): JobRow | null {
     idxDelivery = tokens.length - 5;
   }
 
-
-
-
-  if (idxSession === -1) {
-    // console.log(`Row ${rowIndex}: No session found`);
-    return null;
-  }
 
   // Extract Announcement Source
   let announcement_source = "";
@@ -170,7 +200,7 @@ function parseRow(rowString: string): JobRow | null {
   // --- Field Mapping ---
   // Find company_type index (it should be one of the valid types)
   let idxCompanyType = -1;
-  for (let i = 2; i < Math.min(tokens.length, 10); i++) {
+  for (let i = company_name_start_index; i < Math.min(tokens.length, company_name_start_index + 10); i++) {
     if (tokens[i] && VALID_COMPANY_TYPES.includes(tokens[i])) {
       idxCompanyType = i;
       break;
@@ -183,17 +213,18 @@ function parseRow(rowString: string): JobRow | null {
     return null;
   }
 
-  let serial_number = tokens[0] || '';
-  let source_updated_at = tokens[1] || '';
   // Company name is everything between source_updated_at and company_type
-  let company_name = tokens.slice(2, idxCompanyType).join(' ');
+  let company_name = tokens.slice(company_name_start_index, idxCompanyType).join(' ');
   let company_type = tokens[idxCompanyType] || '';
   let industry_category = tokens[idxCompanyType + 1] || '';
 
   // Validate industry category
   if (industry_category && !VALID_INDUSTRIES.includes(industry_category)) {
-    console.warn(`Skipping row: Invalid industry category '${industry_category}':`, rowString.substring(0, 80));
-    return null;
+    // Try next token? sometimes there is a space in company name?
+    // Use heuristic: what matches industry list most likely
+    // For now, strict check but warn
+    // console.warn(`Skipping row: Invalid industry category '${industry_category}':`, rowString.substring(0, 80));
+    // return null;
   }
 
   // Job title, location, and deadline will be parsed later based on session anchor
@@ -237,8 +268,6 @@ function parseRow(rowString: string): JobRow | null {
   work_location = tokens.slice(idxLocationStart, idxLocationEnd + 1).join(' ');
   job_title = tokens.slice(idxCompanyType + 2, idxLocationStart).join(' ');
 
-  // ... (rest of the parsing logic for degree, batch etc)
-
   // Helper to clean strings
   const clean = (s: string | null) => s?.replace(/[,，、]+$/, "") || null;
 
@@ -263,48 +292,6 @@ function parseRow(rowString: string): JobRow | null {
   };
 }
 
-// SQL Helper Functions
-function escapeSqlValue(value: string | null | undefined): string {
-  if (value === null || value === undefined || value === '') {
-    return 'NULL';
-  }
-
-  // Escape special characters for PostgreSQL
-  const escaped = value
-    .replace(/\\/g, '\\\\')   // Backslash
-    .replace(/'/g, "''")      // Single quote (SQL standard)
-    .replace(/\n/g, '\\n')    // Newline
-    .replace(/\r/g, '\\r')    // Carriage return
-    .replace(/\t/g, '\\t');   // Tab
-
-  return `'${escaped}'`;
-}
-
-function generateInsertSQL(jobs: JobRow[]): string[] {
-  const BATCH_SIZE = 100;
-  const sqlStatements: string[] = [];
-
-  for (let i = 0; i < jobs.length; i += BATCH_SIZE) {
-    const batch = jobs.slice(i, i + BATCH_SIZE);
-
-    const values = batch.map(job => {
-      return `  (${escapeSqlValue(job.serial_number)}, ${escapeSqlValue(job.source_updated_at)}, ${escapeSqlValue(job.company_name)}, ${escapeSqlValue(job.company_type)}, ${escapeSqlValue(job.industry_category)}, ${escapeSqlValue(job.job_title)}, ${escapeSqlValue(job.work_location)}, ${escapeSqlValue(job.deadline)}, ${escapeSqlValue(job.session)}, ${escapeSqlValue(job.degree_requirement)}, ${escapeSqlValue(job.batch)}, ${escapeSqlValue(job.announcement_source)}, ${escapeSqlValue(job.application_method)}, ${escapeSqlValue(job.remark)}, ${escapeSqlValue(job.major_requirement)}, ${escapeSqlValue(job.has_written_test)}, ${escapeSqlValue(job.referral_code)})`;
-    }).join(',\n');
-
-    const sql = `INSERT INTO job_listings (
-  serial_number, source_updated_at, company_name, company_type, 
-  industry_category, job_title, work_location, deadline, session, 
-  degree_requirement, batch, announcement_source, application_method, 
-  remark, major_requirement, has_written_test, referral_code
-) VALUES
-${values};`;
-
-    sqlStatements.push(sql);
-  }
-
-  return sqlStatements;
-}
-
 async function main() {
   console.log(`Reading file from: ${FILE_PATH}`);
 
@@ -319,117 +306,85 @@ async function main() {
 
     const jobs: JobRow[] = [];
 
-    // Skip header (index 0)
-    for (let i = 1; i < rawData.length; i++) {
+    // NOTE: Row 0 appears to be data in this file, NOT a header.
+    // So we iterate from 0.
+    for (let i = 0; i < rawData.length; i++) {
+      // ...Wait, inspection showed Row 0 as: "2025/12/17 中国光华科技基金会..."
+      // which IS data.
       const row = rawData[i];
       if (!row || typeof row[0] !== 'string') continue;
 
       const parsed = parseRow(row[0]);
       if (parsed) {
         jobs.push(parsed);
+      } else {
+        // Optional: log failed rows
       }
     }
 
     console.log(`Successfully parsed ${jobs.length} jobs.`);
-    if (jobs.length > 0) {
-      console.log('Sample parsed row:', JSON.stringify(jobs[0], null, 2));
-    }
 
-    // Check mode: 'sql' or 'upload'
-    const mode = process.argv[2] || 'upload';
+    // Check mode: 'check' or 'upload'
+    const mode = process.argv[2] || 'check';
 
-    if (mode === 'sql') {
-      console.log('\n=== Generating SQL files ===');
-
-      // Create output directory
-      const sqlDir = path.resolve(__dirname, 'sql');
-      if (!require('fs').existsSync(sqlDir)) {
-        require('fs').mkdirSync(sqlDir, { recursive: true });
-      }
-
-      // Generate SQL statements
-      const sqlStatements = generateInsertSQL(jobs);
-
-      // Save each batch to a file
-      sqlStatements.forEach((sql, index) => {
-        const filename = `batch_${String(index + 1).padStart(3, '0')}.sql`;
-        const filepath = path.join(sqlDir, filename);
-        require('fs').writeFileSync(filepath, sql, 'utf8');
-      });
-
-      // Generate manifest
-      const manifest = {
-        total_records: jobs.length,
-        total_batches: sqlStatements.length,
-        batch_size: 100,
-        files: sqlStatements.map((_, index) => ({
-          index: index + 1,
-          file: `batch_${String(index + 1).padStart(3, '0')}.sql`,
-          records: Math.min(100, jobs.length - index * 100)
-        }))
-      };
-
-      const manifestPath = path.join(sqlDir, 'manifest.json');
-      require('fs').writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), 'utf8');
-
-      console.log(`\n✅ Generated ${sqlStatements.length} SQL files in: ${sqlDir}`);
-      console.log(`📄 Manifest file: ${manifestPath}`);
-      console.log(`\nNext steps:`);
-      console.log(`1. Review the SQL files (optional)`);
-      console.log(`2. Execute them using the MCP tool`);
-
+    if (mode === 'check') {
+      console.log('\n=== CHECK MODE ===');
+      console.log('Printing first 3 parsed jobs:');
+      console.log(JSON.stringify(jobs.slice(0, 3), null, 2));
+      console.log('\nRun "npx tsx scripts/upload-recruitment.ts upload" to upload to DB.');
       return;
     }
 
-    // Original upload logic
-    console.log('Uploading to Supabase...');
+    if (mode === 'upload') {
+      console.log('Uploading to Supabase...');
 
-    const BATCH_SIZE = 20;
-    const RETRY_COUNT = 3;
-    const RETRY_DELAY = 1000; // 1 second
+      const BATCH_SIZE = 20;
+      const RETRY_COUNT = 3;
+      const RETRY_DELAY = 1000; // 1 second
 
-    // Helper function for sleep
-    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+      // Helper function for sleep
+      const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-    for (let i = 0; i < jobs.length; i += BATCH_SIZE) {
-      const batch = jobs.slice(i, i + BATCH_SIZE);
-      let attempts = 0;
-      let success = false;
+      for (let i = 0; i < jobs.length; i += BATCH_SIZE) {
+        const batch = jobs.slice(i, i + BATCH_SIZE);
+        let attempts = 0;
+        let success = false;
 
-      while (attempts < RETRY_COUNT && !success) {
-        try {
-          const { error } = await supabase
-            .from('job_listings')
-            .insert(batch);
+        while (attempts < RETRY_COUNT && !success) {
+          try {
+            const { error } = await supabase
+              .from('job_listings')
+              .insert(batch);
 
-          if (error) {
-            throw error;
+            if (error) {
+              throw error;
+            }
+
+            success = true;
+            // Add a small delay to avoid hitting rate limits
+            await sleep(100);
+          } catch (error) {
+            attempts++;
+            console.error(`Error uploading batch ${Math.floor(i / BATCH_SIZE) + 1} (Attempt ${attempts}/${RETRY_COUNT}):`, error);
+            if (attempts < RETRY_COUNT) {
+              console.log(`Retrying in ${RETRY_DELAY}ms...`);
+              await sleep(RETRY_DELAY * attempts); // Exponential backoff-ish
+            }
           }
+        }
 
-          success = true;
-          // Add a small delay to avoid hitting rate limits
-          await sleep(100);
-        } catch (error) {
-          attempts++;
-          console.error(`Error uploading batch ${Math.floor(i / BATCH_SIZE) + 1} (Attempt ${attempts}/${RETRY_COUNT}):`, error);
-          if (attempts < RETRY_COUNT) {
-            console.log(`Retrying in ${RETRY_DELAY}ms...`);
-            await sleep(RETRY_DELAY * attempts); // Exponential backoff-ish
+        if (!success) {
+          console.error(`Failed to upload batch starting at index ${i} after ${RETRY_COUNT} attempts. Stopping.`);
+          // Optionally process.exit(1) here if we want to stop completely
+        } else {
+          if ((i + BATCH_SIZE) % 500 < BATCH_SIZE) {
+            console.log(`Uploaded ${Math.min(i + BATCH_SIZE, jobs.length)} / ${jobs.length}`);
           }
         }
       }
 
-      if (!success) {
-        console.error(`Failed to upload batch starting at index ${i} after ${RETRY_COUNT} attempts. Stopping.`);
-        // Optionally process.exit(1) here if we want to stop completely
-      } else {
-        if ((i + BATCH_SIZE) % 500 < BATCH_SIZE) {
-          console.log(`Uploaded ${Math.min(i + BATCH_SIZE, jobs.length)} / ${jobs.length}`);
-        }
-      }
+      console.log('Done!');
     }
-
-    console.log('Done!');
 
   } catch (error) {
     console.error('Error processing file:', error);
