@@ -71,7 +71,10 @@ export function JobItem({ job, isCollected = false }: JobItemProps) {
   }
 
   return (
-    <div className="group flex flex-col md:flex-row gap-4 p-6 bg-card hover:bg-muted/50 border rounded-xl transition-all hover:border-blue-200 hover:shadow-md relative">
+    <Link
+      href={`/jobs/${job.id}`}
+      className="group flex flex-col md:flex-row gap-4 p-6 bg-card hover:bg-muted/50 border rounded-xl transition-all hover:border-blue-200 hover:shadow-md relative"
+    >
       {/* Main Content */}
       <div className="flex-1 space-y-3 min-w-0">
         {/* Header: Company & Date */}
@@ -123,13 +126,13 @@ export function JobItem({ job, isCollected = false }: JobItemProps) {
         </div>
       </div>
 
-      {/* Action Button (Right side on desktop) */}
-      <div className="flex md:flex-col justify-end md:justify-center shrink-0 gap-2">
+      {/* Collect Button (Absolute top-right or consistent right side) */}
+      <div className="md:ml-auto flex items-start md:items-center">
         <Button
           variant="ghost"
           size="icon"
           className={cn(
-            "h-10 w-10 rounded-lg transition-colors",
+            "h-10 w-10 rounded-lg transition-colors z-10",
             collected ? "text-yellow-500 hover:text-yellow-600 hover:bg-yellow-50" : "text-muted-foreground hover:text-yellow-500 hover:bg-yellow-50"
           )}
           onClick={handleCollect}
@@ -137,35 +140,7 @@ export function JobItem({ job, isCollected = false }: JobItemProps) {
         >
           <Star className={cn("w-5 h-5", collected && "fill-current")} />
         </Button>
-
-        {isUrl ? (
-          <Link
-            href={applyLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              "inline-flex items-center justify-center h-10 px-6 rounded-lg font-medium transition-colors",
-              "bg-blue-600 text-white hover:bg-blue-700 shadow-sm"
-            )}
-          >
-            立即投递 <ExternalLink className="w-4 h-4 ml-2" />
-          </Link>
-        ) : isEmail ? (
-          <a
-            href={applyLink}
-            className={cn(
-              "inline-flex items-center justify-center h-10 px-6 rounded-lg font-medium transition-colors",
-              "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-            )}
-          >
-            发送邮件 <ExternalLink className="w-4 h-4 ml-2" />
-          </a>
-        ) : (
-          <div className="inline-flex items-center justify-center h-10 px-6 rounded-lg bg-muted text-muted-foreground cursor-not-allowed text-sm">
-            {job.application_method.substring(0, 8)}...
-          </div>
-        )}
       </div>
-    </div>
+    </Link>
   )
 }

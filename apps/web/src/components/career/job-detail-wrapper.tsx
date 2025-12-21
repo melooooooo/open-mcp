@@ -1,6 +1,6 @@
 import { getJobById } from "@/lib/api/jobs"
 import { getJobListingById } from "@/lib/api/job-listings"
-import { JobDetailServerClient } from "./job-detail-server-client"
+import { JobDetailSimple } from "./job-detail-simple"
 import { notFound } from "next/navigation"
 
 export async function JobDetailWrapper({ jobId }: { jobId: string }) {
@@ -45,7 +45,9 @@ export async function JobDetailWrapper({ jobId }: { jobId: string }) {
       isNew: job.source_updated_at ? new Date(job.source_updated_at).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000 : false,
       description: job.remark || job.announcement_source, // 使用备注或来源作为描述
       requirements: job.major_requirement,
-      benefits: undefined
+      benefits: undefined,
+      applicationMethod: job.application_method,
+      publishDate: job.source_updated_at
     }
   } else {
     // 映射 cp_job_sites 数据 (原有逻辑)
@@ -71,11 +73,13 @@ export async function JobDetailWrapper({ jobId }: { jobId: string }) {
       isNew: job.created_at ? new Date(job.created_at).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000 : false,
       description: job.description,
       requirements: job.requirements,
-      benefits: job.benefits
+      benefits: job.benefits,
+      applicationMethod: job.application_link,
+      publishDate: job.publish_date || job.created_at
     }
   }
 
   return (
-    <JobDetailServerClient job={formattedJob} />
+    <JobDetailSimple job={formattedJob} />
   )
 }
