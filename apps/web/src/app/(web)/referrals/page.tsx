@@ -12,9 +12,10 @@ export const metadata = {
 
 const PAGE_SIZE = 30
 
-export default async function ReferralPage({ searchParams }: { searchParams?: { page?: string } }) {
+export default async function ReferralPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const supabase = await createServerSupabaseClient()
-  const page = Math.max(1, Number(searchParams?.page) || 1)
+  const { page: pageParam } = await searchParams
+  const page = Math.max(1, Number(pageParam) || 1)
   const from = (page - 1) * PAGE_SIZE
   const to = from + PAGE_SIZE - 1
 
