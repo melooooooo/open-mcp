@@ -72,7 +72,7 @@ export function JobItem({ job, isCollected = false }: JobItemProps) {
 
   return (
     <Link
-      href={`/jobs/${job.id}`}
+      href={`/recruitment/${job.id}`}
       className="group flex flex-col md:flex-row gap-4 p-6 bg-card hover:bg-muted/50 border rounded-xl transition-all hover:border-blue-200 hover:shadow-md relative"
     >
       {/* Main Content */}

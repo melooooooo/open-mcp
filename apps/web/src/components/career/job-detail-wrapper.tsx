@@ -1,7 +1,7 @@
 import { getJobById } from "@/lib/api/jobs"
-import { getJobListingById } from "@/lib/api/job-listings"
 import { JobDetailSimple } from "./job-detail-simple"
 import { notFound } from "next/navigation"
+import { createServerSupabaseClient } from "@/lib/supabase/server"
 
 export async function JobDetailWrapper({ jobId }: { jobId: string }) {
   // 获取职位详情
@@ -9,8 +9,14 @@ export async function JobDetailWrapper({ jobId }: { jobId: string }) {
   let isJobListing = false
 
   if (!job) {
-    // 尝试从 job_listings 表获取
-    job = await getJobListingById(jobId)
+    // 尝试从 job_listings 表获取（服务端查询）
+    const supabase = await createServerSupabaseClient()
+    const { data } = await supabase
+      .from("job_listings")
+      .select("*")
+      .eq("id", jobId)
+      .maybeSingle()
+    job = data
     isJobListing = true
   }
 

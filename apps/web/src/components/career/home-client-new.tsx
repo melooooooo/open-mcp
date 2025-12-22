@@ -483,7 +483,7 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
                 return (
                   <Link
                     key={job.id}
-                    href={`/jobs/${job.id}`}
+                    href={`/recruitment/${job.id}`}
                     className="block p-6 flex gap-6 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group cursor-pointer"
                   >
                     <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-50 to-white shadow-sm border border-slate-200 flex flex-col items-center justify-center text-blue-600 transition-colors dark:bg-gradient-to-br dark:from-slate-800 dark:to-slate-900 dark:border-slate-700/70 dark:shadow-[0_14px_40px_-18px_rgba(15,23,42,0.8)]">
