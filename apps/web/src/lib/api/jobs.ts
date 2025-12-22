@@ -29,7 +29,7 @@ export async function getJobById(id: string) {
     .from('cp_job_sites')
     .select('*')
     .eq('id', id)
-    .single()
+    .maybeSingle()
 
   if (error) {
     console.error('Error fetching job site:', JSON.stringify(error, null, 2))

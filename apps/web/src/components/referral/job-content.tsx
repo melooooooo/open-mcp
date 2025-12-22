@@ -28,41 +28,58 @@ export function JobContent({ content }: JobContentProps) {
     // 5. Fix specific case where header is immediately followed by list item (e.g. "职位描述1、")
     .replace(/(职位描述|任职要求|岗位职责|工作内容|任职资格|联系方式|工作地点|薪资待遇|截止日期|加分项|岗位要求|福利待遇|招聘岗位|招聘要求)[:：]?\n?(\d+[、\.．])/g, '$1\n$2')
 
-  const lines = formatted.split('\n').map(line => line.trim()).filter(Boolean)
+  const rawLines = formatted.split('\n').map((line) => line.trim())
+  const lines: string[] = []
+  for (const line of rawLines) {
+    if (!line) {
+      if (lines.length > 0 && lines[lines.length - 1] !== "") lines.push("")
+      continue
+    }
+    lines.push(line)
+  }
 
   return (
-    <div className="space-y-2 text-base leading-relaxed text-foreground/90 font-normal">
+    <div className="space-y-3 text-sm sm:text-base leading-relaxed text-foreground/90 font-normal break-words">
       {lines.map((line, index) => {
+        if (!line) {
+          return <div key={index} className="h-2" />
+        }
+
         // Render Section Headers
         if (/^(职位描述|任职要求|岗位职责|工作内容|任职资格|联系方式|工作地点|薪资待遇|截止日期|加分项|岗位要求|福利待遇|招聘岗位|招聘要求)/.test(line)) {
           return (
-            <h3 key={index} className="font-bold text-lg mt-8 mb-3 text-blue-700 border-l-4 border-blue-500 pl-3">
+            <h4
+              key={index}
+              className="mt-6 mb-2 text-base sm:text-lg font-semibold text-foreground border-l-4 border-blue-500/70 pl-3"
+            >
               {line.replace(/[:：]$/, '')}
-            </h3>
+            </h4>
           )
         }
 
         // Render Top-level Chinese Numbers (一、)
         if (/^([一二三四五六七八九十][、\.．])/.test(line)) {
-          return <h4 key={index} className="font-semibold text-md mt-6 mb-2">{line}</h4>
+          return <h5 key={index} className="mt-4 mb-1 font-semibold text-foreground">{line}</h5>
         }
 
         // Render List Items
         if (/^(\d+[、\.．]|\(\d+\)|（\d+）|[•·\-])/.test(line)) {
+          const marker = line.match(/^(\d+[、\.．]|\(\d+\)|（\d+）|[•·\-])/)?.[0] ?? "•"
+          const body = line.replace(/^(\d+[、\.．]|\(\d+\)|（\d+）|[•·\-])/, "").trim()
           return (
-            <div key={index} className="pl-4 relative">
-              <span className="absolute left-0 opacity-70">
-                {line.match(/^(\d+[、\.．]|\(\d+\)|（\d+）|[•·\-])/)?.[0]}
-              </span>
-              <span className="pl-6 block">
-                {linkify(line.replace(/^(\d+[、\.．]|\(\d+\)|（\d+）|[•·\-])/, ''))}
-              </span>
+            <div key={index} className="grid grid-cols-[22px,1fr] gap-x-2">
+              <span className="text-muted-foreground font-medium">{marker}</span>
+              <span className="min-w-0 break-words">{linkify(body)}</span>
             </div>
           )
         }
 
         // Regular Paragraphs
-        return <p key={index} className="mb-2">{linkify(line)}</p>
+        return (
+          <p key={index} className="whitespace-pre-wrap break-words">
+            {linkify(line)}
+          </p>
+        )
       })}
     </div>
   )
@@ -83,7 +100,7 @@ function linkify(text: string) {
           href={part}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-600 hover:underline break-all font-medium"
+          className="text-blue-600 hover:underline break-words font-medium"
         >
           {part}
         </a>

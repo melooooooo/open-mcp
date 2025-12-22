@@ -134,7 +134,10 @@ export function JobList() {
             />
             {query && (
               <button
-                onClick={() => setQuery("")}
+                onClick={() => {
+                  setQuery("")
+                  setAppliedQuery("") // Optional: auto-clear results too? Maybe not for search.
+                }}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
               >
                 <X className="h-4 w-4" />
@@ -143,12 +146,26 @@ export function JobList() {
           </div>
 
           <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 no-scrollbar items-center">
-            <div className="w-[140px] shrink-0">
+            <div className="w-[140px] shrink-0 relative">
               <Input
                 placeholder="工作地点"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleApply()
+                }}
               />
+              {location && (
+                <button
+                  onClick={() => {
+                    setLocation("")
+                    // setAppliedLocation("") // Keep manual for text? Or auto? Let's keep manual consistency for text inputs.
+                  }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
             </div>
 
             <Popover>
@@ -167,7 +184,11 @@ export function JobList() {
               <PopoverContent className="w-64 p-3">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-muted-foreground">选择多个性质</span>
-                  <Button variant="ghost" size="sm" onClick={() => setCompanyTypes([])}>
+                  <Button variant="ghost" size="sm" onClick={() => {
+                    setCompanyTypes([])
+                    setAppliedCompanyTypes([])
+                    setPage(1)
+                  }}>
                     清空
                   </Button>
                 </div>
@@ -182,11 +203,14 @@ export function JobList() {
                         <Checkbox
                           checked={checked}
                           onCheckedChange={(isChecked) => {
-                            setCompanyTypes((prev) =>
-                              isChecked
+                            setCompanyTypes((prev) => {
+                              const next = isChecked
                                 ? [...prev, opt]
                                 : prev.filter((item) => item !== opt)
-                            )
+                              setAppliedCompanyTypes(next) // Auto apply
+                              setPage(1)
+                              return next
+                            })
                           }}
                         />
                         <span className="truncate">{opt}</span>
@@ -213,7 +237,11 @@ export function JobList() {
               <PopoverContent className="w-64 p-3">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-muted-foreground">选择多个行业</span>
-                  <Button variant="ghost" size="sm" onClick={() => setIndustries([])}>
+                  <Button variant="ghost" size="sm" onClick={() => {
+                    setIndustries([])
+                    setAppliedIndustries([])
+                    setPage(1)
+                  }}>
                     清空
                   </Button>
                 </div>
@@ -228,11 +256,14 @@ export function JobList() {
                         <Checkbox
                           checked={checked}
                           onCheckedChange={(isChecked) => {
-                            setIndustries((prev) =>
-                              isChecked
+                            setIndustries((prev) => {
+                              const next = isChecked
                                 ? [...prev, opt]
                                 : prev.filter((item) => item !== opt)
-                            )
+                              setAppliedIndustries(next) // Auto apply
+                              setPage(1)
+                              return next
+                            })
                           }}
                         />
                         <span className="truncate">{opt}</span>
@@ -243,7 +274,11 @@ export function JobList() {
               </PopoverContent>
             </Popover>
 
-            <Select value={session} onValueChange={setSession}>
+            <Select value={session} onValueChange={(val) => {
+              setSession(val)
+              setAppliedSession(val) // Auto apply
+              setPage(1)
+            }}>
               <SelectTrigger className="w-[120px] shrink-0">
                 <SelectValue placeholder="届次" />
               </SelectTrigger>
