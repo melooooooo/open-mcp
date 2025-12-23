@@ -30,21 +30,39 @@ if (!supabaseUrl || !supabaseKey) {
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 async function main() {
-  const slug = decodeURIComponent('%E4%B8%AD%E5%9B%BD%E4%BA%BA%E4%BF%9D%E5%BE%85%E9%81%87%E5%A4%A7%E6%9B%9D%E5%85%89')
-  console.log('Fetching experience for slug:', slug)
-
-  const { data, error } = await supabase
+  // Search for articles with broader keywords
+  const { data: articles, error } = await supabase
     .from('finance_experiences')
-    .select('*')
-    .eq('slug', slug)
-    .single()
+    .select('id, title, markdown_content')
+    .ilike('markdown_content', '%-END-%')
+    .limit(5);
 
   if (error) {
-    console.error('Error:', error)
-    return
+    console.error('Error:', error);
+    return;
   }
 
-  console.log('Experience Data:', JSON.stringify(data, null, 2))
+  if (!articles || articles.length === 0) {
+    console.log("No articles found with keyword '-END-'.");
+    return;
+  }
+
+  console.log(`Found ${articles.length} articles with '-END-'. Inspecting context...\n`);
+
+  articles.forEach((article, index) => {
+    const content = article.markdown_content || "";
+    const indexEnd = content.indexOf("-END-");
+
+    // Show 100 chars before and 200 chars after
+    const start = Math.max(0, indexEnd - 100);
+    const end = Math.min(content.length, indexEnd + 200);
+    const context = content.slice(start, end);
+
+    console.log(`--- Article ${index + 1}: ${article.title} (ID: ${article.id}) ---`);
+    console.log(`Context:\n${context}\n`);
+    console.log("--------------------------------------------------\n");
+  });
 }
 
 main()
+

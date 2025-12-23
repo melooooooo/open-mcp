@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/ui/popover"
 import { Checkbox } from "@repo/ui/components/ui/checkbox"
 import { Search, Loader2, X, ChevronDown } from "lucide-react"
-import { getJobListings, getFilterOptions, type JobListing, COMPANY_TYPES, INDUSTRY_CATEGORIES, SESSION_OPTIONS } from "@/lib/api/job-listings"
+import { getJobListings, getFilterOptions, type JobListing, COMPANY_TYPES, SESSION_OPTIONS } from "@/lib/api/job-listings"
 import { JobItem } from "./job-item"
 import { Container } from "@/components/web/container"
 import { getJobCollectionStatus } from "@/app/actions/interactions"
@@ -21,21 +21,18 @@ export function JobList() {
   // Filters
   const [query, setQuery] = useState("")
   const [location, setLocation] = useState("")
-  const [industries, setIndustries] = useState<string[]>([])
   const [companyTypes, setCompanyTypes] = useState<string[]>([])
   const [session, setSession] = useState("all")
 
   // Applied filters (only fetch when用户点击“查询”)
   const [appliedQuery, setAppliedQuery] = useState("")
   const [appliedLocation, setAppliedLocation] = useState("")
-  const [appliedIndustries, setAppliedIndustries] = useState<string[]>([])
   const [appliedCompanyTypes, setAppliedCompanyTypes] = useState<string[]>([])
   const [appliedSession, setAppliedSession] = useState("all")
 
   // Options
   // Industry and Company Type options are now static constants, but we can still keep them in state if we want to load them async later
   // For now, using the imported constants directly is fine, but let's stick to the pattern of loading options
-  const [industryOptions, setIndustryOptions] = useState<string[]>(INDUSTRY_CATEGORIES)
   const [companyTypeOptions, setCompanyTypeOptions] = useState<string[]>(COMPANY_TYPES)
   const [sessionOptions, setSessionOptions] = useState<string[]>(SESSION_OPTIONS)
 
@@ -62,7 +59,6 @@ export function JobList() {
           pageSize,
           query: appliedQuery || undefined,
           location: appliedLocation || undefined,
-          industry: appliedIndustries.length > 0 ? appliedIndustries : undefined,
           companyType: appliedCompanyTypes.length > 0 ? appliedCompanyTypes : undefined,
           session: appliedSession === "all" ? undefined : appliedSession,
         })
@@ -90,7 +86,7 @@ export function JobList() {
     }
 
     fetchData()
-  }, [page, appliedQuery, appliedLocation, appliedIndustries, appliedCompanyTypes, appliedSession])
+  }, [page, appliedQuery, appliedLocation, appliedCompanyTypes, appliedSession])
 
   const totalPages = Math.ceil(total / pageSize)
 
@@ -98,7 +94,6 @@ export function JobList() {
     setPage(1)
     setAppliedQuery(query.trim())
     setAppliedLocation(location.trim())
-    setAppliedIndustries(industries)
     setAppliedCompanyTypes(companyTypes)
     setAppliedSession(session)
   }
@@ -106,12 +101,10 @@ export function JobList() {
   const handleResetFilters = () => {
     setQuery("")
     setLocation("")
-    setIndustries([])
     setCompanyTypes([])
     setSession("all")
     setAppliedQuery("")
     setAppliedLocation("")
-    setAppliedIndustries([])
     setAppliedCompanyTypes([])
     setAppliedSession("all")
     setPage(1)
@@ -221,58 +214,7 @@ export function JobList() {
               </PopoverContent>
             </Popover>
 
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="w-[160px] shrink-0 justify-between">
-                  <span className="truncate">
-                    {industries.length === 0
-                      ? "所有行业"
-                      : industries.length === 1
-                        ? industries[0]
-                        : `已选${industries.length}项`}
-                  </span>
-                  <ChevronDown className="w-4 h-4 ml-2 text-muted-foreground" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-64 p-3">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-muted-foreground">选择多个行业</span>
-                  <Button variant="ghost" size="sm" onClick={() => {
-                    setIndustries([])
-                    setAppliedIndustries([])
-                    setPage(1)
-                  }}>
-                    清空
-                  </Button>
-                </div>
-                <div className="max-h-64 overflow-y-auto space-y-1">
-                  {industryOptions.map((opt) => {
-                    const checked = industries.includes(opt)
-                    return (
-                      <label
-                        key={opt}
-                        className="flex items-center space-x-2 rounded px-2 py-1 hover:bg-muted cursor-pointer text-sm"
-                      >
-                        <Checkbox
-                          checked={checked}
-                          onCheckedChange={(isChecked) => {
-                            setIndustries((prev) => {
-                              const next = isChecked
-                                ? [...prev, opt]
-                                : prev.filter((item) => item !== opt)
-                              setAppliedIndustries(next) // Auto apply
-                              setPage(1)
-                              return next
-                            })
-                          }}
-                        />
-                        <span className="truncate">{opt}</span>
-                      </label>
-                    )
-                  })}
-                </div>
-              </PopoverContent>
-            </Popover>
+
 
             <Select value={session} onValueChange={(val) => {
               setSession(val)
@@ -338,12 +280,10 @@ export function JobList() {
           <Button variant="link" onClick={() => {
             setQuery("")
             setLocation("")
-            setIndustries([])
             setCompanyTypes([])
             setSession("all")
             setAppliedQuery("")
             setAppliedLocation("")
-            setAppliedIndustries([])
             setAppliedCompanyTypes([])
             setAppliedSession("all")
             setPage(1)
