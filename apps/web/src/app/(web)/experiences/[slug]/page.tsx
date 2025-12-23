@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation"
+import { Metadata } from "next"
 import Link from "next/link"
 import sanitizeHtml from "sanitize-html"
-import { getExperienceBySlug } from "@/lib/api/experiences"
+import { getExperienceBySlug, getExperienceMetadata } from "@/lib/api/experiences"
 import { Container } from "@/components/web/container"
 import { Badge } from "@repo/ui/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar"
@@ -93,6 +94,44 @@ function cleanHtmlContent(html?: string | null): string {
 
 type ExperienceDetailPageProps = {
   params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata({ params }: ExperienceDetailPageProps): Promise<Metadata> {
+  const resolvedParams = await params
+  const decodedSlug = decodeURIComponent(resolvedParams.slug)
+  const experience = await getExperienceMetadata(decodedSlug)
+
+  if (!experience) {
+    return {}
+  }
+
+  // Remove HTML tags from content for description if summary is missing
+  const plainTextContent = experience.content_html
+    ? experience.content_html.replace(/<[^>]*>/g, '').slice(0, 160)
+    : ''
+
+  const title = experience.title
+  const description = experience.summary || plainTextContent || "经验分享"
+  const author = experience.author_name || "职场江湖指北"
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      authors: [author],
+      publishedTime: experience.publish_time || undefined,
+      images: experience.cover_asset_path ? [experience.cover_asset_path] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: experience.cover_asset_path ? [experience.cover_asset_path] : [],
+    }
+  }
 }
 
 export default async function ExperienceDetailPage({ params }: ExperienceDetailPageProps) {

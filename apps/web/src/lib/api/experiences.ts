@@ -164,3 +164,20 @@ export async function getExperienceBySlug(slug: string) {
 
   return { ...data, isLiked }
 }
+
+export async function getExperienceMetadata(slug: string) {
+  const supabase = await createServerSupabaseClient()
+
+  const { data, error } = await supabase
+    .from("finance_experiences")
+    .select("title, summary, content_html, author_name, publish_time, cover_asset_path")
+    .eq("slug", slug)
+    .single()
+
+  if (error) {
+    console.error("Error fetching experience metadata:", error)
+    return null
+  }
+
+  return data
+}
