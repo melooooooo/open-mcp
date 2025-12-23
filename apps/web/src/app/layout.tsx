@@ -10,7 +10,7 @@ import { geistMono, geistSans } from "./fonts";
 import { Providers } from "./providers"
 
 export const metadata: Metadata = {
-  title: "开启你的银行生涯",
+  title: "银行帮-银行招聘求职指南",
   description: "汇聚银行、券商、保险职位、网站合集与面试经验，应届生与社招的金融科技求职第一站。",
 };
 

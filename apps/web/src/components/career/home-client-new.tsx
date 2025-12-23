@@ -180,8 +180,9 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
             </div>
 
             <h1 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">
-              开启你的 <span className="text-blue-700 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-blue-400 dark:via-cyan-400 dark:to-blue-500 relative inline-block">
-                银行生涯
+              银行招聘{" "}
+              <span className="text-blue-700 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-blue-400 dark:via-cyan-400 dark:to-blue-500 relative inline-block">
+                求职指南
                 <svg className="absolute w-full h-3 -bottom-1 left-0 text-blue-200 dark:hidden -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
                   <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" />
                 </svg>
