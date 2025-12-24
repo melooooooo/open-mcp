@@ -2,10 +2,16 @@ import { HomeDataWrapperNew } from "@/components/career/home-data-wrapper-new"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "银行帮 - 银行招聘求职第一站 | 校招社招面试经验",
-  description: "发现最新的银行、券商、保险招聘信息。获取专业的面试攻略与内推资源，助力您的金融求职之旅。",
+  title: "银行招聘 求职指南",
+  description: "汇聚银行、券商、保险职位、网站合集与面试经验，应届生与社招的金融科技求职第一站。",
 }
 
 export default function Home() {
-  return <HomeDataWrapperNew />
+  return (
+    <>
+      <h1 className="sr-only">银行招聘 求职指南</h1>
+      <h2 className="sr-only">银行招聘信息与求职经验汇总</h2>
+      <HomeDataWrapperNew />
+    </>
+  )
 }

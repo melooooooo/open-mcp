@@ -170,7 +170,7 @@ export async function getExperienceMetadata(slug: string) {
 
   const { data, error } = await supabase
     .from("finance_experiences")
-    .select("title, summary, content_html, author_name, publish_time, cover_asset_path")
+    .select("title, summary, content_html, markdown_content, metadata, author_name, publish_time, cover_asset_path")
     .eq("slug", slug)
     .single()
 

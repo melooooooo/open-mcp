@@ -179,7 +179,7 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
               2025银行秋招进行中
             </div>
 
-            <h1 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">
+            <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">
               银行招聘{" "}
               <span className="text-blue-700 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-blue-400 dark:via-cyan-400 dark:to-blue-500 relative inline-block">
                 求职指南
@@ -187,7 +187,7 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
                   <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" />
                 </svg>
               </span>
-            </h1>
+            </h2>
             <p className="text-slate-500 dark:text-slate-400 text-lg md:text-xl mb-12 font-normal max-w-2xl mx-auto leading-relaxed">
               汇聚银行、券商、保险职位、网站合集与面试经验
               <br className="hidden md:block" />
@@ -282,9 +282,9 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
                   </Avatar>
                   <div className="relative ml-4 flex-1 min-w-0">
                     <div className="flex justify-between items-start mb-1">
-                      <h4 className="font-bold text-slate-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate pr-2">
+                      <h3 className="font-bold text-slate-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate pr-2">
                         {site.title}
-                      </h4>
+                      </h3>
                       <span className="text-[10px] font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10 px-2 py-0.5 rounded-md border border-blue-100 dark:border-blue-500/20 whitespace-nowrap flex-shrink-0">
                         {getTagDisplay(site)}
                       </span>
@@ -437,9 +437,9 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
                       </span>
                     </div>
 
-                    <h4 className="font-bold text-slate-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 mb-2 flex-1">
+                    <h3 className="font-bold text-slate-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 mb-2 flex-1">
                       {job.title}
-                    </h4>
+                    </h3>
 
                     <div className="flex items-center justify-between text-xs text-slate-400 dark:text-slate-600 mt-auto">
                       <span className="flex items-center gap-1">

@@ -89,7 +89,7 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
             <div className="rounded-xl border bg-card p-5 shadow-sm space-y-5">
               <div className="flex items-center gap-2 pb-2 border-b">
                 <div className="h-4 w-1 bg-blue-600 rounded-full" />
-                <h2 className="font-semibold">筛选条件</h2>
+                <p className="font-semibold">筛选条件</p>
               </div>
 
               <ExperienceFiltersDesktop
@@ -101,7 +101,7 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
 
             {/* Popular Tags Sidebar */}
             <div className="rounded-xl border bg-card p-5 shadow-sm space-y-4">
-              <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider">热门标签</h3>
+              <h2 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider">热门标签</h2>
               <div className="flex flex-wrap gap-2">
                 {selectedTags.slice(0, 15).map((tag) => (
                   <Link
@@ -126,6 +126,7 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
 
         {/* Main Content */}
         <div className="lg:col-span-3 space-y-6">
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">经验列表</h2>
           {/* Mobile Filters */}
           <div className="lg:hidden rounded-xl border bg-card p-4 shadow-sm">
             <ExperienceFiltersMobile

@@ -96,6 +96,38 @@ type ExperienceDetailPageProps = {
   params: Promise<{ slug: string }>
 }
 
+const stripMarkdown = (text: string) =>
+  text
+    // Images (complete or truncated)
+    .replace(/!\[[^\]]*\]\([^\)]*\)/g, " ")
+    .replace(/!\[[^\]]*\]\([^\)]*$/g, " ")
+    // Links (complete or truncated)
+    .replace(/\[([^\]]+)\]\([^\)]*\)/g, "$1")
+    .replace(/\[([^\]]+)\]\([^\)]*$/g, "$1")
+    // Titles / setext
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/^[=\-]{2,}\s*$/gm, " ")
+
+const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+
+const buildDescription = (raw: string | null | undefined, title?: string) => {
+  if (!raw) return ""
+  const normalizedTitle = title ? escapeRegExp(title.trim().replace(/\s+/g, " ")) : ""
+  return stripMarkdown(raw)
+    .replace(/<[^>]*>/g, " ")
+    .replace(/原创\s*职场江湖指北/g, " ")
+    .replace(/职场江湖指北/g, " ")
+    .replace(/此图片来自微信公众平台|未经允许不可引用/g, " ")
+    .replace(/\s+/g, " ")
+    .replace(
+      normalizedTitle ? new RegExp(`^${normalizedTitle}\\s*[!！:：\\-–—]?\\s*`, "i") : /$^/,
+      ""
+    )
+    .replace(/^(原创\\s*)?职场江湖指北\\s*/i, "")
+    .trim()
+    .slice(0, 160)
+}
+
 export async function generateMetadata({ params }: ExperienceDetailPageProps): Promise<Metadata> {
   const resolvedParams = await params
   const decodedSlug = decodeURIComponent(resolvedParams.slug)
@@ -105,13 +137,15 @@ export async function generateMetadata({ params }: ExperienceDetailPageProps): P
     return {}
   }
 
-  // Remove HTML tags from content for description if summary is missing
-  const plainTextContent = experience.content_html
-    ? experience.content_html.replace(/<[^>]*>/g, '').slice(0, 160)
-    : ''
-
   const title = experience.title
-  const description = experience.summary || plainTextContent || "经验分享"
+  const fallbackSource =
+    experience.content_html ||
+    experience.markdown_content ||
+    (experience.metadata as any)?.markdown_source?.content ||
+    ""
+  const plainTextContent = buildDescription(fallbackSource, experience.title)
+  const cleanedSummary = buildDescription(experience.summary || "", experience.title)
+  const description = cleanedSummary || plainTextContent || "经验分享"
   const author = experience.author_name || "职场江湖指北"
 
   return {
