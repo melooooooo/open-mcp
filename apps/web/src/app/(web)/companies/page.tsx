@@ -4,6 +4,12 @@ import { Container } from "@/components/web/container"
 import { Button } from "@repo/ui/components/ui/button"
 import Link from "next/link"
 import { Building2 } from "lucide-react"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "企业百科 - 金融机构招聘概况",
+  description: "了解各大银行、金融企业的招聘节奏、薪酬福利与员工评价，为您的职业选择提供参考。",
+}
 
 export default function CompaniesPage() {
   return (

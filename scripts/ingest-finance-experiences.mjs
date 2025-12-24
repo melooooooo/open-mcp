@@ -203,6 +203,69 @@ const headingRegex = /^([一二三四五六七八九十]+[、\.．]|第[一二�
 const isHeadingParagraph = (text) =>
   headingRegex.test(text) || (/公司|薪|福利|待遇|招聘|岗位|总结|亮点/.test(text) && text.length <= 20)
 
+const normalizeMarkdownHeadings = (markdown) => {
+  if (!markdown) return markdown
+  const lines = markdown.split(/\r?\n/)
+  const output = []
+  let inCodeBlock = false
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i]
+    const trimmed = line.trim()
+    const nextLine = lines[i + 1]?.trim() ?? ""
+
+    if (/^```|^~~~/.test(trimmed)) {
+      inCodeBlock = !inCodeBlock
+      output.push(line)
+      continue
+    }
+
+    if (inCodeBlock) {
+      output.push(line)
+      continue
+    }
+
+    if (!trimmed) {
+      output.push(line)
+      continue
+    }
+
+    if (/^#{1,6}\s+/.test(trimmed)) {
+      output.push(line)
+      continue
+    }
+
+    if (/^!\[/.test(trimmed) || /^>/.test(trimmed)) {
+      output.push(line)
+      continue
+    }
+
+    if (/^(\*|-|\+)\s+/.test(trimmed) || /^\d+\.\s+/.test(trimmed)) {
+      output.push(line)
+      continue
+    }
+
+    if (/^(-{3,}|\*{3,})$/.test(trimmed)) {
+      output.push(line)
+      continue
+    }
+
+    if (/^=+$/.test(nextLine) || /^-+$/.test(nextLine)) {
+      output.push(line)
+      continue
+    }
+
+    if (isHeadingParagraph(trimmed) && trimmed.length <= 40) {
+      output.push(`## ${trimmed}`)
+      continue
+    }
+
+    output.push(line)
+  }
+
+  return output.join("\n")
+}
+
 const createAnchorGenerator = () => {
   const counter = new Map()
   return (title, fallbackIndex = 1) => {
@@ -227,7 +290,8 @@ const renderTokensHtml = (tokens, links) => {
 
 const buildSectionsFromMarkdown = (markdown) => {
   if (!markdown || !markdown.trim()) return []
-  const tokens = marked.lexer(markdown)
+  const normalized = normalizeMarkdownHeadings(markdown)
+  const tokens = marked.lexer(normalized)
   const links = tokens.links || {}
   const sections = []
   const anchorGen = createAnchorGenerator()
@@ -344,12 +408,55 @@ const buildSectionsFromHtml = (contentHtml) => {
   return sections
 }
 
+const MIN_MEANINGFUL_SECTION_LEN = 60
+
+const getSectionText = (section) => {
+  if (!section) return ""
+  if (section.body_text) return cleanWhitespace(section.body_text)
+  if (section.body_html) return cleanWhitespace(stripTags(section.body_html))
+  return ""
+}
+
+const scoreSections = (sections = []) => {
+  if (!Array.isArray(sections) || sections.length === 0) {
+    return { score: 0, meaningful: 0, titled: 0, count: 0 }
+  }
+  let meaningful = 0
+  let titled = 0
+  for (const section of sections) {
+    const text = getSectionText(section)
+    if (text.length >= MIN_MEANINGFUL_SECTION_LEN) meaningful += 1
+    if (cleanWhitespace(section?.title || "").length > 0) titled += 1
+  }
+  const count = sections.length
+  const score = meaningful * 1000 + titled * 10 + count
+  return { score, meaningful, titled, count }
+}
+
+const pickBestSections = (markdownSections = [], htmlSections = []) => {
+  if (!markdownSections.length) return htmlSections
+  if (!htmlSections.length) return markdownSections
+
+  if (markdownSections.length <= 1 && htmlSections.length > 1) return htmlSections
+  if (htmlSections.length <= 1 && markdownSections.length > 1) return markdownSections
+
+  const mdStats = scoreSections(markdownSections)
+  const htmlStats = scoreSections(htmlSections)
+
+  if (mdStats.meaningful === 0 && htmlStats.meaningful > 0) return htmlSections
+  if (htmlStats.meaningful === 0 && mdStats.meaningful > 0) return markdownSections
+
+  if (htmlStats.score === mdStats.score) return markdownSections
+  return htmlStats.score > mdStats.score ? htmlSections : markdownSections
+}
+
 const buildSections = ({ contentHtml, markdown }) => {
+  const htmlSections = buildSectionsFromHtml(contentHtml)
   if (markdown) {
     const markdownSections = buildSectionsFromMarkdown(markdown)
-    if (markdownSections.length) return markdownSections
+    if (markdownSections.length) return pickBestSections(markdownSections, htmlSections)
   }
-  return buildSectionsFromHtml(contentHtml)
+  return htmlSections
 }
 
 const ensureTitleInContentText = (title, text) => {

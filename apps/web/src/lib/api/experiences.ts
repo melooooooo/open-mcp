@@ -181,3 +181,18 @@ export async function getExperienceMetadata(slug: string) {
 
   return data
 }
+
+export async function getAllExperienceSlugs() {
+  const supabase = await createServerSupabaseClient()
+  const { data, error } = await supabase
+    .from("finance_experiences")
+    .select("slug, updated_at")
+    .order("publish_time", { ascending: false })
+
+  if (error) {
+    console.error("Error fetching all experience slugs:", error)
+    return []
+  }
+
+  return data || []
+}
