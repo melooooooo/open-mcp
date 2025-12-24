@@ -2,8 +2,8 @@ import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { headers } from "next/headers"
 import { auth } from "@/lib/auth"
 import { db } from "@repo/db"
-import { userExperienceLikes } from "@repo/db/schema"
-import { eq, inArray, and } from "drizzle-orm"
+import { financeExperiences, userExperienceLikes } from "@repo/db/schema"
+import { eq, inArray, and, sql } from "drizzle-orm"
 
 type ExperienceListOptions = {
   limit?: number
@@ -143,6 +143,24 @@ export async function getExperienceBySlug(slug: string) {
   if (error) {
     console.error("Error fetching experience detail:", error)
     return null
+  }
+
+  if (data?.id) {
+    try {
+      await db
+        .update(financeExperiences)
+        .set({
+          viewCount: sql`coalesce(${financeExperiences.viewCount}, 0) + 1`
+        })
+        .where(eq(financeExperiences.id, data.id))
+      if (typeof data.view_count === "number") {
+        data.view_count += 1
+      } else {
+        data.view_count = 1
+      }
+    } catch (viewError) {
+      console.error("Error incrementing experience view count:", viewError)
+    }
   }
 
   // Fetch like status
