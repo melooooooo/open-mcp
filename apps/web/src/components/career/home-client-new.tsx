@@ -179,7 +179,7 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
               2025银行秋招进行中
             </div>
 
-            <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">
+            <h1 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">
               银行招聘{" "}
               <span className="text-blue-700 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-blue-400 dark:via-cyan-400 dark:to-blue-500 relative inline-block">
                 求职指南
@@ -187,7 +187,7 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
                   <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" />
                 </svg>
               </span>
-            </h2>
+            </h1>
             <p className="text-slate-500 dark:text-slate-400 text-lg md:text-xl mb-12 font-normal max-w-2xl mx-auto leading-relaxed">
               汇聚银行、券商、保险职位、网站合集与面试经验
               <br className="hidden md:block" />

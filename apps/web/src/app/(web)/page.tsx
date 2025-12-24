@@ -7,11 +7,5 @@ export const metadata: Metadata = {
 }
 
 export default function Home() {
-  return (
-    <>
-      <h1 className="sr-only">银行招聘 求职指南</h1>
-      <h2 className="sr-only">银行招聘信息与求职经验汇总</h2>
-      <HomeDataWrapperNew />
-    </>
-  )
+  return <HomeDataWrapperNew />
 }
