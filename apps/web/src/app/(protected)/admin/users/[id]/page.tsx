@@ -659,7 +659,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
                   </Avatar>
                   <div>
                     <h3 className="text-xl font-bold">{user?.name}</h3>
-                    <p className="text-muted-foreground">{user?.position}</p>
+                    <p className="text-muted-foreground">{(user as any)?.position}</p>
                   </div>
                   <div className="flex gap-2">
                     <Badge variant="outline" className="text-sm">

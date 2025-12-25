@@ -170,14 +170,14 @@ export function SignupForm() {
   }
 
   return (
-    <Form {...form}>
+    <Form {...(form as any)}>
       <form onSubmit={form.handleSubmit(handleRegister)} className="space-y-4">
         <CardDescription className="text-center text-sm text-muted-foreground pb-2">
           创建一个新账户，开启您的旅程
         </CardDescription>
 
         <FormField
-          control={form.control}
+          control={form.control as any}
           name="email"
           render={({ field }) => (
             <FormItem>
@@ -191,7 +191,7 @@ export function SignupForm() {
         />
 
         <FormField
-          control={form.control}
+          control={form.control as any}
           name="password"
           render={({ field }) => (
             <FormItem>
@@ -205,7 +205,7 @@ export function SignupForm() {
         />
 
         <FormField
-          control={form.control}
+          control={form.control as any}
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
@@ -222,7 +222,7 @@ export function SignupForm() {
           <FormLabel>验证码</FormLabel>
           <div className="flex gap-2 items-start">
             <FormField
-              control={form.control}
+              control={form.control as any}
               name="otp"
               render={({ field }) => (
                 <FormItem className="flex-1">

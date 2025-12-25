@@ -74,7 +74,7 @@ export async function verifyUserEmail(
  * @param user - The user data.
  * @returns The newly created user or null if not created.
  */
-export async function createUser(user: {
+export async function createUser(userData: {
   email: string;
   password: string;
   name: string;
@@ -84,7 +84,7 @@ export async function createUser(user: {
     .insert(user)
     .values({
       id: createId(),
-      ...user,
+      ...userData,
       emailVerified: false,
       createdAt: now,
       updatedAt: now,
@@ -94,7 +94,7 @@ export async function createUser(user: {
   return newUser ?? null;
 }
 
-export async function createUserByPhone(user: {
+export async function createUserByPhone(userData: {
   phone: string;
   password: string;
   name: string;
@@ -104,9 +104,9 @@ export async function createUserByPhone(user: {
     .insert(user)
     .values({
       id: createId(),
-      name: user.name,
-      password: user.password,
-      phoneNumber: user.phone,
+      name: userData.name,
+      password: userData.password,
+      phoneNumber: userData.phone,
       email: `${createId()}@placeholder.com`,
       emailVerified: false,
       createdAt: now,

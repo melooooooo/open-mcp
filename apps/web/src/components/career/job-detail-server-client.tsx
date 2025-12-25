@@ -35,7 +35,7 @@ export function JobDetailServerClient({ job }: JobDetailServerClientProps) {
 
   const jobTypeMap = {
     fulltime: "全职",
-    intern: "实习", 
+    intern: "实习",
     parttime: "兼职"
   }
 
@@ -83,7 +83,7 @@ export function JobDetailServerClient({ job }: JobDetailServerClientProps) {
                         )}
                       </div>
                       <div className="text-lg text-muted-foreground mb-3">{job.company.name}</div>
-                      
+
                       {/* 关键信息 */}
                       <div className="flex flex-wrap gap-4 text-sm">
                         <div className="flex items-center gap-1">
@@ -98,7 +98,7 @@ export function JobDetailServerClient({ job }: JobDetailServerClientProps) {
                         </div>
                         <div className="flex items-center gap-1">
                           <Building2 className="h-4 w-4 text-muted-foreground" />
-                          <span>{jobTypeMap[job.jobType]}</span>
+                          <span>{(jobTypeMap as any)[(job as any).jobType]}</span>
                         </div>
                         {job.educationRequirement && (
                           <div className="flex items-center gap-1">
@@ -109,7 +109,7 @@ export function JobDetailServerClient({ job }: JobDetailServerClientProps) {
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* 操作按钮 */}
                   <div className="flex items-center gap-2 shrink-0">
                     <Button
@@ -178,7 +178,7 @@ export function JobDetailServerClient({ job }: JobDetailServerClientProps) {
                     <TabsTrigger value="benefits">福利待遇</TabsTrigger>
                   </TabsList>
                 </CardHeader>
-                
+
                 <CardContent className="space-y-4">
                   <TabsContent value="description" className="space-y-4">
                     <div>
@@ -198,7 +198,7 @@ export function JobDetailServerClient({ job }: JobDetailServerClientProps) {
                       </div>
                     </div>
                   </TabsContent>
-                  
+
                   <TabsContent value="requirements" className="space-y-4">
                     <div>
                       <h3 className="font-semibold mb-3">任职要求</h3>
@@ -218,7 +218,7 @@ export function JobDetailServerClient({ job }: JobDetailServerClientProps) {
                       </div>
                     </div>
                   </TabsContent>
-                  
+
                   <TabsContent value="company" className="space-y-4">
                     <div>
                       <h3 className="font-semibold mb-3">公司介绍</h3>
@@ -239,7 +239,7 @@ export function JobDetailServerClient({ job }: JobDetailServerClientProps) {
                       </div>
                     </div>
                   </TabsContent>
-                  
+
                   <TabsContent value="benefits" className="space-y-4">
                     <div>
                       <h3 className="font-semibold mb-3">福利待遇</h3>

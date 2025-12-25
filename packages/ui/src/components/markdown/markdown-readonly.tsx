@@ -56,7 +56,7 @@ const extractNodeText = (node: React.ReactNode): string => {
   if (node === null || node === undefined) return ""
   if (typeof node === "string" || typeof node === "number") return String(node)
   if (Array.isArray(node)) return node.map(extractNodeText).join("")
-  if (React.isValidElement(node)) return extractNodeText(node.props.children)
+  if (React.isValidElement(node)) return extractNodeText((node.props as any).children)
   return ""
 }
 

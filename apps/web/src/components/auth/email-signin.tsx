@@ -163,10 +163,10 @@ export function EmailLogin({ onSuccess }: EmailLoginProps) {
   return (
     <div className="space-y-4">
       {mode === "password" ? (
-        <Form {...passwordForm}>
+        <Form {...(passwordForm as any)}>
           <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="space-y-4">
             <FormField
-              control={passwordForm.control}
+              control={passwordForm.control as any}
               name="email"
               render={({ field }) => (
                 <FormItem>
@@ -179,7 +179,7 @@ export function EmailLogin({ onSuccess }: EmailLoginProps) {
               )}
             />
             <FormField
-              control={passwordForm.control}
+              control={passwordForm.control as any}
               name="password"
               render={({ field }) => (
                 <FormItem>
@@ -220,10 +220,10 @@ export function EmailLogin({ onSuccess }: EmailLoginProps) {
           </form>
         </Form>
       ) : otpStep === "request" ? (
-        <Form {...otpEmailForm}>
+        <Form {...(otpEmailForm as any)}>
           <form onSubmit={otpEmailForm.handleSubmit(onOtpEmailSubmit)} className="space-y-4">
             <FormField
-              control={otpEmailForm.control}
+              control={otpEmailForm.control as any}
               name="email"
               render={({ field }) => (
                 <FormItem>
@@ -253,13 +253,13 @@ export function EmailLogin({ onSuccess }: EmailLoginProps) {
           </form>
         </Form>
       ) : (
-        <Form {...otpForm}>
+        <Form {...(otpForm as any)}>
           <form onSubmit={otpForm.handleSubmit(onOtpSubmit)} className="space-y-4">
             <div className="text-sm text-muted-foreground">
               验证码已发送至 <span className="font-medium">{otpEmail}</span>
             </div>
             <FormField
-              control={otpForm.control}
+              control={otpForm.control as any}
               name="otp"
               render={({ field }) => (
                 <FormItem className="space-y-4">

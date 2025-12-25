@@ -62,7 +62,7 @@ export function CompanyCard({ company, variant = "default", className, onClick }
 
   if (variant === "compact") {
     return (
-      <Card 
+      <Card
         className={cn(
           "group cursor-pointer transition-all duration-200 hover:shadow-lg",
           className
@@ -90,9 +90,9 @@ export function CompanyCard({ company, variant = "default", className, onClick }
               </div>
               <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
                 {company.industry && <span>{company.industry}</span>}
-                {company.size && sizeMap[company.size] && (
+                {company.size && (sizeMap as any)[company.size] && (
                   <Badge variant="secondary" className="text-xs h-4">
-                    {sizeMap[company.size].label}
+                    {(sizeMap as any)[company.size].label}
                   </Badge>
                 )}
                 {company.jobCount !== undefined && (
@@ -108,7 +108,7 @@ export function CompanyCard({ company, variant = "default", className, onClick }
   }
 
   return (
-    <Card 
+    <Card
       className={cn(
         "group cursor-pointer transition-all duration-200 hover:shadow-xl relative overflow-hidden",
         className
@@ -150,9 +150,9 @@ export function CompanyCard({ company, variant = "default", className, onClick }
                       {company.industry}
                     </span>
                   )}
-                  {company.size && sizeMap[company.size] && (
-                    <Badge className={cn("text-xs", sizeMap[company.size].color)}>
-                      {sizeMap[company.size].label}
+                  {company.size && (sizeMap as any)[company.size] && (
+                    <Badge className={cn("text-xs", (sizeMap as any)[company.size].color)}>
+                      {(sizeMap as any)[company.size].label}
                     </Badge>
                   )}
                   {company.fundingStage && (

@@ -141,11 +141,11 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
           </DialogDescription>
         </DialogHeader>
 
-        <Form {...form}>
+        <Form {...(form as any)}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-4 no-scrollbar">
               <FormField
-                control={form.control}
+                control={form.control as any}
                 name="type"
                 render={({ field }) => (
                   <FormItem>
@@ -212,7 +212,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
               />
 
               <FormField
-                control={form.control}
+                control={form.control as any}
                 name="title"
                 render={({ field }) => (
                   <FormItem>
@@ -226,7 +226,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
               />
 
               <FormField
-                control={form.control}
+                control={form.control as any}
                 name="userEmail"
                 render={({ field }) => (
                   <FormItem>
@@ -241,7 +241,7 @@ export function FeedbackDialog({ open, onOpenChange }: FeedbackDialogProps) {
               />
 
               <FormField
-                control={form.control}
+                control={form.control as any}
                 name="description"
                 render={({ field }) => (
                   <FormItem>

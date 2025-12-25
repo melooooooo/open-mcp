@@ -1,6 +1,6 @@
 import { and, asc, desc, eq, like, or, sql } from "drizzle-orm";
 import { db } from "../../index";
-import { account, user } from "../../schema";
+import { account as accounts, user, user as users } from "../../schema";
 import { createId } from "@paralleldrive/cuid2"
 
 import { zCreateUserSchema, zUpdateUserSchema, zSearchUsersSchema } from "../../types";
@@ -72,10 +72,10 @@ export async function verifyUserEmail(
 /**
  * Create a new user.
  *
- * @param user - The user data.
+ * @param userData - The user data.
  * @returns The newly created user or null if not created.
  */
-export async function createUser(user: {
+export async function createUser(userData: {
   email: string;
   password: string;
   name: string;
@@ -84,9 +84,9 @@ export async function createUser(user: {
     .insert(user)
     .values({
       id: createId(),
-      name: user.name,
-      email: user.email,
-      password: user.password,
+      name: userData.name,
+      email: userData.email,
+      password: userData.password,
       emailVerified: false,
       createdAt: sql`now()`,
       updatedAt: sql`now()`,
@@ -98,7 +98,7 @@ export async function createUser(user: {
 }
 
 
-export async function createUserByPhone(user: {
+export async function createUserByPhone(userData: {
   phone: string;
   password: string;
   name: string;
@@ -108,10 +108,10 @@ export async function createUserByPhone(user: {
     .values({
       // @ts-expect-error
       id: createId(),
-      name: user.name,
+      name: userData.name,
       email: null,
-      password: user.password,
-      phoneNumber: user.phone,
+      password: userData.password,
+      phoneNumber: userData.phone,
       phoneNumberVerified: sql`now()`,
       emailVerified: null,
       createdAt: sql`now()`,
@@ -146,10 +146,10 @@ export async function updateUserPassword(
  * @returns True if user exists, otherwise false.
  */
 export async function userExists(userId: string): Promise<boolean> {
-  const user = await db.query.user.findFirst({
+  const existingUser = await db.query.user.findFirst({
     where: eq(user.id, userId),
   });
-  return user !== null;
+  return existingUser !== null && existingUser !== undefined;
 }
 
 /**

@@ -143,10 +143,10 @@ export default function CategoryCreatePage() {
         }
       />
 
-      <Form {...form}>
+      <Form {...(form as any)}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
-            control={form.control}
+            control={form.control as any}
             name="name"
             render={({ field }) => (
               <FormItem>
@@ -167,7 +167,7 @@ export default function CategoryCreatePage() {
           />
 
           <FormField
-            control={form.control}
+            control={form.control as any}
             name="slug"
             render={({ field }) => (
               <FormItem>
@@ -184,7 +184,7 @@ export default function CategoryCreatePage() {
           />
 
           <FormField
-            control={form.control}
+            control={form.control as any}
             name="description"
             render={({ field }) => (
               <FormItem>
@@ -205,7 +205,7 @@ export default function CategoryCreatePage() {
           />
 
           <FormField
-            control={form.control}
+            control={form.control as any}
             name="parentId"
             render={({ field }) => (
               <FormItem>

@@ -1,0 +1,100 @@
+turbo 2.5.4
+
+• Packages in scope: docs
+• Running build in 1 packages
+• Remote caching disabled
+docs:build: cache miss, executing ce68ad599b93e07c
+docs:build: 
+docs:build: > docs@0.1.0 build /Users/jiang/develop/GitHub/open-mcp/apps/docs
+docs:build: > next build
+docs:build: 
+docs:build:    ▲ Next.js 15.3.5
+docs:build:    - Experiments (use with caution):
+docs:build:      ✓ viewTransition
+docs:build: 
+docs:build:    Creating an optimized production build ...
+docs:build: [MDX] updated map file in 6.757249999999999ms
+docs:build:  ✓ Compiled successfully in 3.0s
+docs:build:    Skipping validation of types
+docs:build:    Skipping linting
+docs:build:    Collecting page data ...
+docs:build:  ⚠ Using edge runtime on a page currently disables static generation for that page
+docs:build: imageRoutes [
+docs:build:   { slug: [ 'image.png' ] },
+docs:build:   { slug: [ 'page', '2', 'image.png' ] },
+docs:build:   { slug: [ 'page', '3', 'image.png' ] },
+docs:build:   { slug: [ 'page', '4', 'image.png' ] },
+docs:build:   { slug: [ 'conceptual', 'image.png' ] },
+docs:build:   { slug: [ 'idea', 'image.png' ] },
+docs:build:   { slug: [ 'solution', 'image.png' ] },
+docs:build:   { slug: [ 'tech', 'image.png' ] },
+docs:build:   { slug: [ 'idea', 'page', '2', 'image.png' ] },
+docs:build:   { slug: [ 'solution', 'page', '2', 'image.png' ] },
+docs:build:   { slug: [ 'series', 'x', 'image.png' ] },
+docs:build:   { slug: [ 'series', '构建 React 组件库', 'image.png' ] },
+docs:build:   {
+docs:build:     slug: [ 'conceptual', 'css-fundamentals-for-framer-motion', 'image.png' ]
+docs:build:   },
+docs:build:   { slug: [ 'conceptual', 'non-technical-intro-to-npd', 'image.png' ] },
+docs:build:   { slug: [ 'conceptual', 'schema-driven-ux', 'image.png' ] },
+docs:build:   { slug: [ 'idea', 'edge-computing-revolution', 'image.png' ] },
+docs:build:   { slug: [ 'idea', 'ethical-ai-development', 'image.png' ] },
+docs:build:   { slug: [ 'idea', 'microservices-trade-offs', 'image.png' ] },
+docs:build:   {
+docs:build:     slug: [ 'idea', 'newsletter-subscription-for-static-sites', 'image.png' ]
+docs:build:   },
+docs:build:   { slug: [ 'idea', 'open-source-sustainability', 'image.png' ] },
+docs:build:   { slug: [ 'idea', 'understanding-llm-development', 'image.png' ] },
+docs:build:   {
+docs:build:     slug: [
+docs:build:       'solution',
+docs:build:       'building-react-component-library-configure-vite-tailwind',
+docs:build:       'image.png'
+docs:build:     ]
+docs:build:   },
+docs:build:   { slug: [ 'solution', 'embed-x-post-in-fuma-docs', 'image.png' ] },
+docs:build:   { slug: [ 'solution', 'github-code-block', 'image.png' ] },
+docs:build:   {
+docs:build:     slug: [ 'solution', 'implementing-category-on-fuma-docs', 'image.png' ]
+docs:build:   },
+docs:build:   { slug: [ 'solution', 'part-2-series-x', 'image.png' ] },
+docs:build:   { slug: [ 'solution', 'part-3-series-x', 'image.png' ] },
+docs:build:   { slug: [ 'solution', 'responsive-preview', 'image.png' ] },
+docs:build:   { slug: [ 'solution', 'setup-blog-with-fuma-docs', 'image.png' ] },
+docs:build:   { slug: [ 'tech', 'api-first-design', 'image.png' ] }
+docs:build: ]
+docs:build:    Generating static pages (0/72) ...
+docs:build: resolvedParams { slug: [ 'solution', 'image.png' ] }
+docs:build: resolvedParams { slug: [ 'tech', 'image.png' ] }
+docs:build: resolvedParams {
+docs:build:   slug: [ 'conceptual', 'css-fundamentals-for-framer-motion', 'image.png' ]
+docs:build: }
+docs:build: resolvedParams { slug: [ 'solution', 'page', '2', 'image.png' ] }
+docs:build: resolvedParams { slug: [ 'series', 'x', 'image.png' ] }
+docs:build: resolvedParams { slug: [ 'conceptual', 'non-technical-intro-to-npd', 'image.png' ] }
+docs:build: resolvedParams { slug: [ 'series', '构建 React 组件库', 'image.png' ] }
+docs:build: resolvedParams { slug: [ 'idea', 'page', '2', 'image.png' ] }
+docs:build: Error occurred prerendering page "/blog/solution/github-code-block". Read more: https://nextjs.org/docs/messages/prerender-error
+docs:build: ReferenceError: lineNumber is not defined
+docs:build:     at ig (/Users/jiang/develop/GitHub/open-mcp/apps/docs/.next/server/chunks/5779.js:1:281296)
+docs:build:     at io (/Users/jiang/develop/GitHub/open-mcp/apps/docs/.next/server/chunks/5779.js:1:281665)
+docs:build:     at eO (/Users/jiang/develop/GitHub/open-mcp/node_modules/.pnpm/next@15.3.5_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/next-server/app-page-experimental.runtime.prod.js:49:13812)
+docs:build:     at e (/Users/jiang/develop/GitHub/open-mcp/node_modules/.pnpm/next@15.3.5_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/next-server/app-page-experimental.runtime.prod.js:49:17863)
+docs:build:     at eB (/Users/jiang/develop/GitHub/open-mcp/node_modules/.pnpm/next@15.3.5_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/next-server/app-page-experimental.runtime.prod.js:49:18325)
+docs:build:     at Object.toJSON (/Users/jiang/develop/GitHub/open-mcp/node_modules/.pnpm/next@15.3.5_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/next-server/app-page-experimental.runtime.prod.js:49:15329)
+docs:build:     at stringify (<anonymous>)
+docs:build:     at eY (/Users/jiang/develop/GitHub/open-mcp/node_modules/.pnpm/next@15.3.5_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/next-server/app-page-experimental.runtime.prod.js:49:27296)
+docs:build:     at eZ (/Users/jiang/develop/GitHub/open-mcp/node_modules/.pnpm/next@15.3.5_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/next-server/app-page-experimental.runtime.prod.js:49:27686)
+docs:build:     at e0 (/Users/jiang/develop/GitHub/open-mcp/node_modules/.pnpm/next@15.3.5_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/next-server/app-page-experimental.runtime.prod.js:49:28223)
+docs:build: Export encountered an error on /(home)/blog/[[...slug]]/page: /blog/solution/github-code-block, exiting the build.
+docs:build:  ⨯ Next.js build worker exited with code: 1 and signal: null
+docs:build:  ELIFECYCLE  Command failed with exit code 1.
+docs:build: ERROR: command finished with error: command (/Users/jiang/develop/GitHub/open-mcp/apps/docs) /usr/local/bin/pnpm run build exited (1)
+docs#build: command (/Users/jiang/develop/GitHub/open-mcp/apps/docs) /usr/local/bin/pnpm run build exited (1)
+
+ Tasks:    0 successful, 1 total
+Cached:    0 cached, 1 total
+  Time:    7.416s 
+Failed:    docs#build
+
+ ERROR  run failed: command  exited (1)

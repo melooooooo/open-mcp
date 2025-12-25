@@ -71,7 +71,7 @@ export async function POST(req: Request) {
     try {
       signupResult = await auth.api.signUpEmail({
         body: { name, email, password },
-        headers: headers(),
+        headers: await headers() as any,
         returnHeaders: true,
       })
     } catch (error) {

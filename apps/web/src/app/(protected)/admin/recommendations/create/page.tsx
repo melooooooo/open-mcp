@@ -108,10 +108,10 @@ export default function CreateRecommendationPage() {
         <h2 className="text-3xl font-bold tracking-tight">创建推荐</h2>
       </div>
 
-      <Form {...form}>
+      <Form {...(form as any)}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
-            control={form.control}
+            control={form.control as any}
             name="title"
             render={({ field }) => (
               <FormItem>
@@ -126,7 +126,7 @@ export default function CreateRecommendationPage() {
           />
 
           <FormField
-            control={form.control}
+            control={form.control as any}
             name="type"
             render={({ field }) => (
               <FormItem>
@@ -156,7 +156,7 @@ export default function CreateRecommendationPage() {
 
           {type === "category" && (
             <FormField
-              control={form.control}
+              control={form.control as any}
               name="category"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
@@ -218,7 +218,7 @@ export default function CreateRecommendationPage() {
           )}
 
           <FormField
-            control={form.control}
+            control={form.control as any}
             name="description"
             render={({ field }) => (
               <FormItem>

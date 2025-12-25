@@ -289,7 +289,7 @@ export default function SubmitPage() {
           <p className="text-muted-foreground">分享您的 MCP 客户端、服务器或应用，让更多的人了解和使用您的产品</p>
         </div>
 
-        <Form {...form}>
+        <Form {...(form as any)}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <Card className="w-full">
               <CardHeader>
@@ -334,7 +334,7 @@ export default function SubmitPage() {
 
                 <div className="grid gap-6 md:grid-cols-2">
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="nickname"
                     render={({ field }) => (
                       <FormItem>
@@ -348,7 +348,7 @@ export default function SubmitPage() {
                   />
 
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="email"
                     render={({ field }) => (
                       <FormItem>
@@ -363,7 +363,7 @@ export default function SubmitPage() {
                 </div>
 
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
@@ -377,7 +377,7 @@ export default function SubmitPage() {
                 />
 
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name="description"
                   render={({ field }) => (
                     <FormItem>
@@ -392,7 +392,7 @@ export default function SubmitPage() {
 
                 <div className="grid gap-6 md:grid-cols-2">
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="website"
                     render={({ field }) => (
                       <FormItem>
@@ -406,7 +406,7 @@ export default function SubmitPage() {
                   />
 
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="github"
                     render={({ field }) => (
                       <FormItem>
@@ -421,7 +421,7 @@ export default function SubmitPage() {
                 </div>
 
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name="tags"
                   render={({ field }) => (
                     <FormItem>

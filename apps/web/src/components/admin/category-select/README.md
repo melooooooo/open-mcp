@@ -40,7 +40,7 @@ function MyComponent() {
   });
 
   return (
-    <Form {...form}>
+    <Form {...(form as any)}>
       <CategorySelect
         categories={categoriesData?.data || []}
         name="categoryId"
@@ -72,7 +72,7 @@ function MyComponent() {
 ```tsx
 // 在 add-github-app.tsx 中
 <FormField
-  control={form.control}
+  control={form.control as any}
   name="categoryId"
   render={({ field }) => (
     <FormItem>

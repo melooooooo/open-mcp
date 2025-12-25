@@ -103,7 +103,7 @@ export function MarkdownEditor({
     if (historyIndex > 0) {
       const newIndex = historyIndex - 1;
       setHistoryIndex(newIndex);
-      onChange(history[newIndex]);
+      onChange(history[newIndex] ?? "");
     }
   }, [historyIndex, history, onChange]);
 
@@ -112,7 +112,7 @@ export function MarkdownEditor({
     if (historyIndex < history.length - 1) {
       const newIndex = historyIndex + 1;
       setHistoryIndex(newIndex);
-      onChange(history[newIndex]);
+      onChange(history[newIndex] ?? "");
     }
   }, [historyIndex, history, onChange]);
 

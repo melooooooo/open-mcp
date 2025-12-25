@@ -138,10 +138,10 @@ export function PhoneSignin({ onSuccess }: PhoneSigninProps) {
   return (
     <div className="space-y-4">
       {step === "phone" ? (
-        <Form {...phoneForm}>
+        <Form {...(phoneForm as any)}>
           <form onSubmit={phoneForm.handleSubmit(onPhoneSubmit)} className="space-y-4">
             <FormField
-              control={phoneForm.control}
+              control={phoneForm.control as any}
               name="phone"
               render={({ field }) => (
                 <FormItem>
@@ -169,13 +169,13 @@ export function PhoneSignin({ onSuccess }: PhoneSigninProps) {
           </form>
         </Form>
       ) : (
-        <Form {...verificationForm}>
+        <Form {...(verificationForm as any)}>
           <form onSubmit={verificationForm.handleSubmit(onVerificationSubmit)} className="space-y-4">
             <div className="text-sm text-muted-foreground mb-4">
               验证码已发送至 <span className="font-medium">{phoneNumber}</span>
             </div>
             <FormField
-              control={verificationForm.control}
+              control={verificationForm.control as any}
               name="code"
               render={({ field }) => (
                 <FormItem className="space-y-4">

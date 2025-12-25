@@ -122,7 +122,7 @@ export function AddGitHubAppButton() {
   };
 
   return (
-    <Form {...form}>
+    <Form {...(form as any)}>
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
           <Button variant="default">
@@ -154,7 +154,7 @@ export function AddGitHubAppButton() {
                   GitHub URL *
                 </Label>
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name="gitHubURL"
                   render={({ field }) => (
                     <FormItem>
@@ -176,7 +176,7 @@ export function AddGitHubAppButton() {
                   应用类型 *
                 </Label>
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name="type"
                   render={({ field }) => (
                     <FormItem>
@@ -207,7 +207,7 @@ export function AddGitHubAppButton() {
                   应用分类
                 </Label>
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name="categoryId"
                   render={({ field }) => (
                     <FormItem>

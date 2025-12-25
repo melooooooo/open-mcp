@@ -21,7 +21,7 @@ export function ExperienceEditButton({
       {
         retry: false,
         // 如果未登录或无权限，不显示错误
-        onError: () => { },
+
       }
     );
 

@@ -18,16 +18,19 @@ interface JobDetailClientProps {
 
 export function JobDetailClient({ jobId }: JobDetailClientProps) {
   const [isBookmarked, setIsBookmarked] = useState(false)
-  
+
   // 模拟根据ID获取职位详情
-  const job = mockJobs.find(j => j.id === jobId) || mockJobs[0]
-  
+  const job = (mockJobs.find(j => j.id === jobId) || mockJobs[0]) as any;
+  if (!job) {
+    return <div className="p-8 text-center">职位未找到</div>
+  }
+
   // 相关职位推荐
-  const relatedJobs = mockJobs.filter(j => 
-    j.id !== job.id && 
-    (j.company.name === job.company.name || j.tags?.some(tag => job.tags?.includes(tag)))
+  const relatedJobs = mockJobs.filter(j =>
+    j.id !== job.id &&
+    (j.company.name === job.company.name || j.tags?.some((tag: any) => job.tags?.includes(tag)))
   ).slice(0, 3)
-  
+
   const formatSalary = (min?: number, max?: number) => {
     if (!min && !max) return "薪资面议"
     if (!max) return `${min}k起`
@@ -44,9 +47,9 @@ export function JobDetailClient({ jobId }: JobDetailClientProps) {
     return `${Math.ceil(days / 7)}周后截止`
   }
 
-  const jobTypeMap = {
+  const jobTypeMap: any = {
     fulltime: "全职",
-    intern: "实习", 
+    intern: "实习",
     parttime: "兼职"
   }
 
@@ -94,7 +97,7 @@ export function JobDetailClient({ jobId }: JobDetailClientProps) {
                         )}
                       </div>
                       <div className="text-lg text-muted-foreground mb-3">{job.company.name}</div>
-                      
+
                       {/* 关键信息 */}
                       <div className="flex flex-wrap gap-4 text-sm">
                         <div className="flex items-center gap-1">
@@ -109,7 +112,7 @@ export function JobDetailClient({ jobId }: JobDetailClientProps) {
                         </div>
                         <div className="flex items-center gap-1">
                           <Building2 className="h-4 w-4 text-muted-foreground" />
-                          <span>{jobTypeMap[job.jobType]}</span>
+                          <span>{(jobTypeMap as any)[job.jobType]}</span>
                         </div>
                         {job.educationRequirement && (
                           <div className="flex items-center gap-1">
@@ -120,7 +123,7 @@ export function JobDetailClient({ jobId }: JobDetailClientProps) {
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* 操作按钮 */}
                   <div className="flex items-center gap-2 shrink-0">
                     <Button
@@ -145,7 +148,7 @@ export function JobDetailClient({ jobId }: JobDetailClientProps) {
                 {/* 标签 */}
                 {job.tags && job.tags.length > 0 && (
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {job.tags.map((tag, index) => (
+                    {job.tags.map((tag: any, index: any) => (
                       <Badge key={index} variant="outline">
                         {tag}
                       </Badge>
@@ -189,7 +192,7 @@ export function JobDetailClient({ jobId }: JobDetailClientProps) {
                     <TabsTrigger value="benefits">福利待遇</TabsTrigger>
                   </TabsList>
                 </CardHeader>
-                
+
                 <CardContent className="space-y-4">
                   <TabsContent value="description" className="space-y-4">
                     <div>
@@ -205,7 +208,7 @@ export function JobDetailClient({ jobId }: JobDetailClientProps) {
                       </div>
                     </div>
                   </TabsContent>
-                  
+
                   <TabsContent value="requirements" className="space-y-4">
                     <div>
                       <h3 className="font-semibold mb-3">任职要求</h3>
@@ -221,7 +224,7 @@ export function JobDetailClient({ jobId }: JobDetailClientProps) {
                       </div>
                     </div>
                   </TabsContent>
-                  
+
                   <TabsContent value="company" className="space-y-4">
                     <div>
                       <h3 className="font-semibold mb-3">公司介绍</h3>
@@ -243,7 +246,7 @@ export function JobDetailClient({ jobId }: JobDetailClientProps) {
                       </div>
                     </div>
                   </TabsContent>
-                  
+
                   <TabsContent value="benefits" className="space-y-4">
                     <div>
                       <h3 className="font-semibold mb-3">福利待遇</h3>

@@ -1,6 +1,6 @@
 import { and, asc, desc, eq, sql } from "drizzle-orm";
 import { db } from "../../index";
-import { user } from "../../schema";
+import { user as users, appSubmissions, apps, appCategories } from "../../schema";
 import { zCreateAppSubmissionSchema, zUpdateAppSubmissionSchema, zSearchAppSubmissionsSchema, CreateAppSubmission } from "../../types";
 
 export const appSubmissionData = {

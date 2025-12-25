@@ -180,11 +180,11 @@ export function SuggestionDialog({ app }: SuggestionDialogProps) {
             <DialogDescription>分享您对这个应用的想法、功能建议或改进意见</DialogDescription>
           </DialogHeader>
 
-          <Form {...form}>
+          <Form {...(form as any)}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full">
               <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-4 no-scrollbar">
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name="type"
                   render={({ field }) => (
                     <FormItem>
@@ -263,7 +263,7 @@ export function SuggestionDialog({ app }: SuggestionDialogProps) {
                 />
 
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name="title"
                   render={({ field }) => (
                     <FormItem>
@@ -278,7 +278,7 @@ export function SuggestionDialog({ app }: SuggestionDialogProps) {
                 />
 
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name="description"
                   render={({ field }) => (
                     <FormItem>

@@ -237,10 +237,10 @@ export const useAppColumns = (recommendationId: string) => {
                     调整应用在推荐列表中的顺序
                   </DialogDescription>
                 </DialogHeader>
-                <Form {...form}>
+                <Form {...(form as any)}>
                   <form onSubmit={form.handleSubmit(handleUpdateOrder)} className="space-y-4">
                     <FormField
-                      control={form.control}
+                      control={form.control as any}
                       name="order"
                       render={({ field }) => (
                         <FormItem>

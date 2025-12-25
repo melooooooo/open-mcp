@@ -12,7 +12,7 @@ import { Textarea } from "@repo/ui/components/ui/textarea"
 import { ArrowLeft, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { use, useEffect,useState } from "react"
+import { use, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
@@ -69,19 +69,20 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
   // Update form values when user data is loaded
   useEffect(() => {
     if (user) {
+      const safeUser = user as any;
       form.reset({
         name: user.name || "",
         email: user.email || "",
         phone: user.phoneNumber || "",
         role: (user.role || "user") as "admin" | "user",
         banned: user.banned || false,
-        location: user.location || "",
-        bio: user.bio || "",
-        company: user.company || "",
-        position: user.position || "",
-        website: user.website || "",
-        github: user.github || "",
-        twitter: user.twitter || "",
+        location: safeUser.location || "",
+        bio: safeUser.bio || "",
+        company: safeUser.company || "",
+        position: safeUser.position || "",
+        website: safeUser.website || "",
+        github: safeUser.github || "",
+        twitter: safeUser.twitter || "",
       })
     }
   }, [user, form])
@@ -113,7 +114,7 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
         website: values.website || undefined,
         github: values.github || undefined,
         twitter: values.twitter || undefined,
-      })
+      } as any)
 
       toast.success("用户更新成功", {
         description: "用户信息已成功更新。",
@@ -144,7 +145,7 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
         }
       />
 
-      <Form {...form}>
+      <Form {...(form as any)}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
@@ -159,7 +160,7 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
 
                   <div className="grid grid-cols-1 gap-4">
                     <FormField
-                      control={form.control}
+                      control={form.control as any}
                       name="name"
                       render={({ field }) => (
                         <FormItem>
@@ -173,7 +174,7 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
                     />
 
                     <FormField
-                      control={form.control}
+                      control={form.control as any}
                       name="email"
                       render={({ field }) => (
                         <FormItem>
@@ -187,7 +188,7 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
                     />
 
                     <FormField
-                      control={form.control}
+                      control={form.control as any}
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
@@ -201,7 +202,7 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
                     />
 
                     <FormField
-                      control={form.control}
+                      control={form.control as any}
                       name="location"
                       render={({ field }) => (
                         <FormItem>
@@ -215,7 +216,7 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
                     />
 
                     <FormField
-                      control={form.control}
+                      control={form.control as any}
                       name="bio"
                       render={({ field }) => (
                         <FormItem>
@@ -238,7 +239,7 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
                   <FormSection title="账户设置" description="用户的角色和状态">
                     <div className="grid grid-cols-1 gap-4">
                       <FormField
-                        control={form.control}
+                        control={form.control as any}
                         name="role"
                         render={({ field }) => (
                           <FormItem>
@@ -261,7 +262,7 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
                       />
 
                       <FormField
-                        control={form.control}
+                        control={form.control as any}
                         name="banned"
                         render={({ field }) => (
                           <FormItem>
@@ -295,7 +296,7 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
                   <FormSection title="工作信息" description="用户的职业信息">
                     <div className="grid grid-cols-1 gap-4">
                       <FormField
-                        control={form.control}
+                        control={form.control as any}
                         name="company"
                         render={({ field }) => (
                           <FormItem>
@@ -309,7 +310,7 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
                       />
 
                       <FormField
-                        control={form.control}
+                        control={form.control as any}
                         name="position"
                         render={({ field }) => (
                           <FormItem>
@@ -331,7 +332,7 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
                   <FormSection title="社交信息" description="用户的社交媒体链接">
                     <div className="grid grid-cols-1 gap-4">
                       <FormField
-                        control={form.control}
+                        control={form.control as any}
                         name="website"
                         render={({ field }) => (
                           <FormItem>
@@ -345,7 +346,7 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
                       />
 
                       <FormField
-                        control={form.control}
+                        control={form.control as any}
                         name="github"
                         render={({ field }) => (
                           <FormItem>

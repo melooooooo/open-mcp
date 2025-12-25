@@ -14,7 +14,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import type React from "react"
 import { useState } from "react"
-import { type Control, useForm } from "react-hook-form"
+import { type Control, type FieldPath, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 
@@ -83,7 +83,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 type FieldProps<T> = {
   control: Control<FormValues>;
-  name: keyof FormValues;
+  name: FieldPath<FormValues>;
   value?: T;
 }
 
@@ -93,8 +93,8 @@ const FormTextField = ({ control, name, label, description, placeholder }: Field
   placeholder?: string;
 }) => (
   <FormField
-    control={control}
-    name={name}
+    control={control as any}
+    name={name as any}
     render={({ field }) => (
       <FormItem>
         <FormLabel>{label}</FormLabel>
@@ -114,8 +114,8 @@ const FormTextArea = ({ control, name, label, description, placeholder }: FieldP
   placeholder?: string;
 }) => (
   <FormField
-    control={control}
-    name={name}
+    control={control as any}
+    name={name as any}
     render={({ field }) => (
       <FormItem>
         <FormLabel>{label}</FormLabel>
@@ -135,8 +135,8 @@ const FormSelect = ({ control, name, label, description, options }: FieldProps<s
   options: { value: string; label: string }[];
 }) => (
   <FormField
-    control={control}
-    name={name}
+    control={control as any}
+    name={name as any}
     render={({ field }) => (
       <FormItem>
         <FormLabel>{label}</FormLabel>
@@ -166,8 +166,8 @@ const FormCheckbox = ({ control, name, label, description }: FieldProps<boolean>
   description?: string;
 }) => (
   <FormField
-    control={control}
-    name={name}
+    control={control as any}
+    name={name as any}
     render={({ field }) => (
       <FormItem className="flex flex-row items-start space-x-3 space-y-0">
         <FormControl>
@@ -191,8 +191,8 @@ const FormMultiCheckbox = ({ control, name, label, description, options }: Field
   options: { id: string; name: string; description?: string }[];
 }) => (
   <FormField
-    control={control}
-    name={name}
+    control={control as any}
+    name={name as any}
     render={({ field }) => (
       <FormItem>
         <FormLabel>{label}</FormLabel>
@@ -412,7 +412,7 @@ export default function CreateAppPage() {
       <div className="grid gap-6">
         <Card>
           <CardContent className="pt-6">
-            <Form {...form}>
+            <Form {...(form as any)}>
               <form className="space-y-8">
                 <FormSection title="基本信息" description="设置应用的基本信息">
                   <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 items-start">
@@ -438,12 +438,12 @@ export default function CreateAppPage() {
                       />
                     </div>
                     <div className="space-y-4">
-                      <FormTextField control={form.control} name="name" label="应用名称 *" description="应用的显示名称" placeholder="输入应用名称" />
+                      <FormTextField control={form.control as any} name="name" label="应用名称 *" description="应用的显示名称" placeholder="输入应用名称" />
 
-                      <FormTextField control={form.control} name="slug" label="标识符 *" description="应用的唯一标识符，用于URL和API，只能包含小写字母、数字和连字符" placeholder="输入标识符" />
-                      <FormCheckbox control={form.control} name="featured" label="推荐应用" description="将此应用标记为推荐应用" />
+                      <FormTextField control={form.control as any} name="slug" label="标识符 *" description="应用的唯一标识符，用于URL和API，只能包含小写字母、数字和连字符" placeholder="输入标识符" />
+                      <FormCheckbox control={form.control as any} name="featured" label="推荐应用" description="将此应用标记为推荐应用" />
                       <FormSelect
-                        control={form.control}
+                        control={form.control as any}
                         name="type"
                         label="应用类型 *"
                         description="选择应用的类型"
@@ -456,7 +456,7 @@ export default function CreateAppPage() {
 
                       {appType === "server" && (
                         <FormField
-                          control={form.control}
+                          control={form.control as any}
                           name="scenario"
                           render={({ field }) => (
                             <FormItem>
@@ -486,10 +486,10 @@ export default function CreateAppPage() {
 
                   <Separator />
 
-                  <FormTextArea control={form.control} name="description" label="简短描述 *" description="简短描述应用的主要功能和特点（最多500个字符）" placeholder="输入应用的简短描述" />
+                  <FormTextArea control={form.control as any} name="description" label="简短描述 *" description="简短描述应用的主要功能和特点（最多500个字符）" placeholder="输入应用的简短描述" />
 
                   <FormTextArea
-                    control={form.control}
+                    control={form.control as any}
                     name="longDescription"
                     label="详细描述"
                     description="详细描述应用的功能、特点和使用场景（最多2000个字符）"
@@ -499,15 +499,15 @@ export default function CreateAppPage() {
 
                 <FormSection title="链接和版本" description="设置应用的相关链接和版本信息">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <FormTextField control={form.control} name="website" label="官方网站" description="应用的官方网站" placeholder="https://example.com" />
+                    <FormTextField control={form.control as any} name="website" label="官方网站" description="应用的官方网站" placeholder="https://example.com" />
 
-                    <FormTextField control={form.control} name="github" label="GitHub 仓库" description="应用的GitHub仓库" placeholder="https://github.com/username/repo" />
+                    <FormTextField control={form.control as any} name="github" label="GitHub 仓库" description="应用的GitHub仓库" placeholder="https://github.com/username/repo" />
 
-                    <FormTextField control={form.control} name="docs" label="文档链接" description="应用的文档链接" placeholder="https://docs.example.com" />
+                    <FormTextField control={form.control as any} name="docs" label="文档链接" description="应用的文档链接" placeholder="https://docs.example.com" />
 
-                    <FormTextField control={form.control} name="version" label="版本" description="应用的版本" placeholder="1.0.0" />
+                    <FormTextField control={form.control as any} name="version" label="版本" description="应用的版本" placeholder="1.0.0" />
 
-                    <FormTextField control={form.control} name="license" label="许可证" description="应用的许可证" placeholder="MIT, Apache-2.0, 专有软件等" />
+                    <FormTextField control={form.control as any} name="license" label="许可证" description="应用的许可证" placeholder="MIT, Apache-2.0, 专有软件等" />
                   </div>
                 </FormSection>
 
@@ -519,7 +519,7 @@ export default function CreateAppPage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {categoriesData?.data && (
                           <FormMultiCheckbox
-                            control={form.control}
+                            control={form.control as any}
                             name="categoryIds"
                             label="分类"
                             options={categoriesData.data.map((category) => ({
@@ -538,7 +538,7 @@ export default function CreateAppPage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {availableTags?.data && (
                           <FormMultiCheckbox
-                            control={form.control}
+                            control={form.control as any}
                             name="tagIds"
                             label="标签"
                             options={availableTags.data.map((tag) => ({

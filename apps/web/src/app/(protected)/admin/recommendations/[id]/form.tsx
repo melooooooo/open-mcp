@@ -95,11 +95,11 @@ export function RecommendationForm({ recommendation, apps }: RecommendationFormP
 
   return (
     <div className="space-y-6">
-      <Form {...form}>
+      <Form {...(form as any)}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="grid gap-4 md:grid-cols-2">
             <FormField
-              control={form.control}
+              control={form.control as any}
               name="title"
               render={({ field }) => (
                 <FormItem>
@@ -112,7 +112,7 @@ export function RecommendationForm({ recommendation, apps }: RecommendationFormP
               )}
             />
             <FormField
-              control={form.control}
+              control={form.control as any}
               name="type"
               render={({ field }) => (
                 <FormItem>
@@ -140,7 +140,7 @@ export function RecommendationForm({ recommendation, apps }: RecommendationFormP
               )}
             />
             <FormField
-              control={form.control}
+              control={form.control as any}
               name="status"
               render={({ field }) => (
                 <FormItem>
@@ -164,7 +164,7 @@ export function RecommendationForm({ recommendation, apps }: RecommendationFormP
               )}
             />
             <FormField
-              control={form.control}
+              control={form.control as any}
               name="description"
               render={({ field }) => (
                 <FormItem>

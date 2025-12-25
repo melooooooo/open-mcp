@@ -29,5 +29,7 @@ export const zCreateSiteFeedback = z.object({
 export const zSiteFeedbackTypeEnum = z.enum(["feature", "bug", "improvement", "other"]);
 export const zSiteFeedbackStatusEnum = z.enum(["pending", "reviewing", "accepted", "implemented", "rejected", "duplicate"]);
 
-export type SiteFeedback = z.infer<typeof zSiteFeedback>;
+import { type InferSelectModel } from "drizzle-orm";
+
+export type SiteFeedback = InferSelectModel<typeof siteFeedbacks>;
 export type CreateSiteFeedback = z.infer<typeof zCreateSiteFeedback>;

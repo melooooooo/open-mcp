@@ -2,8 +2,6 @@ import React from "react";
 import {
   DocsPage,
   DocsBody,
-  DocsDescription,
-  DocsTitle,
 } from "fumadocs-ui/page";
 import { BlogConfiguration } from "./types";
 
@@ -11,6 +9,7 @@ import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { Calendar, BookOpen } from "lucide-react";
 import Link from "next/link";
 import { cn } from "./utils";
+import { SidebarProvider } from "fumadocs-ui/provider";
 
 // Popover and Badge configuration come from configuration context
 import { SeriesPopoverContent } from "./series-info";
@@ -79,7 +78,7 @@ export function SinglePost({
             </div>
           </div>
         )}
-        <DocsTitle className="text-left dark:text-white flex items-center gap-2">
+        <h1 className="text-3xl font-bold tracking-tight text-left dark:text-white flex items-center gap-2">
           {page.data.title}
 
           {page.data.series &&
@@ -114,10 +113,10 @@ export function SinglePost({
                 </configuration.PopoverContent>
               </configuration.Popover>
             )}
-        </DocsTitle>
-        <DocsDescription className="text-left mt-3 dark:text-gray-300">
+        </h1>
+        <p className="text-lg text-muted-foreground text-left mt-3 dark:text-gray-300">
           {page.data.description}
-        </DocsDescription>
+        </p>
         <div className="flex flex-wrap gap-2 mt-4">
           {tags.length > 0 &&
             tags.map((tag) => (
@@ -131,50 +130,52 @@ export function SinglePost({
         </div>
       </div>
       <div className="flex w-full items-center justify-center">
-        <DocsLayout
-          nav={{ enabled: false }}
-          tree={{
-            name: "Tree",
-            children: [],
-          }}
-          sidebar={{ enabled: false, prefetch: false, tabs: false }}
-          containerProps={{
-            className: classNames(
-              "flex-row-reverse",
-              "relative container [--fd-nav-height:calc(var(--spacing)*14)] md:[--fd-nav-height:57px] !ml-0 "
-            ),
-            style: {
-              maxWidth: "100%",
-              marginInlineStart: "initial",
-            },
-          }}
-        >
-          {slot(configuration?.backgroundPattern, null)}
+        <SidebarProvider>
+          <DocsLayout
+            nav={{ enabled: false }}
+            tree={{
+              name: "Tree",
+              children: [],
+            }}
+            sidebar={{ enabled: false, prefetch: false, tabs: false }}
+            containerProps={{
+              className: classNames(
+                "flex-row-reverse",
+                "relative container [--fd-nav-height:calc(var(--spacing)*14)] md:[--fd-nav-height:57px] !ml-0 "
+              ),
+              style: {
+                maxWidth: "100%",
+                marginInlineStart: "initial",
+              },
+            }}
+          >
+            {slot(configuration?.backgroundPattern, null)}
 
-          <div className="flex w-full">
-            <DocsPage
-              toc={page.data.toc}
-              full={page.data.full}
-              lastUpdate={lastUpdate}
-              footer={{
-                enabled: false,
-              }}
-              tableOfContent={{
-                style: "clerk",
-                single: false,
-              }}
-              article={{
-                className: classNames(
-                  "!m-[unset] max-w-none bg-zinc-50/50 dark:bg-zinc-900/50 py-8 md:py-12"
-                ),
-              }}
-            >
-              <DocsBody>
-                <MDX configuration={mdxComponents} />
-              </DocsBody>
-            </DocsPage>
-          </div>
-        </DocsLayout>
+            <div className="flex w-full">
+              <DocsPage
+                toc={page.data.toc}
+                full={page.data.full}
+                lastUpdate={lastUpdate}
+                footer={{
+                  enabled: false,
+                }}
+                tableOfContent={{
+                  style: "clerk",
+                  single: false,
+                }}
+                article={{
+                  className: classNames(
+                    "!m-[unset] max-w-none bg-zinc-50/50 dark:bg-zinc-900/50 py-8 md:py-12"
+                  ),
+                }}
+              >
+                <DocsBody>
+                  <MDX configuration={mdxComponents} />
+                </DocsBody>
+              </DocsPage>
+            </div>
+          </DocsLayout>
+        </SidebarProvider>
       </div>
     </>
   );

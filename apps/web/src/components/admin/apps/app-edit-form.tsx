@@ -153,7 +153,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
     return (
       <>
         <FormField
-          control={control}
+          control={control as any}
           name="name"
           render={({ field }) => (
             <FormItem>
@@ -178,7 +178,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
         />
 
         <FormField
-          control={control}
+          control={control as any}
           name="slug"
           render={({ field }) => (
             <FormItem>
@@ -193,7 +193,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
         />
 
         <FormField
-          control={control}
+          control={control as any}
           name="description"
           render={({ field }) => (
             <FormItem>
@@ -208,7 +208,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
         />
 
         <FormField
-          control={control}
+          control={control as any}
           name="longDescription"
           render={({ field }) => (
             <FormItem>
@@ -224,7 +224,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
-            control={control}
+            control={control as any}
             name="type"
             render={({ field }) => (
               <FormItem>
@@ -249,7 +249,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
         </div>
         <div className="flex flex-row gap-4 justify-between">
           <FormField
-            control={control}
+            control={control as any}
             name="icon"
             render={({ field }) => (
               <FormItem>
@@ -273,7 +273,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
           />
 
           <FormField
-            control={control}
+            control={control as any}
             name="banner"
             render={({ field }) => (
               <FormItem>
@@ -338,7 +338,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
         <CardDescription>更新应用程序的基本信息和详细信息。修改完成后，点击保存按钮提交更改。</CardDescription>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
+        <Form {...(form as any)}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-3">
@@ -353,7 +353,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
 
               <TabsContent value="details" className="space-y-4 pt-4">
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name="website"
                   render={({ field }) => (
                     <FormItem>
@@ -368,7 +368,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
                 />
 
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name="github"
                   render={({ field }) => (
                     <FormItem>
@@ -384,7 +384,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="docs"
                     render={({ field }) => (
                       <FormItem>
@@ -399,7 +399,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
                   />
 
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="scenario"
                     render={({ field }) => (
                       <FormItem>
@@ -416,7 +416,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="version"
                     render={({ field }) => (
                       <FormItem>
@@ -431,7 +431,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
                   />
 
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="license"
                     render={({ field }) => (
                       <FormItem>
@@ -450,7 +450,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
               <TabsContent value="advanced" className="space-y-4 pt-4">
                 <div className="grid grid-cols-1 gap-4">
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="readme"
                     render={({ field }) => (
                       <FormItem>
@@ -473,7 +473,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField
-                      control={form.control}
+                      control={form.control as any}
                       name="featured"
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
@@ -489,7 +489,7 @@ export function AppEditForm({ appId }: AppEditFormProps) {
                     />
 
                     <FormField
-                      control={form.control}
+                      control={form.control as any}
                       name="verified"
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">

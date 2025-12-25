@@ -8,7 +8,7 @@ import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "../../trpc";
 
 // Sanitize HTML 配置
-const sanitizeOptions: sanitizeHtml.IOptions = {
+const sanitizeOptions = {
   allowedTags: sanitizeHtml.defaults.allowedTags.concat([
     "img",
     "h1",
@@ -113,7 +113,7 @@ export const experiencesRouter = router({
 
       const hasPermission = canEditExperience(
         ctx.user.id,
-        ctx.user.role,
+        (ctx.user as any).role,
         experience
       );
 
@@ -169,7 +169,7 @@ export const experiencesRouter = router({
       // 检查权限
       const hasPermission = canEditExperience(
         ctx.user.id,
-        ctx.user.role,
+        (ctx.user as any).role,
         experience
       );
 
@@ -234,7 +234,7 @@ export const experiencesRouter = router({
       // 检查权限
       const hasPermission = canEditExperience(
         ctx.user.id,
-        ctx.user.role,
+        (ctx.user as any).role,
         experience
       );
 
@@ -296,7 +296,7 @@ export const experiencesRouter = router({
       // 检查权限
       const hasPermission = canEditExperience(
         ctx.user.id,
-        ctx.user.role,
+        (ctx.user as any).role,
         experience
       );
 

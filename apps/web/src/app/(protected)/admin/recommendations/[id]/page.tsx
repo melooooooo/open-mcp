@@ -99,10 +99,10 @@ export default function EditRecommendationPage({ params }: { params: Promise<{ i
         <h2 className="text-3xl font-bold tracking-tight">编辑推荐</h2>
       </div>
 
-      <Form {...form}>
+      <Form {...(form as any)}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
-            control={form.control}
+            control={form.control as any}
             name="title"
             render={({ field }) => (
               <FormItem>
@@ -117,7 +117,7 @@ export default function EditRecommendationPage({ params }: { params: Promise<{ i
           />
 
           <FormField
-            control={form.control}
+            control={form.control as any}
             name="description"
             render={({ field }) => (
               <FormItem>

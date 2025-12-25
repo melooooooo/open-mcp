@@ -300,10 +300,10 @@ export function ClaimAppDialog({ app }: ClaimAppDialogProps) {
                     </div>
                   </div>
 
-                  <Form {...emailForm}>
+                  <Form {...(emailForm as any)}>
                     <form onSubmit={emailForm.handleSubmit(handleSendVerificationCode)} className="space-y-4">
                       <FormField
-                        control={emailForm.control}
+                        control={emailForm.control as any}
                         name="email"
                         render={({ field }) => (
                           <FormItem>
@@ -366,10 +366,10 @@ export function ClaimAppDialog({ app }: ClaimAppDialogProps) {
                     <DialogDescription>请输入发送到 {emailForm.getValues("email")} 的6位验证码</DialogDescription>
                   </DialogHeader>
 
-                  <Form {...emailForm}>
+                  <Form {...(emailForm as any)}>
                     <form onSubmit={emailForm.handleSubmit(handleVerifyCode)} className="space-y-4">
                       <FormField
-                        control={emailForm.control}
+                        control={emailForm.control as any}
                         name="verificationCode"
                         render={({ field }) => (
                           <FormItem>
@@ -440,10 +440,10 @@ export function ClaimAppDialog({ app }: ClaimAppDialogProps) {
                     <DialogDescription>请提供能够证明您是 {app.name} 所有者的相关信息</DialogDescription>
                   </DialogHeader>
 
-                  <Form {...claimForm}>
+                  <Form {...(claimForm as any)}>
                     <form onSubmit={claimForm.handleSubmit(handleSubmitClaim)} className="space-y-4">
                       <FormField
-                        control={claimForm.control}
+                        control={claimForm.control as any}
                         name="proofType"
                         render={({ field }) => (
                           <FormItem>
@@ -468,7 +468,7 @@ export function ClaimAppDialog({ app }: ClaimAppDialogProps) {
                       />
 
                       <FormField
-                        control={claimForm.control}
+                        control={claimForm.control as any}
                         name="proofUrl"
                         render={({ field }) => (
                           <FormItem>
@@ -483,7 +483,7 @@ export function ClaimAppDialog({ app }: ClaimAppDialogProps) {
                       />
 
                       <FormField
-                        control={claimForm.control}
+                        control={claimForm.control as any}
                         name="additionalInfo"
                         render={({ field }) => (
                           <FormItem>

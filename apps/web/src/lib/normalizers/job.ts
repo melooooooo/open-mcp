@@ -68,15 +68,16 @@ function normalizeLocations(rawLocation: unknown): string[] {
   return []
 }
 
-export function normalizeJobRecord(job: SupabaseJob | MockJob): NormalizedJob {
+export function normalizeJobRecord(rawJob: SupabaseJob | MockJob): NormalizedJob {
+  const job = rawJob as any;
   const isMock = "company" in job && !!job.company
 
   const company = isMock
     ? job.company
     : {
-      name: (job as any).company_name || job.companies?.name || "未知公司",
-      logo: (job as any).company_logo || job.companies?.logo_url || undefined,
-      size: (job as any).company_size || job.companies?.size || undefined,
+      name: (job as any).company_name || (job as any).companies?.name || "未知公司",
+      logo: (job as any).company_logo || (job as any).companies?.logo_url || undefined,
+      size: (job as any).company_size || (job as any).companies?.size || undefined,
     }
 
   const salaryMin = isMock ? job.salaryMin : job.salary_min ?? job.salaryMin

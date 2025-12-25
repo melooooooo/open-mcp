@@ -59,12 +59,12 @@ export function AdForm({ initialData, onSubmit, isLoading }: AdFormProps) {
   };
 
   return (
-    <Form {...form}>
+    <Form {...(form as any)}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-4">
             <FormField
-              control={form.control}
+              control={form.control as any}
               name="title"
               render={({ field }) => (
                 <FormItem>
@@ -78,7 +78,7 @@ export function AdForm({ initialData, onSubmit, isLoading }: AdFormProps) {
             />
 
             <FormField
-              control={form.control}
+              control={form.control as any}
               name="type"
               render={({ field }) => (
                 <FormItem>
@@ -100,7 +100,7 @@ export function AdForm({ initialData, onSubmit, isLoading }: AdFormProps) {
             />
 
             <FormField
-              control={form.control}
+              control={form.control as any}
               name="startDate"
               render={({ field }) => (
                 <FormItem>
@@ -114,7 +114,7 @@ export function AdForm({ initialData, onSubmit, isLoading }: AdFormProps) {
             />
 
             <FormField
-              control={form.control}
+              control={form.control as any}
               name="endDate"
               render={({ field }) => (
                 <FormItem>
@@ -130,7 +130,7 @@ export function AdForm({ initialData, onSubmit, isLoading }: AdFormProps) {
 
           <div className="space-y-4">
             <FormField
-              control={form.control}
+              control={form.control as any}
               name="price"
               render={({ field }) => (
                 <FormItem>
@@ -144,7 +144,7 @@ export function AdForm({ initialData, onSubmit, isLoading }: AdFormProps) {
             />
 
             <FormField
-              control={form.control}
+              control={form.control as any}
               name="budget"
               render={({ field }) => (
                 <FormItem>
@@ -158,7 +158,7 @@ export function AdForm({ initialData, onSubmit, isLoading }: AdFormProps) {
             />
 
             <FormField
-              control={form.control}
+              control={form.control as any}
               name="imageUrl"
               render={({ field }) => (
                 <FormItem>
@@ -180,7 +180,7 @@ export function AdForm({ initialData, onSubmit, isLoading }: AdFormProps) {
         </div>
 
         <FormField
-          control={form.control}
+          control={form.control as any}
           name="description"
           render={({ field }) => (
             <FormItem>

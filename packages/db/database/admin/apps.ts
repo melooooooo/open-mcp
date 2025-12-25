@@ -1,7 +1,7 @@
 import { and, asc, desc, eq, exists, inArray, like, not, or, sql } from "drizzle-orm";
 import { db } from "../../index";
 import { zCreateAppSchema, zUpdateAppSchema, zSearchAppsSchema, zCreateRecommendationAppSchema } from "../../types";
-import { user } from "../../schema";
+import { user, user as users, apps, categories, appCategories, tags, appTags, repos, relatedApps, appRss, ads, suggestions, claims, recommendations, recommendationApps, rankingRecords, appSubmissions } from "../../schema";
 
 // 应用程序数据访问模块
 export const appsDataAccess = {

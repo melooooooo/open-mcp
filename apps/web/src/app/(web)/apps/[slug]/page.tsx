@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { trpc } from "@/lib/trpc/server";
+import { serverApi as trpc } from "@/lib/trpc/server";
 import { AppContent } from "@/components/web/app-content";
 import { Container } from "@/components/web/container";
 
@@ -11,7 +11,7 @@ type AppPageProps = {
 export async function generateMetadata({ params }: AppPageProps): Promise<Metadata> {
   const { slug } = await params;
   try {
-    const app = await trpc.mcpApps.getBySlug({ slug });
+    const app = await trpc.mcpApps.getBySlug.query({ slug });
 
     if (!app) {
       return {
@@ -49,7 +49,7 @@ export default async function AppPage({ params }: AppPageProps) {
   const { slug } = await params;
 
   try {
-    const app = await trpc.mcpApps.getBySlug({ slug });
+    const app = await trpc.mcpApps.getBySlug.query({ slug });
 
     if (!app) {
       notFound();

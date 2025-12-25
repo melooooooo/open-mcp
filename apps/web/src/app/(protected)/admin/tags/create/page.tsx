@@ -128,11 +128,11 @@ export default function CreateTagPage() {
       <div className="grid gap-6">
         <Card>
           <CardContent className="pt-6">
-            <Form {...form}>
+            <Form {...(form as any)}>
               <form className="space-y-8">
                 <FormSection title="基本信息" description="设置标签的基本信息">
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="name"
                     render={({ field }) => (
                       <FormItem>
@@ -147,7 +147,7 @@ export default function CreateTagPage() {
                   />
 
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="slug"
                     render={({ field }) => (
                       <FormItem>
@@ -164,7 +164,7 @@ export default function CreateTagPage() {
                   />
 
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="description"
                     render={({ field }) => (
                       <FormItem>

@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
     });
 
     // 生成预签名URL（有效期15分钟）
-    const uploadUrl = await getSignedUrl(client, command, { expiresIn: 900 });
+    const uploadUrl = await getSignedUrl(client as any, command, { expiresIn: 900 });
 
     // 生成用于回调的assetId
     const assetId = `${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
