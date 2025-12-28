@@ -1,0 +1,78 @@
+name: Create and publish a Docker image
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image
+        id: push
+        timeout-minutes: 25
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          # ⚠️
+          # 建议只填写构建需要的环境变量
+          # NEXT_PUBLIC_ 开头的环境变量使用 vars
+          # 其他环境变量使用 secrets
+          build-args: |
+            NEXT_PUBLIC_SITE_URL=${{ vars.NEXT_PUBLIC_SITE_URL }}
+            NEXT_PUBLIC_PRICING_PATH=${{ vars.NEXT_PUBLIC_PRICING_PATH }}
+            NEXT_PUBLIC_OPTIMIZED_IMAGES=${{ vars.NEXT_PUBLIC_OPTIMIZED_IMAGES }}
+            NEXT_PUBLIC_LOGIN_MODE=${{ vars.NEXT_PUBLIC_LOGIN_MODE }}
+            NEXT_PUBLIC_GITHUB_CLIENT_ID=${{ vars.NEXT_PUBLIC_GITHUB_CLIENT_ID }}
+            NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ vars.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}
+            NEXT_PUBLIC_TURNSTILE_SITE_KEY=${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
+            NEXT_PUBLIC_ENABLE_STRIPE=${{ vars.NEXT_PUBLIC_ENABLE_STRIPE }}
+            NEXT_PUBLIC_DEFAULT_CURRENCY=${{ vars.NEXT_PUBLIC_DEFAULT_CURRENCY }}
+            NEXT_PUBLIC_GOOGLE_ID=${{ vars.NEXT_PUBLIC_GOOGLE_ID }}
+            NEXT_PUBLIC_PLAUSIBLE_DOMAIN=${{ vars.NEXT_PUBLIC_PLAUSIBLE_DOMAIN }}
+            NEXT_PUBLIC_PLAUSIBLE_SRC=${{ vars.NEXT_PUBLIC_PLAUSIBLE_SRC }}
+            NEXT_PUBLIC_DISCORD_INVITE_URL=${{ vars.NEXT_PUBLIC_DISCORD_INVITE_URL }}
+            NEXT_PUBLIC_AUTO_FILL_AI_PROVIDER=${{ vars.NEXT_PUBLIC_AUTO_FILL_AI_PROVIDER }}
+            NEXT_PUBLIC_AUTO_FILL_AI_MODEL_ID=${{ vars.NEXT_PUBLIC_AUTO_FILL_AI_MODEL_ID }}
+            NEXT_PUBLIC_DAILY_AI_AUTO_FILL_LIMIT=${{ vars.NEXT_PUBLIC_DAILY_AI_AUTO_FILL_LIMIT }}
+            NEXT_PUBLIC_DAILY_SUBMIT_LIMIT=${{ vars.NEXT_PUBLIC_DAILY_SUBMIT_LIMIT }}
+            NEXT_PUBLIC_DAILY_IMAGE_UPLOAD_LIMIT=${{ vars.NEXT_PUBLIC_DAILY_IMAGE_UPLOAD_LIMIT }}
+            R2_PUBLIC_URL=${{ secrets.R2_PUBLIC_URL }}
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+
+      - name: Trigger dokploy redeploy
+        # ⚠️ 使用 Dokploy deployments 的 Webhook URL
+        run: |
+          curl -X GET http://72.61.71.244:3000/api/deploy/sGk2wG7BN5FFopsqKd1DB
