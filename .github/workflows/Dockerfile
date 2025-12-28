@@ -8,7 +8,18 @@ WORKDIR /app
 RUN corepack enable
 
 # 复制包管理文件
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml* ./
+COPY apps/web/package.json ./apps/web/
+COPY apps/docs/package.json ./apps/docs/
+COPY packages/ui/package.json ./packages/ui/
+COPY packages/track/package.json ./packages/track/
+COPY packages/trpc/package.json ./packages/trpc/
+COPY packages/fumadocs-blog/package.json ./packages/fumadocs-blog/
+COPY packages/github/package.json ./packages/github/
+COPY packages/eslint-config/package.json ./packages/eslint-config/
+COPY packages/db/package.json ./packages/db/
+COPY packages/typescript-config/package.json ./packages/typescript-config/
+COPY packages/email/package.json ./packages/email/
 
 # 使用缓存挂载预取依赖
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store/v3 \
@@ -26,9 +37,9 @@ WORKDIR /app
 # 启用 corepack
 RUN corepack enable
 
-# 从依赖阶段复制 node_modules
-COPY --from=deps /app/node_modules ./node_modules
-# 复制所有源代码
+# 从依赖阶段复制整个目录（包含所有工作区的 node_modules）
+COPY --from=deps /app ./
+# 复制所有源代码（如果 .dockerignore 配置正确，这会覆盖源码但保留 node_modules）
 COPY . .
 
 # ============================================
