@@ -1,0 +1,33 @@
+# Docker 忽略文件
+# 防止将本地 node_modules、构建缓存和敏感文件复制到镜像中
+# 这对于 monorepo 及其重要，否则本地依赖会覆盖容器内的正确依赖
+
+node_modules
+**/.env
+**/.env.*
+!**/.env.production
+!**/.env.example
+
+# 构建产物
+.next
+.turbo
+.vercel
+dist
+build
+out
+
+# Git
+.git
+.gitignore
+.github
+
+# 依赖锁文件 (需要复制，所以这里不忽略，但要注意 Dockerfile 的 COPY 顺序)
+# pnpm-lock.yaml
+# package.json
+
+# 系统文件
+.DS_Store
+*.log
+
+# 其他
+README.md
