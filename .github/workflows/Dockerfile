@@ -92,9 +92,9 @@ ENV BETTER_AUTH_URL=${BETTER_AUTH_URL}
 # 禁用 Next.js 遥测
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# 构建应用程序
+# 构建应用程序（仅 web）
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store/v3 \
-  pnpm build
+  pnpm build:web
 
 # ============================================
 # 运行阶段
@@ -118,9 +118,9 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # 从构建阶段复制必要文件（web 应用）
-COPY --from=builder /app/apps/web/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./.next/static
+COPY --from=builder /app/apps/web/public ./apps/web/public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./apps/web
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 
 # 切换到非 root 用户
 USER nextjs
@@ -133,4 +133,4 @@ ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 # 启动应用程序
-CMD ["node", "server.js"]
+CMD ["node", "apps/web/server.js"]
