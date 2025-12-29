@@ -118,9 +118,10 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # 从构建阶段复制必要文件（web 应用）
+# 注意：standalone 模式会复制包含 apps/web/ 的完整目录结构
 COPY --from=builder /app/apps/web/public ./apps/web/public
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./apps/web
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./.next/static
 
 # 切换到非 root 用户
 USER nextjs
