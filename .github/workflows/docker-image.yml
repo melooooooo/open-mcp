@@ -72,6 +72,41 @@ jobs:
             RESEND_FROM=${{ vars.RESEND_FROM }}
             BETTER_AUTH_URL=${{ vars.BETTER_AUTH_URL }}
 
+      - name: Build image for verification (no push)
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: .
+          file: .github/workflows/Dockerfile
+          load: true
+          push: false
+          tags: local:yinhangbang-web
+          build-args: |
+            NEXT_PUBLIC_SUPABASE_URL=${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+            NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+            NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=${{ vars.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY }}
+            NEXT_PUBLIC_APP_URL=${{ vars.NEXT_PUBLIC_APP_URL }}
+            NEXT_PUBLIC_BASE_URL=${{ vars.NEXT_PUBLIC_BASE_URL }}
+            NEXT_PUBLIC_SITE_URL=${{ vars.NEXT_PUBLIC_SITE_URL }}
+            NODE_ENV=${{ vars.NODE_ENV }}
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            R2_BUCKET_NAME=${{ vars.R2_BUCKET_NAME }}
+            R2_ACCOUNT_ID=${{ secrets.R2_ACCOUNT_ID }}
+            R2_PUBLIC_URL=${{ vars.R2_PUBLIC_URL }}
+            R2_ACCESS_KEY_ID=${{ secrets.R2_ACCESS_KEY_ID }}
+            R2_SECRET_ACCESS_KEY=${{ secrets.R2_SECRET_ACCESS_KEY }}
+            BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}
+            GOOGLE_CLIENT_ID=${{ vars.GOOGLE_CLIENT_ID }}
+            GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+            RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+            RESEND_FROM=${{ vars.RESEND_FROM }}
+            BETTER_AUTH_URL=${{ vars.BETTER_AUTH_URL }}
+
+      - name: Verify standalone files
+        run: |
+          docker run --rm local:yinhangbang-web test -f /app/apps/web/server.js
+          docker run --rm local:yinhangbang-web test -d /app/apps/web/.next/static
+          docker run --rm local:yinhangbang-web ls -la /app/apps/web/.next/static/css | head -n 5
+
       - name: Trigger dokploy redeploy
         # ⚠️ 使用 Dokploy deployments 的 Webhook URL
         run: |
