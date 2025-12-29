@@ -70,6 +70,16 @@ export const auth = betterAuth({
     }),
     emailOTP({
       async sendVerificationOTP({ email, otp, type }) {
+        if (type === "sign-in") {
+          const existingUser = await db.query.user.findFirst({
+            where: (table, { eq }) => eq(table.email, email)
+          })
+
+          if (!existingUser) {
+            throw new Error("该邮箱未注册，请先注册")
+          }
+        }
+
         // 实现发送验证码的逻辑
         console.info(`发送验证码 ${otp} 到邮箱 ${email}`);
         await sendMagicCodeEmail({
