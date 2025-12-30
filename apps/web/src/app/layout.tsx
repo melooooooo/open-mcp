@@ -66,6 +66,7 @@ export default function RootLayout({
     <html lang="zh-CN" suppressHydrationWarning className="scroll-smooth">
       <head>
         <UmamiProvider />
+        <script defer data-domain="yinhangbang.com" src="https://app.pageview.app/js/script.js"></script>
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>

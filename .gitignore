@@ -36,3 +36,28 @@ npm-debug.log*
 *.pem
 .env.production
 .env.*
+
+# ---------------------------------
+# Private & Operational (New Rules)
+# ---------------------------------
+
+# Operational Scripts & Tools
+scripts/
+analysis/
+
+# Local Data & Webhooks
+webhook-data/
+*.xlsx
+*.csv
+/byr_jobs*.json
+/imports/
+
+# Debug Outputs & Temps
+# Only ignore these in the root directory to avoid breaking web assets
+/*.html
+/*.txt
+/*.png
+*.log
+
+# Specific Root Files
+/run-mcp-supabase.sh
