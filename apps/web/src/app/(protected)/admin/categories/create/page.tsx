@@ -21,7 +21,6 @@ import {
   SelectValue,
 } from "@repo/ui/components/ui/select"
 import { Textarea } from "@repo/ui/components/ui/textarea"
-import { slugify } from "inngest/helpers/strings"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -43,6 +42,12 @@ const formSchema = z.object({
 })
 
 type FormValues = z.infer<typeof formSchema>
+
+const slugifyCategory = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
 
 export default function CategoryCreatePage() {
   const router = useRouter()
@@ -83,7 +88,7 @@ export default function CategoryCreatePage() {
     form,
     sourceField: 'name',
     computedField: 'slug',
-    callback: slugify,
+    callback: slugifyCategory,
   });
 
   // 处理表单提交
@@ -120,12 +125,7 @@ export default function CategoryCreatePage() {
     form.setValue("name", name)
 
     // 生成 slug
-    const slug = name
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "")
-
-    form.setValue("slug", slug)
+    form.setValue("slug", slugifyCategory(name))
   }
 
   return (
@@ -253,4 +253,3 @@ export default function CategoryCreatePage() {
     </div>
   )
 }
-
