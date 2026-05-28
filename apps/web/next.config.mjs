@@ -3,7 +3,7 @@ const isProd = process.env.BUILD_ENV === "production";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "standalone",
+  output: process.env.VERCEL ? undefined : "standalone",
   reactStrictMode: true,
   assetPrefix: isProd ? "https://zenly.oss-cn-hangzhou.aliyuncs.com/mcp" : "",
   images: {
