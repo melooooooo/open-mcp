@@ -1,0 +1,25 @@
+<view class="ref-detail">
+  <view class="detail-nav">
+    <view class="back-btn" bindtap="goBack">‹</view>
+    <text>内推详情</text>
+    <view class="nav-space"></view>
+  </view>
+  <view wx:if="{{loading}}" class="loading">正在加载内推...</view>
+  <view wx:elif="{{error}}" class="error">{{error}}</view>
+  <block wx:elif="{{referral}}">
+    <view class="header">
+      <text class="title">{{referral.title}}</text>
+      <view class="meta">
+        <text>{{referral.publishDate || '近期'}}</text>
+        <text>· {{referral.replyCount || 0}} 回复</text>
+      </view>
+    </view>
+    <view class="content">
+      <text wx:for="{{contentLines}}" wx:key="*this" class="paragraph">{{item}}</text>
+    </view>
+    <view class="actions bottom-actions">
+      <button class="collect secondary-button {{referral.isCollected ? 'active' : ''}}" bindtap="toggleCollect">{{referral.isCollected ? '已收藏' : '收藏'}}</button>
+      <button class="copy primary-button" bindtap="copyLink">复制原帖链接</button>
+    </view>
+  </block>
+</view>

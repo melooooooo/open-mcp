@@ -1,0 +1,124 @@
+.article-page {
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+.article-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(68rpx + env(safe-area-inset-top)) 28rpx 20rpx;
+  background: #ffffff;
+  border-bottom: 1rpx solid #f3f4f6;
+  color: #111827;
+  font-size: 32rpx;
+  font-weight: 900;
+}
+
+.back-btn,
+.nav-space {
+  width: 48rpx;
+  height: 48rpx;
+  line-height: 42rpx;
+  font-size: 54rpx;
+  font-weight: 400;
+}
+
+.article-scroll {
+  height: calc(100vh - 188rpx);
+  padding-bottom: 150rpx;
+  box-sizing: border-box;
+}
+
+.article-header,
+.article-body {
+  margin-bottom: 18rpx;
+  padding: 36rpx;
+  background: #ffffff;
+}
+
+.article-title {
+  display: block;
+  color: #111827;
+  font-size: 40rpx;
+  font-weight: 900;
+  line-height: 1.38;
+}
+
+.article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  margin-top: 20rpx;
+  color: #6b7280;
+  font-size: 24rpx;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 24rpx;
+}
+
+.tag {
+  padding: 8rpx 16rpx;
+  border-radius: 999rpx;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 22rpx;
+}
+
+.article-body {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.paragraph {
+  color: #374151;
+  font-size: 29rpx;
+  line-height: 1.78;
+}
+
+.article-actions {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  gap: 24rpx;
+  padding: 22rpx 32rpx calc(34rpx + env(safe-area-inset-bottom));
+  background: #ffffff;
+  border-top: 1rpx solid #f3f4f6;
+}
+
+.like-btn,
+.share-btn {
+  height: 86rpx;
+  border-radius: 999rpx;
+  font-size: 28rpx;
+  font-weight: 900;
+  line-height: 86rpx;
+}
+
+.like-btn {
+  width: 180rpx;
+  background: #fff7ed;
+  color: #f97316;
+}
+
+.like-btn.active {
+  background: #f97316;
+  color: #ffffff;
+}
+
+.share-btn {
+  flex: 1;
+  background: #2563eb;
+  color: #ffffff;
+}
+

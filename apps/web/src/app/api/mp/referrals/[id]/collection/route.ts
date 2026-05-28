@@ -1,0 +1,23 @@
+import { db } from "@repo/db"
+import { userCollections } from "@repo/db/schema"
+import { and, eq } from "drizzle-orm"
+import { fail, getCurrentUser, ok } from "../../../_shared/response"
+
+export async function POST(_: Request, context: { params: Promise<{ id: string }> }) {
+  const user = await getCurrentUser()
+  if (!user?.id) return fail("UNAUTHORIZED", "请先登录", 401)
+
+  const { id } = await context.params
+  const existing = await db.query.userCollections.findFirst({
+    where: and(eq(userCollections.userId, user.id), eq(userCollections.jobId, id)),
+  })
+
+  if (existing) {
+    await db.delete(userCollections).where(and(eq(userCollections.userId, user.id), eq(userCollections.jobId, id)))
+    return ok({ isCollected: false })
+  }
+
+  await db.insert(userCollections).values({ userId: user.id, jobId: id })
+  return ok({ isCollected: true })
+}
+

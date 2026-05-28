@@ -1,0 +1,44 @@
+<view class="page jobs-page">
+  <view class="jobs-head">
+    <text class="jobs-title">职位广场</text>
+    <view class="search-box">
+      <text class="search-symbol">⌕</text>
+      <input value="{{query}}" bindinput="onInput" confirm-type="search" bindconfirm="submitSearch" placeholder="搜索职位、公司" />
+    </view>
+    <view class="filter-tabs">
+      <view wx:for="{{filters}}" wx:key="*this" class="filter-tab {{activeType === item ? 'active' : ''}}" data-value="{{item}}" bindtap="changeFilter">
+        <text>{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="result-count">共找到 {{total}} 个职位</view>
+
+  <view wx:if="{{loading}}" class="loading">正在加载职位...</view>
+  <view wx:elif="{{error}}" class="error">{{error}}</view>
+  <view wx:elif="{{jobs.length === 0}}" class="empty">没有找到相关职位</view>
+  <view wx:else class="job-list">
+    <view wx:for="{{jobs}}" wx:key="id" wx:for-item="job" class="job-card card" bindtap="openJob" data-id="{{job.id}}">
+      <view class="job-top">
+        <text class="job-title line-2">{{job.title}}</text>
+        <text class="type-chip">{{job.companyType}}</text>
+      </view>
+      <text class="company">{{job.company}}</text>
+      <view class="tag-row">
+        <text wx:for="{{job.visibleTags}}" wx:key="*this" class="tag">{{item}}</text>
+      </view>
+      <view class="meta-row">
+        <text>⌖ {{job.location}}</text>
+        <text>◷ {{job.displayTime}}</text>
+      </view>
+    </view>
+    <view wx:if="{{loadingMore}}" class="loading more">继续加载...</view>
+  </view>
+
+  <view class="bottom-tabs">
+    <view class="tab-item" bindtap="switchTab" data-page="home"><text class="tab-icon">⌂</text><text>首页</text></view>
+    <view class="tab-item active"><text class="tab-icon">▣</text><text>职位</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="experiences"><text class="tab-icon">▤</text><text>经验</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="profile"><text class="tab-icon">○</text><text>我的</text></view>
+  </view>
+</view>

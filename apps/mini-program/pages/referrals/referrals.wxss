@@ -1,0 +1,51 @@
+.sub-title {
+  margin-top: 18rpx;
+  color: #6b7280;
+  text-align: center;
+  font-size: 25rpx;
+}
+
+.ref-list {
+  padding: 28rpx 32rpx 0;
+}
+
+.ref-card {
+  padding: 28rpx;
+  margin-bottom: 22rpx;
+}
+
+.ref-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18rpx;
+}
+
+.ref-badge {
+  padding: 6rpx 14rpx;
+  border-radius: 8rpx;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 22rpx;
+  font-weight: 900;
+}
+
+.source {
+  color: #9ca3af;
+  font-size: 22rpx;
+}
+
+.ref-title {
+  color: #111827;
+  font-size: 30rpx;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24rpx;
+  color: #9ca3af;
+  font-size: 23rpx;
+}

@@ -1,0 +1,145 @@
+.jobs-head {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding: calc(76rpx + env(safe-area-inset-top)) 32rpx 0;
+  background: #ffffff;
+  box-shadow: 0 4rpx 16rpx rgba(15, 23, 42, 0.04);
+}
+
+.jobs-title {
+  display: block;
+  margin-bottom: 22rpx;
+  color: #111827;
+  text-align: center;
+  font-size: 34rpx;
+  font-weight: 900;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  height: 72rpx;
+  padding: 0 22rpx;
+  border-radius: 16rpx;
+  background: #f3f4f6;
+}
+
+.search-symbol {
+  margin-right: 10rpx;
+  color: #9ca3af;
+}
+
+.search-box input {
+  flex: 1;
+  color: #374151;
+  font-size: 27rpx;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 44rpx;
+  margin-top: 24rpx;
+  border-bottom: 1rpx solid #f3f4f6;
+}
+
+.filter-tab {
+  position: relative;
+  padding-bottom: 20rpx;
+  color: #6b7280;
+  font-size: 27rpx;
+  font-weight: 700;
+}
+
+.filter-tab.active {
+  color: #2563eb;
+}
+
+.filter-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 32rpx;
+  height: 4rpx;
+  margin-left: -16rpx;
+  border-radius: 999rpx;
+  background: #2563eb;
+}
+
+.result-count {
+  padding: 24rpx 32rpx 0;
+  color: #6b7280;
+  font-size: 24rpx;
+}
+
+.job-list {
+  padding: 24rpx 32rpx 0;
+}
+
+.job-card {
+  padding: 28rpx;
+  margin-bottom: 22rpx;
+}
+
+.job-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20rpx;
+  margin-bottom: 14rpx;
+}
+
+.job-title {
+  flex: 1;
+  color: #111827;
+  font-size: 30rpx;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.type-chip {
+  flex-shrink: 0;
+  max-width: 150rpx;
+  padding: 8rpx 14rpx;
+  border-radius: 8rpx;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 22rpx;
+  font-weight: 800;
+}
+
+.company {
+  display: block;
+  margin-bottom: 16rpx;
+  color: #1f2937;
+  font-size: 27rpx;
+  font-weight: 700;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-bottom: 18rpx;
+}
+
+.tag {
+  padding: 6rpx 14rpx;
+  border-radius: 8rpx;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-size: 22rpx;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16rpx;
+  color: #9ca3af;
+  font-size: 23rpx;
+}
+
+.loading.more {
+  padding-top: 24rpx;
+}

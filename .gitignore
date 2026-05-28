@@ -21,6 +21,9 @@ coverage
 # Vercel
 .vercel
 
+# WeChat Mini Program local developer settings
+apps/mini-program/project.private.config.json
+
 # Build Outputs
 .next/
 out/

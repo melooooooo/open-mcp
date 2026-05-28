@@ -1,0 +1,33 @@
+<view class="article-page">
+  <view class="article-nav">
+    <view class="back-btn" bindtap="goBack">‹</view>
+    <text>经验详情</text>
+    <view class="nav-space"></view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">正在加载经验...</view>
+  <view wx:elif="{{error}}" class="error">{{error}}</view>
+  <block wx:elif="{{exp}}">
+    <scroll-view scroll-y class="article-scroll">
+      <view class="article-header">
+        <text class="article-title">{{exp.title}}</text>
+        <view class="article-meta">
+          <text>{{exp.authorName}}</text>
+          <text wx:if="{{exp.organizationName}}">· {{exp.organizationName}}</text>
+          <text>· ◉ {{exp.viewCount}}</text>
+        </view>
+        <view class="tag-row">
+          <text wx:for="{{tags}}" wx:key="*this" class="tag">{{item}}</text>
+        </view>
+      </view>
+      <view class="article-body">
+        <text wx:if="{{contentLines.length === 0}}" class="paragraph">暂无正文内容。</text>
+        <text wx:for="{{contentLines}}" wx:key="*this" class="paragraph">{{item}}</text>
+      </view>
+    </scroll-view>
+    <view class="article-actions bottom-actions">
+      <button class="like-btn secondary-button {{exp.isLiked ? 'active' : ''}}" bindtap="toggleLike">♥ {{exp.likeCount || 0}}</button>
+      <button open-type="share" class="share-btn primary-button">分享给同学</button>
+    </view>
+  </block>
+</view>

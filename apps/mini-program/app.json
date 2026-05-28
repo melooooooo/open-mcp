@@ -1,0 +1,21 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/jobs/jobs",
+    "pages/job-detail/job-detail",
+    "pages/experiences/experiences",
+    "pages/experience-detail/experience-detail",
+    "pages/profile/profile",
+    "pages/search/search",
+    "pages/referrals/referrals",
+    "pages/referral-detail/referral-detail"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "backgroundColor": "#F9FAFB",
+    "backgroundTextStyle": "dark"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
+

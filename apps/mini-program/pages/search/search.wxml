@@ -1,0 +1,47 @@
+<view class="search-page">
+  <view class="search-nav">
+    <view class="back" bindtap="goBack">‹</view>
+    <view class="search-input">
+      <text>⌕</text>
+      <input value="{{q}}" bindinput="onInput" confirm-type="search" bindconfirm="search" placeholder="搜索银行、岗位或关键词" focus />
+    </view>
+    <view class="search-btn" bindtap="search">搜索</view>
+  </view>
+
+  <view wx:if="{{!searched}}" class="hot-section">
+    <text class="title">热门搜索</text>
+    <view class="hot-wrap">
+      <text wx:for="{{hotSearches}}" wx:key="*this" class="hot-chip" data-q="{{item}}" bindtap="useHot">{{item}}</text>
+    </view>
+  </view>
+
+  <view wx:elif="{{loading}}" class="loading">正在搜索...</view>
+  <view wx:else class="results">
+    <view wx:if="{{jobListings.length === 0 && experiences.length === 0 && jobSites.length === 0}}" class="empty">没有找到相关结果</view>
+
+    <view wx:if="{{jobListings.length}}" class="result-section">
+      <text class="title">招聘职位</text>
+      <view wx:for="{{jobListings}}" wx:key="id" wx:for-item="job" class="result-card card" data-id="{{job.id}}" bindtap="openJob">
+        <text class="result-title line-2">{{job.title}}</text>
+        <text class="result-sub">{{job.company}} · {{job.location}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{experiences.length}}" class="result-section">
+      <text class="title">经验分享</text>
+      <view wx:for="{{experiences}}" wx:key="id" wx:for-item="exp" class="result-card card" data-slug="{{exp.slug}}" bindtap="openExperience">
+        <text class="result-title line-2">{{exp.title}}</text>
+        <text class="result-sub">{{exp.authorName}} · {{exp.organizationName}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{jobSites.length}}" class="result-section">
+      <text class="title">求职导航</text>
+      <view wx:for="{{jobSites}}" wx:key="id" wx:for-item="site" class="result-card card" data-url="{{site.websiteUrl}}" bindtap="copySite">
+        <text class="result-title line-2">{{site.title}}</text>
+        <text class="result-sub">{{site.description}}</text>
+      </view>
+    </view>
+  </view>
+</view>
+

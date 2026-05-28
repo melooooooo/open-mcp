@@ -1,0 +1,53 @@
+<view class="page profile-page">
+  <view class="profile-head">
+    <view class="avatar-wrap">
+      <image wx:if="{{user && user.image}}" src="{{user.image}}" class="avatar-img" mode="aspectFill"></image>
+      <text wx:else class="avatar-fallback">{{user.initial || '同'}}</text>
+    </view>
+    <view class="user-info">
+      <text class="user-name">{{user.name || '同学_A1B2'}}</text>
+      <text class="user-sub">{{user.address || '北京'}} · {{user.roleLabel || '应届生'}}</text>
+    </view>
+  </view>
+
+  <view class="stats">
+    <view class="stat-item">
+      <text class="stat-num">{{stats.collections}}</text>
+      <text class="stat-label">我的收藏</text>
+    </view>
+    <view class="divider"></view>
+    <view class="stat-item">
+      <text class="stat-num">{{stats.likes}}</text>
+      <text class="stat-label">我的点赞</text>
+    </view>
+    <view class="divider"></view>
+    <view class="stat-item">
+      <text class="stat-num">{{stats.history}}</text>
+      <text class="stat-label">浏览历史</text>
+    </view>
+  </view>
+
+  <view class="menu-card card">
+    <view class="menu-row" bindtap="showResumeTodo">
+      <view class="menu-left"><text class="menu-icon">▣</text><text>完善个人简历</text></view>
+      <text class="menu-right">去填写 ›</text>
+    </view>
+    <view class="menu-row" bindtap="showFeedback">
+      <view class="menu-left"><text class="menu-icon">✎</text><text>意见反馈</text></view>
+      <text class="menu-right">›</text>
+    </view>
+    <view class="menu-row">
+      <view class="menu-left"><text class="menu-icon">ⓘ</text><text>关于我们</text></view>
+      <text class="menu-right">›</text>
+    </view>
+  </view>
+
+  <view class="version">银行帮 v1.0.0</view>
+
+  <view class="bottom-tabs">
+    <view class="tab-item" bindtap="switchTab" data-page="home"><text class="tab-icon">⌂</text><text>首页</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="jobs"><text class="tab-icon">▣</text><text>职位</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="experiences"><text class="tab-icon">▤</text><text>经验</text></view>
+    <view class="tab-item active"><text class="tab-icon">○</text><text>我的</text></view>
+  </view>
+</view>

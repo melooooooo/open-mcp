@@ -1,0 +1,63 @@
+<view class="detail-page">
+  <view class="detail-nav">
+    <view class="back-btn" bindtap="goBack">‹</view>
+    <text>职位详情</text>
+    <view class="nav-space"></view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">正在加载职位详情...</view>
+  <view wx:elif="{{error}}" class="error">{{error}}</view>
+  <block wx:elif="{{job}}">
+    <scroll-view scroll-y class="detail-scroll">
+      <view class="summary">
+        <view class="summary-title-row">
+          <text class="summary-title">{{job.title}}</text>
+        </view>
+        <view class="company-row">
+          <view class="company-logo">{{job.companyInitial}}</view>
+          <view>
+            <text class="company-name">{{job.company}}</text>
+            <text class="company-sub">{{job.companyType}} · {{job.industry}}</text>
+          </view>
+        </view>
+        <view class="tag-row">
+          <text class="tag">⌖ {{job.location}}</text>
+          <text wx:for="{{tags}}" wx:key="*this" class="tag">{{item}}</text>
+          <text wx:if="{{job.deadline}}" class="tag danger">截止: {{job.deadline}}</text>
+        </view>
+      </view>
+
+      <view class="content-card">
+        <view class="block-title">职位描述</view>
+        <view class="paragraphs">
+          <text wx:if="{{detailLines.length === 0}}" class="paragraph">暂无详细描述，请查看投递方式或公告来源。</text>
+          <text wx:for="{{detailLines}}" wx:key="*this" class="paragraph">{{item}}</text>
+        </view>
+      </view>
+
+      <view class="content-card">
+        <view class="block-title">申请信息</view>
+        <view class="info-row">
+          <text class="info-label">学历要求</text>
+          <text class="info-value">{{job.degreeRequirement || '不限'}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">届次</text>
+          <text class="info-value">{{job.session || '不限'}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">投递方式</text>
+          <text class="info-value">{{job.applicationMethod || '见公告'}}</text>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class="detail-actions bottom-actions">
+      <view class="collect-btn" bindtap="toggleCollect">
+        <text class="{{job.isCollected ? 'saved' : ''}}">★</text>
+        <text>{{job.isCollected ? '已收藏' : '收藏'}}</text>
+      </view>
+      <button class="apply-btn primary-button" bindtap="copyApply">一键复制申请链接</button>
+    </view>
+  </block>
+</view>

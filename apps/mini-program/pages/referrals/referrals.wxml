@@ -1,0 +1,30 @@
+<view class="page referral-page">
+  <view class="nav-title">内推专区</view>
+  <view class="sub-title">最新内推机会，直达面试官</view>
+
+  <view wx:if="{{loading}}" class="loading">正在加载内推...</view>
+  <view wx:elif="{{error}}" class="error">{{error}}</view>
+  <view wx:elif="{{referrals.length === 0}}" class="empty">暂无内推信息</view>
+  <view wx:else class="ref-list">
+    <view wx:for="{{referrals}}" wx:key="id" wx:for-item="ref" class="ref-card card" bindtap="openReferral" data-id="{{ref.id}}">
+      <view class="ref-top">
+        <text class="ref-badge">内推</text>
+        <text class="source">{{ref.source || '来源'}}</text>
+      </view>
+      <text class="ref-title line-2">{{ref.title}}</text>
+      <view class="meta-row">
+        <text>{{ref.publishDate || '近期'}}</text>
+        <text>✎ {{ref.replyCount || 0}}</text>
+      </view>
+    </view>
+    <view wx:if="{{loadingMore}}" class="loading more">继续加载...</view>
+  </view>
+
+  <view class="bottom-tabs">
+    <view class="tab-item" bindtap="switchTab" data-page="home"><text class="tab-icon">⌂</text><text>首页</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="jobs"><text class="tab-icon">▣</text><text>职位</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="experiences"><text class="tab-icon">▤</text><text>经验</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="profile"><text class="tab-icon">○</text><text>我的</text></view>
+  </view>
+</view>
+

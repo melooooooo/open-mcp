@@ -1,0 +1,265 @@
+.home-page {
+  background: #f9fafb;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: calc(92rpx + env(safe-area-inset-top)) 40rpx 44rpx;
+  color: #ffffff;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-bottom-left-radius: 48rpx;
+  border-bottom-right-radius: 48rpx;
+  box-shadow: 0 10rpx 24rpx rgba(37, 99, 235, 0.16);
+}
+
+.hero-art {
+  position: absolute;
+  top: 42rpx;
+  right: 10rpx;
+  width: 220rpx;
+  height: 220rpx;
+  opacity: 0.18;
+}
+
+.bank-roof {
+  width: 0;
+  height: 0;
+  margin: 20rpx auto 0;
+  border-left: 76rpx solid transparent;
+  border-right: 76rpx solid transparent;
+  border-bottom: 48rpx solid #ffffff;
+}
+
+.bank-line {
+  height: 14rpx;
+  margin: 0 28rpx;
+  border: 4rpx solid #ffffff;
+}
+
+.bank-line.bottom {
+  margin-top: 8rpx;
+}
+
+.bank-cols {
+  display: flex;
+  justify-content: space-around;
+  margin: 8rpx 46rpx;
+}
+
+.bank-cols view {
+  width: 18rpx;
+  height: 58rpx;
+  border: 4rpx solid #ffffff;
+}
+
+.brand {
+  position: relative;
+  z-index: 1;
+}
+
+.brand-title {
+  display: block;
+  font-size: 48rpx;
+  font-weight: 900;
+  letter-spacing: 4rpx;
+}
+
+.brand-sub {
+  display: inline-block;
+  margin-top: 12rpx;
+  padding: 6rpx 14rpx;
+  border-radius: 6rpx;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.hero-search {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  margin-top: 38rpx;
+  padding: 22rpx 28rpx;
+  border-radius: 999rpx;
+  background: #ffffff;
+  color: #6b7280;
+  font-size: 28rpx;
+  box-shadow: 0 10rpx 22rpx rgba(15, 23, 42, 0.08);
+}
+
+.search-icon {
+  margin-right: 12rpx;
+  color: #9ca3af;
+}
+
+.hot-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.hot-chip {
+  padding: 12rpx 22rpx;
+  border: 1rpx solid #f3f4f6;
+  border-radius: 999rpx;
+  background: #ffffff;
+  color: #4b5563;
+  font-size: 24rpx;
+  box-shadow: 0 6rpx 18rpx rgba(15, 23, 42, 0.04);
+}
+
+.quick-card {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 40rpx 32rpx 0;
+  padding: 28rpx 20rpx;
+}
+
+.quick-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14rpx;
+  color: #374151;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.quick-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 78rpx;
+  height: 78rpx;
+  border-radius: 999rpx;
+  font-size: 34rpx;
+}
+
+.quick-icon.blue { background: #eff6ff; color: #2563eb; }
+.quick-icon.orange { background: #fff7ed; color: #f97316; }
+.quick-icon.green { background: #ecfdf5; color: #10b981; }
+.quick-icon.purple { background-color: #faf5ff; color: #a855f7; }
+
+.jobs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22rpx;
+}
+
+.job-card,
+.exp-card {
+  padding: 28rpx;
+}
+
+.job-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20rpx;
+  margin-bottom: 14rpx;
+}
+
+.job-title,
+.exp-title {
+  flex: 1;
+  color: #111827;
+  font-size: 30rpx;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.type-chip {
+  flex-shrink: 0;
+  max-width: 150rpx;
+  padding: 8rpx 14rpx;
+  border-radius: 8rpx;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 22rpx;
+  font-weight: 800;
+}
+
+.company {
+  display: block;
+  margin-bottom: 16rpx;
+  color: #1f2937;
+  font-size: 27rpx;
+  font-weight: 700;
+}
+
+.job-card .tag-row {
+  margin-bottom: 18rpx;
+}
+
+.exp-card {
+  margin-bottom: 22rpx;
+}
+
+.exp-meta {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin: 16rpx 0;
+  color: #6b7280;
+  font-size: 24rpx;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 999rpx;
+  background: #dbeafe;
+  color: #2563eb;
+  font-weight: 900;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.referral-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18rpx;
+}
+
+.ref-card {
+  min-height: 178rpx;
+  padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.ref-badge {
+  align-self: flex-start;
+  margin-bottom: 14rpx;
+  padding: 5rpx 12rpx;
+  border-radius: 8rpx;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 20rpx;
+  font-weight: 900;
+}
+
+.ref-title {
+  color: #111827;
+  font-size: 26rpx;
+  font-weight: 900;
+  line-height: 1.42;
+}
+
+.meta-row.compact {
+  margin-top: auto;
+}
+
+.empty.compact {
+  padding: 28rpx 0;
+  background: #ffffff;
+  border-radius: 24rpx;
+}
