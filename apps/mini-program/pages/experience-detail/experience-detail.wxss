@@ -102,13 +102,17 @@
   border-radius: 999rpx;
   font-size: 28rpx;
   font-weight: 900;
-  line-height: 86rpx;
 }
 
 .like-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
   width: 180rpx;
   background: #fff7ed;
   color: #f97316;
+  line-height: 1;
 }
 
 .like-btn.active {
@@ -116,9 +120,38 @@
   color: #ffffff;
 }
 
+.like-mark {
+  position: relative;
+  width: 22rpx;
+  height: 22rpx;
+  background: currentColor;
+  border-radius: 4rpx;
+  transform: rotate(-45deg);
+}
+
+.like-mark::before,
+.like-mark::after {
+  content: "";
+  position: absolute;
+  width: 22rpx;
+  height: 22rpx;
+  border-radius: 999rpx;
+  background: currentColor;
+}
+
+.like-mark::before {
+  left: 0;
+  top: -11rpx;
+}
+
+.like-mark::after {
+  left: 11rpx;
+  top: 0;
+}
+
 .share-btn {
   flex: 1;
   background: #2563eb;
   color: #ffffff;
+  line-height: 86rpx;
 }
-

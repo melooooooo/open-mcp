@@ -2,7 +2,7 @@
   <view class="jobs-head">
     <text class="jobs-title">职位广场</text>
     <view class="search-box">
-      <text class="search-symbol">⌕</text>
+      <view class="search-symbol icon-search"></view>
       <input value="{{query}}" bindinput="onInput" confirm-type="search" bindconfirm="submitSearch" placeholder="搜索职位、公司" />
     </view>
     <view class="filter-tabs">
@@ -28,17 +28,17 @@
         <text wx:for="{{job.visibleTags}}" wx:key="*this" class="tag">{{item}}</text>
       </view>
       <view class="meta-row">
-        <text>⌖ {{job.location}}</text>
-        <text>◷ {{job.displayTime}}</text>
+        <text>地点 {{job.location}}</text>
+        <text>时间 {{job.displayTime}}</text>
       </view>
     </view>
     <view wx:if="{{loadingMore}}" class="loading more">继续加载...</view>
   </view>
 
   <view class="bottom-tabs">
-    <view class="tab-item" bindtap="switchTab" data-page="home"><text class="tab-icon">⌂</text><text>首页</text></view>
-    <view class="tab-item active"><text class="tab-icon">▣</text><text>职位</text></view>
-    <view class="tab-item" bindtap="switchTab" data-page="experiences"><text class="tab-icon">▤</text><text>经验</text></view>
-    <view class="tab-item" bindtap="switchTab" data-page="profile"><text class="tab-icon">○</text><text>我的</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="home"><view class="tab-icon icon-home"></view><text>首页</text></view>
+    <view class="tab-item active"><view class="tab-icon icon-jobs"></view><text>职位</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="experiences"><view class="tab-icon icon-exp"></view><text>经验</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="profile"><view class="tab-icon icon-profile"></view><text>我的</text></view>
   </view>
 </view>

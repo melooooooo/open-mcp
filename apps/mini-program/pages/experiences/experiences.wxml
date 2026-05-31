@@ -18,7 +18,7 @@
         <text class="avatar">{{exp.authorInitial}}</text>
         <text>{{exp.authorName}}</text>
         <text class="spacer"></text>
-        <text>◉ {{exp.viewCount}}</text>
+        <text>浏览 {{exp.viewCount}}</text>
       </view>
       <view class="tag-row">
         <text wx:for="{{exp.visibleTags}}" wx:key="*this" class="tag blue-tag">{{item}}</text>
@@ -28,10 +28,9 @@
   </view>
 
   <view class="bottom-tabs">
-    <view class="tab-item" bindtap="switchTab" data-page="home"><text class="tab-icon">⌂</text><text>首页</text></view>
-    <view class="tab-item" bindtap="switchTab" data-page="jobs"><text class="tab-icon">▣</text><text>职位</text></view>
-    <view class="tab-item active"><text class="tab-icon">▤</text><text>经验</text></view>
-    <view class="tab-item" bindtap="switchTab" data-page="profile"><text class="tab-icon">○</text><text>我的</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="home"><view class="tab-icon icon-home"></view><text>首页</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="jobs"><view class="tab-icon icon-jobs"></view><text>职位</text></view>
+    <view class="tab-item active"><view class="tab-icon icon-exp"></view><text>经验</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="profile"><view class="tab-icon icon-profile"></view><text>我的</text></view>
   </view>
 </view>
-

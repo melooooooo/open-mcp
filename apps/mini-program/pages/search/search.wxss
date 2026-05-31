@@ -14,10 +14,9 @@
 }
 
 .back {
-  width: 42rpx;
+  width: 48rpx;
+  height: 48rpx;
   color: #111827;
-  font-size: 54rpx;
-  line-height: 42rpx;
 }
 
 .search-input {

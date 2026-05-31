@@ -176,11 +176,31 @@
   font-size: 22rpx;
 }
 
-.collect-btn text:first-child {
-  font-size: 38rpx;
+.collect-mark {
+  position: relative;
+  width: 28rpx;
+  height: 34rpx;
+  border: 4rpx solid currentColor;
+  border-bottom: 0;
+  border-radius: 6rpx 6rpx 2rpx 2rpx;
+  box-sizing: border-box;
 }
 
-.collect-btn .saved {
+.collect-mark::after {
+  content: "";
+  position: absolute;
+  left: 3rpx;
+  bottom: -8rpx;
+  width: 14rpx;
+  height: 14rpx;
+  border-left: 4rpx solid currentColor;
+  border-bottom: 4rpx solid currentColor;
+  background: #ffffff;
+  transform: rotate(-45deg);
+  box-sizing: border-box;
+}
+
+.collect-mark.saved {
   color: #f59e0b;
 }
 
@@ -195,4 +215,3 @@
   line-height: 88rpx;
   box-shadow: 0 10rpx 20rpx rgba(37, 99, 235, 0.2);
 }
-

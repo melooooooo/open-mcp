@@ -1,6 +1,6 @@
 <view class="ref-detail">
   <view class="detail-nav">
-    <view class="back-btn" bindtap="goBack">‹</view>
+    <view class="back-btn icon-back" bindtap="goBack"></view>
     <text>内推详情</text>
     <view class="nav-space"></view>
   </view>
@@ -18,7 +18,9 @@
       <text wx:for="{{contentLines}}" wx:key="*this" class="paragraph">{{item}}</text>
     </view>
     <view class="actions bottom-actions">
-      <button class="collect secondary-button {{referral.isCollected ? 'active' : ''}}" bindtap="toggleCollect">{{referral.isCollected ? '已收藏' : '收藏'}}</button>
+      <button class="collect secondary-button {{referral.isCollected ? 'active' : ''}}" bindtap="toggleCollect">
+        {{referral.isCollected ? '已收藏' : (isLoggedIn ? '收藏' : '登录收藏')}}
+      </button>
       <button class="copy primary-button" bindtap="copyLink">复制原帖链接</button>
     </view>
   </block>

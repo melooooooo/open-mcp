@@ -13,7 +13,7 @@
       <text class="brand-sub">你的金融求职第一站</text>
     </view>
     <view class="hero-search" bindtap="goSearch">
-      <text class="search-icon">⌕</text>
+      <view class="search-icon icon-search"></view>
       <text>搜索银行、面经、内推...</text>
     </view>
   </view>
@@ -29,19 +29,19 @@
 
   <view class="quick-card card">
     <view class="quick-item" bindtap="switchTab" data-page="jobs">
-      <view class="quick-icon blue">▣</view>
+      <view class="quick-icon blue">职</view>
       <text>求职导航</text>
     </view>
     <view class="quick-item" bindtap="switchTab" data-page="experiences">
-      <view class="quick-icon orange">▤</view>
+      <view class="quick-icon orange">经</view>
       <text>经验面经</text>
     </view>
     <view class="quick-item" bindtap="switchTab" data-page="referrals">
-      <view class="quick-icon green">✓</view>
+      <view class="quick-icon green">推</view>
       <text>内推专区</text>
     </view>
     <view class="quick-item" bindtap="switchTab" data-page="jobs">
-      <view class="quick-icon purple">↯</view>
+      <view class="quick-icon purple">新</view>
       <text>最新动态</text>
     </view>
   </view>
@@ -53,7 +53,7 @@
     <view class="section">
       <view class="section-head">
         <text class="section-title">最新招聘职位</text>
-        <text class="section-more" bindtap="switchTab" data-page="jobs">全部职位 ›</text>
+        <view class="section-more" bindtap="switchTab" data-page="jobs">全部职位</view>
       </view>
       <view wx:if="{{latestJobs.length === 0}}" class="empty compact">暂无最新职位</view>
       <view wx:else class="jobs-list">
@@ -67,8 +67,8 @@
             <text wx:for="{{job.visibleTags}}" wx:key="*this" class="tag">{{item}}</text>
           </view>
           <view class="meta-row">
-            <text class="line-1">⌖ {{job.location}}</text>
-            <text>◷ {{job.displayTime}}</text>
+            <text class="line-1">地点 {{job.location}}</text>
+            <text>时间 {{job.displayTime}}</text>
           </view>
         </view>
       </view> 
@@ -77,7 +77,7 @@
     <view class="section">
       <view class="section-head">
         <text class="section-title">经验分享</text>
-        <view class="section-more" bindtap="switchTab" data-page="experiences">查看更多 ›</view>
+        <view class="section-more" bindtap="switchTab" data-page="experiences">查看更多</view>
       </view>
       <view wx:if="{{experiences.length === 0}}" class="empty compact">暂无经验分享</view>
       <block wx:else>
@@ -87,7 +87,7 @@
             <text class="avatar">{{exp.authorInitial}}</text>
             <text class="line-1">{{exp.authorName}}</text>
             <text class="spacer"></text>
-            <text>◉ {{exp.viewCount}}</text>
+            <text>浏览 {{exp.viewCount}}</text>
           </view>
           <view class="tag-row">
             <text wx:for="{{exp.visibleTags}}" wx:key="*this" class="tag blue-tag">{{item}}</text>
@@ -99,7 +99,7 @@
     <view class="section">
       <view class="section-head">
         <text class="section-title">内推信息</text>
-        <view class="section-more" bindtap="switchTab" data-page="referrals">更多内推 ›</view>
+        <view class="section-more" bindtap="switchTab" data-page="referrals">更多内推</view>
       </view>
       <view wx:if="{{referrals.length === 0}}" class="empty compact">暂无内推信息</view>
       <view wx:else class="referral-grid">
@@ -108,7 +108,7 @@
           <text class="ref-title line-2">{{ref.title}}</text>
           <view class="meta-row compact">
             <text>{{ref.publishDate || '近期'}}</text>
-            <text wx:if="{{ref.replyCount !== null}}">✎ {{ref.replyCount}}</text>
+            <text wx:if="{{ref.replyCount !== null}}">回复 {{ref.replyCount}}</text>
           </view>
         </view>
       </view>
@@ -116,9 +116,9 @@
   </block>
 
   <view class="bottom-tabs">
-    <view class="tab-item active"><text class="tab-icon">⌂</text><text>首页</text></view>
-    <view class="tab-item" bindtap="switchTab" data-page="jobs"><text class="tab-icon">▣</text><text>职位</text></view>
-    <view class="tab-item" bindtap="switchTab" data-page="experiences"><text class="tab-icon">▤</text><text>经验</text></view>
-    <view class="tab-item" bindtap="switchTab" data-page="profile"><text class="tab-icon">○</text><text>我的</text></view>
+    <view class="tab-item active"><view class="tab-icon icon-home"></view><text>首页</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="jobs"><view class="tab-icon icon-jobs"></view><text>职位</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="experiences"><view class="tab-icon icon-exp"></view><text>经验</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="profile"><view class="tab-icon icon-profile"></view><text>我的</text></view>
   </view>
 </view>

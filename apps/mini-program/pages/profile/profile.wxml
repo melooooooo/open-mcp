@@ -5,12 +5,18 @@
       <text wx:else class="avatar-fallback">{{user.initial || '同'}}</text>
     </view>
     <view class="user-info">
-      <text class="user-name">{{user.name || '同学_A1B2'}}</text>
-      <text class="user-sub">{{user.address || '北京'}} · {{user.roleLabel || '应届生'}}</text>
+      <text class="user-name">{{user.name || '同学'}}</text>
+      <text class="user-sub">{{user.address || '游客模式'}} · {{user.roleLabel || '公测版'}}</text>
     </view>
   </view>
 
-  <view class="stats">
+  <view wx:if="{{!isLoggedIn}}" class="visitor-card card">
+    <text class="visitor-title">公测版已开放内容浏览</text>
+    <text class="visitor-desc">登录后可以收藏职位、内推信息，并同步经验点赞。</text>
+    <button class="visitor-button" loading="{{loading}}" bindtap="handleWechatLogin">微信一键登录</button>
+  </view>
+
+  <view wx:else class="stats">
     <view class="stat-item">
       <text class="stat-num">{{stats.collections}}</text>
       <text class="stat-label">我的收藏</text>
@@ -27,27 +33,70 @@
     </view>
   </view>
 
+  <view wx:if="{{isLoggedIn && showProfileEditor}}" class="profile-editor card">
+    <view class="editor-head">
+      <text class="editor-title">{{isProfileIncomplete ? '完善资料' : '编辑资料'}}</text>
+      <text class="editor-desc">头像和昵称只用于个人中心、收藏与互动展示。</text>
+    </view>
+
+    <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="handleChooseAvatar">
+      <image wx:if="{{profileForm.image}}" src="{{profileForm.image}}" class="avatar-preview" mode="aspectFill"></image>
+      <text wx:else class="avatar-preview-fallback">{{user.initial || '同'}}</text>
+      <text class="avatar-picker-text">更换头像</text>
+    </button>
+
+    <view class="profile-field">
+      <text class="profile-label">昵称</text>
+      <input class="profile-input" type="nickname" value="{{profileForm.name}}" placeholder="请输入昵称" bindinput="handleNameInput" />
+    </view>
+    <view class="profile-field">
+      <text class="profile-label">城市</text>
+      <input class="profile-input" value="{{profileForm.address}}" placeholder="可选" bindinput="handleAddressInput" />
+    </view>
+    <view class="profile-field">
+      <text class="profile-label">性别</text>
+      <input class="profile-input" value="{{profileForm.gender}}" placeholder="可选" bindinput="handleGenderInput" />
+    </view>
+    <view class="profile-field">
+      <text class="profile-label">联系方式</text>
+      <input class="profile-input" value="{{profileForm.contactPhone}}" placeholder="可选，仅自己可编辑" bindinput="handleContactPhoneInput" />
+    </view>
+
+    <view class="profile-actions">
+      <button class="profile-secondary" loading="{{savingProfile}}" bindtap="skipProfile">稍后再说</button>
+      <button class="profile-primary" loading="{{savingProfile}}" bindtap="saveProfile">保存资料</button>
+    </view>
+  </view>
+
   <view class="menu-card card">
+    <view wx:if="{{isLoggedIn && !showProfileEditor}}" class="menu-row" bindtap="showProfileEditor">
+      <view class="menu-left"><text class="menu-icon">编</text><text>编辑个人资料</text></view>
+      <view class="menu-right"><view class="menu-arrow"></view></view>
+    </view>
     <view class="menu-row" bindtap="showResumeTodo">
-      <view class="menu-left"><text class="menu-icon">▣</text><text>完善个人简历</text></view>
-      <text class="menu-right">去填写 ›</text>
+      <view class="menu-left"><text class="menu-icon">历</text><text>完善个人简历</text></view>
+      <view class="menu-right with-text"><text>去填写</text><view class="menu-arrow"></view></view>
     </view>
     <view class="menu-row" bindtap="showFeedback">
-      <view class="menu-left"><text class="menu-icon">✎</text><text>意见反馈</text></view>
-      <text class="menu-right">›</text>
+      <view class="menu-left"><text class="menu-icon">反</text><text>意见反馈</text></view>
+      <view class="menu-right"><view class="menu-arrow"></view></view>
     </view>
-    <view class="menu-row">
-      <view class="menu-left"><text class="menu-icon">ⓘ</text><text>关于我们</text></view>
-      <text class="menu-right">›</text>
+    <view class="menu-row" bindtap="showAbout">
+      <view class="menu-left"><text class="menu-icon">关</text><text>关于我们</text></view>
+      <view class="menu-right"><view class="menu-arrow"></view></view>
+    </view>
+    <view wx:if="{{isLoggedIn}}" class="menu-row" bindtap="handleLogout">
+      <view class="menu-left"><text class="menu-icon">退</text><text>退出登录</text></view>
+      <view class="menu-right"><view class="menu-arrow"></view></view>
     </view>
   </view>
 
   <view class="version">银行帮 v1.0.0</view>
 
   <view class="bottom-tabs">
-    <view class="tab-item" bindtap="switchTab" data-page="home"><text class="tab-icon">⌂</text><text>首页</text></view>
-    <view class="tab-item" bindtap="switchTab" data-page="jobs"><text class="tab-icon">▣</text><text>职位</text></view>
-    <view class="tab-item" bindtap="switchTab" data-page="experiences"><text class="tab-icon">▤</text><text>经验</text></view>
-    <view class="tab-item active"><text class="tab-icon">○</text><text>我的</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="home"><view class="tab-icon icon-home"></view><text>首页</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="jobs"><view class="tab-icon icon-jobs"></view><text>职位</text></view>
+    <view class="tab-item" bindtap="switchTab" data-page="experiences"><view class="tab-icon icon-exp"></view><text>经验</text></view>
+    <view class="tab-item active"><view class="tab-icon icon-profile"></view><text>我的</text></view>
   </view>
 </view>

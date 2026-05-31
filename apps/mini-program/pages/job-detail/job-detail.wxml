@@ -1,6 +1,6 @@
 <view class="detail-page">
   <view class="detail-nav">
-    <view class="back-btn" bindtap="goBack">‹</view>
+    <view class="back-btn icon-back" bindtap="goBack"></view>
     <text>职位详情</text>
     <view class="nav-space"></view>
   </view>
@@ -21,7 +21,7 @@
           </view>
         </view>
         <view class="tag-row">
-          <text class="tag">⌖ {{job.location}}</text>
+          <text class="tag">地点 {{job.location}}</text>
           <text wx:for="{{tags}}" wx:key="*this" class="tag">{{item}}</text>
           <text wx:if="{{job.deadline}}" class="tag danger">截止: {{job.deadline}}</text>
         </view>
@@ -54,8 +54,8 @@
 
     <view class="detail-actions bottom-actions">
       <view class="collect-btn" bindtap="toggleCollect">
-        <text class="{{job.isCollected ? 'saved' : ''}}">★</text>
-        <text>{{job.isCollected ? '已收藏' : '收藏'}}</text>
+        <view class="collect-mark {{job.isCollected ? 'saved' : ''}}"></view>
+        <text>{{job.isCollected ? '已收藏' : (isLoggedIn ? '收藏' : '登录收藏')}}</text>
       </view>
       <button class="apply-btn primary-button" bindtap="copyApply">一键复制申请链接</button>
     </view>

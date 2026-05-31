@@ -1,6 +1,6 @@
 <view class="article-page">
   <view class="article-nav">
-    <view class="back-btn" bindtap="goBack">‹</view>
+    <view class="back-btn icon-back" bindtap="goBack"></view>
     <text>经验详情</text>
     <view class="nav-space"></view>
   </view>
@@ -14,7 +14,7 @@
         <view class="article-meta">
           <text>{{exp.authorName}}</text>
           <text wx:if="{{exp.organizationName}}">· {{exp.organizationName}}</text>
-          <text>· ◉ {{exp.viewCount}}</text>
+          <text>· 浏览 {{exp.viewCount}}</text>
         </view>
         <view class="tag-row">
           <text wx:for="{{tags}}" wx:key="*this" class="tag">{{item}}</text>
@@ -26,7 +26,13 @@
       </view>
     </scroll-view>
     <view class="article-actions bottom-actions">
-      <button class="like-btn secondary-button {{exp.isLiked ? 'active' : ''}}" bindtap="toggleLike">♥ {{exp.likeCount || 0}}</button>
+      <button class="like-btn secondary-button {{exp.isLiked ? 'active' : ''}}" bindtap="toggleLike">
+        <block wx:if="{{isLoggedIn}}">
+          <view class="like-mark"></view>
+          <text>{{exp.likeCount || 0}}</text>
+        </block>
+        <block wx:else>登录点赞</block>
+      </button>
       <button open-type="share" class="share-btn primary-button">分享给同学</button>
     </view>
   </block>
