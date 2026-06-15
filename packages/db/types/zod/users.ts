@@ -35,6 +35,7 @@ export const zUserSchema = zUpdateUserSchema.extend({
   emailVerified: z.boolean(),
   phoneNumber: z.string().optional(),
   phoneNumberVerified: z.boolean(),
+  profileCompletedAt: z.string().or(z.date()).nullable().optional(),
 });
 
 export type User = z.infer<typeof zUserSchema>;

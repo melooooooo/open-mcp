@@ -41,8 +41,10 @@ Page({
       const data = await api.get("/experiences", { page, pageSize: this.data.pageSize, tag })
       const list = (data.items || []).map((item) => ({
         ...item,
+        title: item.title || "未命名经验",
+        authorName: item.authorName || "匿名",
         authorInitial: (item.authorName || "匿").slice(0, 1),
-        visibleTags: (item.tags || []).slice(0, 4)
+        visibleTags: (item.tags || []).filter(Boolean).slice(0, 4)
       }))
       this.setData({
         experiences: reset ? list : this.data.experiences.concat(list),
@@ -64,4 +66,3 @@ Page({
     router.switchMain(event.currentTarget.dataset.page)
   }
 })
-

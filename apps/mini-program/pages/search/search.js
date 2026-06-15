@@ -34,9 +34,23 @@ Page({
     try {
       const data = await api.get("/search", { q })
       this.setData({
-        jobListings: data.jobListings || [],
-        experiences: data.experiences || [],
-        jobSites: data.jobSites || [],
+        jobListings: (data.jobListings || []).map((job) => ({
+          ...job,
+          title: job.title || "未命名职位",
+          company: job.company || "未知公司",
+          location: job.location || "地点未明确"
+        })),
+        experiences: (data.experiences || []).map((exp) => ({
+          ...exp,
+          title: exp.title || "未命名经验",
+          authorName: exp.authorName || "匿名",
+          organizationName: exp.organizationName || "经验分享"
+        })),
+        jobSites: (data.jobSites || []).map((site) => ({
+          ...site,
+          title: site.title || "未命名来源",
+          description: site.description || "求职信息来源"
+        })),
         loading: false
       })
     } catch (error) {
@@ -63,4 +77,3 @@ Page({
     wx.setClipboardData({ data: url })
   }
 })
-

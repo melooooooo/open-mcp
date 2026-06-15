@@ -3,8 +3,8 @@ import { financeExperiences, userExperienceLikes } from "@repo/db/schema"
 import { and, eq, sql } from "drizzle-orm"
 import { fail, getCurrentUser, ok } from "../../../_shared/response"
 
-export async function POST(_: Request, context: { params: Promise<{ slug: string }> }) {
-  const user = await getCurrentUser()
+export async function POST(request: Request, context: { params: Promise<{ slug: string }> }) {
+  const user = await getCurrentUser(request)
   if (!user?.id) return fail("UNAUTHORIZED", "请先登录", 401)
 
   const { slug } = await context.params
@@ -40,4 +40,3 @@ export async function POST(_: Request, context: { params: Promise<{ slug: string
   })
   return ok({ isLiked: true })
 }
-

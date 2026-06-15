@@ -6,14 +6,26 @@ import {
   userExperienceLikes,
   userJobListingCollections,
 } from "@repo/db/schema"
-import { desc, eq, inArray } from "drizzle-orm"
+import { desc, eq } from "drizzle-orm"
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { mapExperience, mapJobListing, mapReferral } from "../_shared/mappers"
-import { fail, getCurrentUser, ok } from "../_shared/response"
+import { fail, getCurrentUser, ok, toMpUser } from "../_shared/response"
 
-export async function GET() {
-  const user = await getCurrentUser()
-  if (!user?.id) {
+export async function GET(request: Request) {
+  const currentUser = await getCurrentUser(request)
+  if (!currentUser?.id) {
+    return ok({
+      user: null,
+      stats: { collections: 0, likes: 0, history: 0 },
+      collections: [],
+      likes: [],
+    })
+  }
+
+  const user = await db.query.user.findFirst({
+    where: eq(userTable.id, currentUser.id),
+  })
+  if (!user) {
     return ok({
       user: null,
       stats: { collections: 0, likes: 0, history: 0 },
@@ -84,7 +96,7 @@ export async function GET() {
     .sort((a, b) => new Date(b.likedAt || 0).getTime() - new Date(a.likedAt || 0).getTime())
 
   return ok({
-    user,
+    user: toMpUser(user),
     stats: {
       collections: collections.length,
       likes: likes.length,
@@ -96,18 +108,45 @@ export async function GET() {
 }
 
 export async function PATCH(request: Request) {
-  const currentUser = await getCurrentUser()
+  const currentUser = await getCurrentUser(request)
   if (!currentUser?.id) return fail("UNAUTHORIZED", "请先登录", 401)
 
+  const existingUser = await db.query.user.findFirst({
+    where: eq(userTable.id, currentUser.id),
+  })
+  if (!existingUser) return fail("NOT_FOUND", "用户不存在", 404)
+
   const body = await request.json().catch(() => ({}))
-  const values = {
-    name: typeof body.name === "string" && body.name.trim() ? body.name.trim() : currentUser.name,
-    gender: typeof body.gender === "string" ? body.gender : undefined,
-    address: typeof body.address === "string" ? body.address : undefined,
-    contactPhone: typeof body.contactPhone === "string" ? body.contactPhone : undefined,
+  const nextName = typeof body.name === "string" && body.name.trim() ? body.name.trim() : existingUser.name
+  const nextImage =
+    body.image === null
+      ? null
+      : typeof body.image === "string"
+        ? body.image.trim() || null
+        : existingUser.image
+  const nextGender = typeof body.gender === "string" ? body.gender : existingUser.gender
+  const nextAddress = typeof body.address === "string" ? body.address : existingUser.address
+  const nextContactPhone =
+    typeof body.contactPhone === "string" ? body.contactPhone : existingUser.contactPhone
+  const completeProfile = Boolean(body.completeProfile)
+  const values: Partial<typeof userTable.$inferInsert> = {
+    name: nextName,
     updatedAt: new Date(),
   }
 
-  await db.update(userTable).set(values).where(eq(userTable.id, currentUser.id))
-  return ok({ saved: true })
+  if (body.image !== undefined) values.image = nextImage
+  if (body.gender !== undefined) values.gender = nextGender
+  if (body.address !== undefined) values.address = nextAddress
+  if (body.contactPhone !== undefined) values.contactPhone = nextContactPhone
+  if (completeProfile) values.profileCompletedAt = new Date()
+
+  await db.update(userTable).set(values).where(eq(userTable.id, existingUser.id))
+  const updatedUser = await db.query.user.findFirst({
+    where: eq(userTable.id, existingUser.id),
+  })
+
+  return ok({
+    saved: true,
+    user: toMpUser(updatedUser),
+  })
 }

@@ -92,6 +92,20 @@
       "when": 1765258487436,
       "tag": "0013_site_feedbacks",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1780118400000,
+      "tag": "0014_client_sessions",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1780185600000,
+      "tag": "0015_user_profile_completed_at",
+      "breakpoints": true
     }
   ]
 }

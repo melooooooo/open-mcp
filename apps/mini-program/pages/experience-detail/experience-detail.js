@@ -1,4 +1,5 @@
 const api = require("../../utils/api")
+const auth = require("../../utils/auth")
 
 function stripMarkdown(value) {
   return (value || "")
@@ -16,24 +17,35 @@ Page({
     slug: "",
     loading: true,
     error: "",
+    isLoggedIn: false,
     exp: null,
     tags: [],
     contentLines: []
   },
 
   onLoad(options) {
-    this.setData({ slug: decodeURIComponent(options.slug || "") })
+    this.setData({ slug: decodeURIComponent(options.slug || ""), isLoggedIn: auth.isLoggedIn() })
     this.loadDetail()
+  },
+
+  onShow() {
+    this.setData({ isLoggedIn: auth.isLoggedIn() })
   },
 
   async loadDetail() {
     this.setData({ loading: true, error: "" })
     try {
       const exp = await api.get(`/experiences/${encodeURIComponent(this.data.slug)}`)
+      const safeExp = {
+        ...exp,
+        title: exp.title || "未命名经验",
+        authorName: exp.authorName || "匿名",
+        summary: exp.summary || "暂无摘要"
+      }
       this.setData({
-        exp,
-        tags: (exp.tags || []).slice(0, 6),
-        contentLines: stripMarkdown(exp.content || exp.summary),
+        exp: safeExp,
+        tags: (safeExp.tags || []).slice(0, 6),
+        contentLines: stripMarkdown(safeExp.content || safeExp.summary),
         loading: false
       })
     } catch (error) {
@@ -47,6 +59,17 @@ Page({
 
   async toggleLike() {
     if (!this.data.exp) return
+    if (!auth.isLoggedIn()) {
+      const authState = await auth.ensureLoggedIn({ reason: "点赞经验" })
+      if (!authState) return
+      this.setData({ isLoggedIn: true })
+      await this.loadDetail()
+      if (!this.data.exp || this.data.exp.isLiked) {
+        wx.showToast({ title: "已点赞", icon: "success" })
+        return
+      }
+    }
+
     const next = !this.data.exp.isLiked
     this.setData({
       "exp.isLiked": next,
@@ -60,7 +83,7 @@ Page({
         "exp.isLiked": !next,
         "exp.likeCount": Math.max((this.data.exp.likeCount || 0) + (next ? -1 : 1), 0)
       })
-      wx.showToast({ title: error.message || "请先登录", icon: "none" })
+      wx.showToast({ title: error.message || "操作失败", icon: "none" })
     }
   },
 
@@ -72,4 +95,3 @@ Page({
     }
   }
 })
-

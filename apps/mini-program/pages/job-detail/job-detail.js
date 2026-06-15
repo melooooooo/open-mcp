@@ -1,18 +1,24 @@
 const api = require("../../utils/api")
+const auth = require("../../utils/auth")
 
 Page({
   data: {
     id: "",
     loading: true,
     error: "",
+    isLoggedIn: false,
     job: null,
     tags: [],
     detailLines: []
   },
 
   onLoad(options) {
-    this.setData({ id: options.id || "" })
+    this.setData({ id: options.id || "", isLoggedIn: auth.isLoggedIn() })
     this.loadDetail()
+  },
+
+  onShow() {
+    this.setData({ isLoggedIn: auth.isLoggedIn() })
   },
 
   async loadDetail() {
@@ -23,11 +29,20 @@ Page({
     this.setData({ loading: true, error: "" })
     try {
       const job = await api.get(`/job-listings/${this.data.id}`)
-      const detailText = [job.remark, job.majorRequirement, job.announcementSource].filter(Boolean).join("\n")
-      job.companyInitial = (job.company || "企").slice(0, 1)
+      const safeJob = {
+        ...job,
+        title: job.title || "未命名职位",
+        company: job.company || "未知公司",
+        location: job.location || "地点未明确",
+        companyType: job.companyType || "其他",
+        industry: job.industry || "行业未明确",
+        applicationMethod: job.applicationMethod || job.announcementSource || ""
+      }
+      const detailText = [safeJob.remark, safeJob.majorRequirement, safeJob.announcementSource].filter(Boolean).join("\n")
+      safeJob.companyInitial = (safeJob.company || "企").slice(0, 1)
       this.setData({
-        job,
-        tags: (job.tags || []).filter(Boolean).slice(0, 5),
+        job: safeJob,
+        tags: (safeJob.tags || []).filter(Boolean).slice(0, 5),
         detailLines: detailText ? detailText.split(/\n+/).filter(Boolean) : [],
         loading: false
       })
@@ -42,6 +57,17 @@ Page({
 
   async toggleCollect() {
     if (!this.data.job) return
+    if (!auth.isLoggedIn()) {
+      const authState = await auth.ensureLoggedIn({ reason: "收藏职位" })
+      if (!authState) return
+      this.setData({ isLoggedIn: true })
+      await this.loadDetail()
+      if (!this.data.job || this.data.job.isCollected) {
+        wx.showToast({ title: "已收藏", icon: "success" })
+        return
+      }
+    }
+
     const next = !this.data.job.isCollected
     this.setData({ "job.isCollected": next })
     try {
@@ -50,7 +76,7 @@ Page({
       wx.showToast({ title: data.isCollected ? "已收藏" : "已取消", icon: "success" })
     } catch (error) {
       this.setData({ "job.isCollected": !next })
-      wx.showToast({ title: error.message || "请先登录", icon: "none" })
+      wx.showToast({ title: error.message || "操作失败", icon: "none" })
     }
   },
 

@@ -1,4 +1,5 @@
 import { auth } from "@/lib/auth"
+import { getUserFromBearer } from "@/lib/client-auth"
 import { headers } from "next/headers"
 import { NextResponse } from "next/server"
 
@@ -23,12 +24,33 @@ export function fail(code: string, message: string, status = 400) {
   )
 }
 
-export async function getCurrentUser() {
+export async function getCurrentUser(request?: Request) {
+  if (request) {
+    const bearerUser = await getUserFromBearer(request)
+    if (bearerUser) return bearerUser
+  }
+
   const session = await auth.api.getSession({
     headers: await headers(),
   })
 
   return session?.user ?? null
+}
+
+export function toMpUser(user: any) {
+  if (!user) return null
+
+  return {
+    id: user.id,
+    name: user.name,
+    image: user.image,
+    role: user.role,
+    gender: user.gender,
+    address: user.address,
+    contactPhone: user.contactPhone,
+    profileCompletedAt: user.profileCompletedAt,
+    createdAt: user.createdAt,
+  }
 }
 
 export function getPaging(searchParams: URLSearchParams, defaults = { page: 1, pageSize: 20 }) {
@@ -69,4 +91,3 @@ export function stripHtml(value?: string | null, maxLength = 160) {
     .trim()
     .slice(0, maxLength)
 }
-

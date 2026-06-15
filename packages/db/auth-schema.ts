@@ -1,6 +1,6 @@
 import { createId } from "@paralleldrive/cuid2";
 import { sql } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, varchar, numeric, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, varchar, numeric, jsonb, index } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -14,6 +14,7 @@ export const user = pgTable("user", {
   gender: text("gender"),
   address: text("address"),
   contactPhone: text("contact_phone"),
+  profileCompletedAt: timestamp("profile_completed_at"),
   role: varchar("role", { length: 64, enum: ["admin", "user", "member"] }).default("user"),
   banned: boolean("banned").notNull().default(false),
   bannedReason: text("ban_reason"),
@@ -34,6 +35,22 @@ export const session = pgTable("session", {
   impersonatedAt: timestamp("impersonated_at"),
   userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" })
 });
+
+export const clientSession = pgTable("client_session", {
+  id: text("id").primaryKey().$defaultFn(() => createId()),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  clientType: varchar("client_type", { length: 64 }).notNull(),
+  deviceId: text("device_id"),
+  refreshTokenHash: text("refresh_token_hash").notNull().unique(),
+  expiresAt: timestamp("expires_at").notNull(),
+  revokedAt: timestamp("revoked_at"),
+  lastUsedAt: timestamp("last_used_at"),
+  createdAt: timestamp("created_at").notNull(),
+  updatedAt: timestamp("updated_at").notNull(),
+}, (table) => [
+  index("client_session_user_id_idx").on(table.userId),
+  index("client_session_client_type_idx").on(table.clientType),
+]);
 
 export const account = pgTable("account", {
   id: text("id").primaryKey(),

@@ -1,25 +1,37 @@
 const api = require("../../utils/api")
+const auth = require("../../utils/auth")
 
 Page({
   data: {
     id: "",
     loading: true,
     error: "",
+    isLoggedIn: false,
     referral: null,
     contentLines: []
   },
 
   onLoad(options) {
-    this.setData({ id: options.id || "" })
+    this.setData({ id: options.id || "", isLoggedIn: auth.isLoggedIn() })
     this.loadDetail()
+  },
+
+  onShow() {
+    this.setData({ isLoggedIn: auth.isLoggedIn() })
   },
 
   async loadDetail() {
     try {
       const referral = await api.get(`/referrals/${this.data.id}`)
+      const safeReferral = {
+        ...referral,
+        title: referral.title || "未命名内推",
+        publishDate: referral.publishDate || "近期",
+        content: referral.content || referral.companyName || "暂无详细内容"
+      }
       this.setData({
-        referral,
-        contentLines: (referral.content || "暂无详细内容").split(/\n+/).map((item) => item.trim()).filter(Boolean),
+        referral: safeReferral,
+        contentLines: safeReferral.content.split(/\n+/).map((item) => item.trim()).filter(Boolean),
         loading: false
       })
     } catch (error) {
@@ -32,6 +44,18 @@ Page({
   },
 
   async toggleCollect() {
+    if (!this.data.referral) return
+    if (!auth.isLoggedIn()) {
+      const authState = await auth.ensureLoggedIn({ reason: "收藏内推" })
+      if (!authState) return
+      this.setData({ isLoggedIn: true })
+      await this.loadDetail()
+      if (!this.data.referral || this.data.referral.isCollected) {
+        wx.showToast({ title: "已收藏", icon: "success" })
+        return
+      }
+    }
+
     const next = !this.data.referral.isCollected
     this.setData({ "referral.isCollected": next })
     try {
@@ -39,7 +63,7 @@ Page({
       this.setData({ "referral.isCollected": data.isCollected })
     } catch (error) {
       this.setData({ "referral.isCollected": !next })
-      wx.showToast({ title: error.message || "请先登录", icon: "none" })
+      wx.showToast({ title: error.message || "操作失败", icon: "none" })
     }
   },
 
@@ -52,4 +76,3 @@ Page({
     wx.setClipboardData({ data: link })
   }
 })
-

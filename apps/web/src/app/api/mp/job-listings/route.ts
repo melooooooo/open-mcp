@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
     return ok({ items: [], total: 0, page, pageSize, error: error.message })
   }
 
-  const user = await getCurrentUser()
+  const user = await getCurrentUser(request)
   const ids = (data || []).map((item) => item.id)
   const collected = new Set<string>()
   if (user?.id && ids.length > 0) {
@@ -49,4 +49,3 @@ export async function GET(request: NextRequest) {
     pageSize,
   })
 }
-

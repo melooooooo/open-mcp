@@ -31,8 +31,14 @@ Page({
     this.setData(reset ? { loading: true, error: "" } : { loadingMore: true, error: "" })
     try {
       const data = await api.get("/referrals", { page, pageSize: this.data.pageSize })
+      const list = (data.items || []).map((item) => ({
+        ...item,
+        title: item.title || "未命名内推",
+        publishDate: item.publishDate || "近期",
+        source: item.source || "来源"
+      }))
       this.setData({
-        referrals: reset ? data.items || [] : this.data.referrals.concat(data.items || []),
+        referrals: reset ? list : this.data.referrals.concat(list),
         total: data.total || 0,
         page,
         loading: false,
@@ -51,4 +57,3 @@ Page({
     router.switchMain(event.currentTarget.dataset.page)
   }
 })
-

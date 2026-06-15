@@ -5,7 +5,6 @@ Page({
   data: {
     loading: true,
     error: "",
-    hotSearches: ["工商银行", "建设银行", "管培生", "金融科技", "数据分析", "客户经理"],
     jobSites: [],
     experiences: [],
     latestJobs: [],
@@ -26,20 +25,30 @@ Page({
       const data = await api.get("/home")
       const experiences = (data.experiences || []).map((item) => ({
         ...item,
+        title: item.title || "未命名经验",
+        authorName: item.authorName || "匿名",
         authorInitial: (item.authorName || "匿").slice(0, 1),
-        visibleTags: (item.tags || []).slice(0, 4)
+        visibleTags: (item.tags || []).filter(Boolean).slice(0, 4)
       }))
       const latestJobs = (data.latestJobs || []).map((item) => ({
         ...item,
+        title: item.title || "未命名职位",
+        company: item.company || "未知公司",
+        location: item.location || "地点未明确",
+        companyType: item.companyType || "其他",
         displayTime: item.timeText || item.sourceUpdatedAt || item.createdAt || "近期",
         visibleTags: (item.tags || [item.session, item.industry]).filter(Boolean).slice(0, 3)
       }))
+      const referrals = (data.referrals || []).map((item) => ({
+        ...item,
+        title: item.title || "未命名内推",
+        publishDate: item.publishDate || "近期"
+      }))
       this.setData({
-        hotSearches: data.hotSearches || this.data.hotSearches,
         jobSites: data.jobSites || [],
         experiences,
         latestJobs,
-        referrals: data.referrals || [],
+        referrals,
         loading: false
       })
     } catch (error) {

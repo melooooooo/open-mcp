@@ -18,15 +18,6 @@
     </view>
   </view>
 
-  <view class="section">
-    <view class="section-head">
-      <text class="section-title small">热门搜索</text>
-    </view>
-    <view class="hot-wrap">
-      <text wx:for="{{hotSearches}}" wx:key="*this" class="hot-chip" bindtap="goSearch" data-q="{{item}}">{{item}}</text>
-    </view>
-  </view>
-
   <view class="quick-card card">
     <view class="quick-item" bindtap="switchTab" data-page="jobs">
       <view class="quick-icon blue">职</view>

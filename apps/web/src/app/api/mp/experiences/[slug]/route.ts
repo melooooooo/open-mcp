@@ -5,7 +5,7 @@ import { db } from "@repo/db"
 import { financeExperiences, userExperienceLikes } from "@repo/db/schema"
 import { and, eq, sql } from "drizzle-orm"
 
-export async function GET(_: Request, context: { params: Promise<{ slug: string }> }) {
+export async function GET(request: Request, context: { params: Promise<{ slug: string }> }) {
   const { slug } = await context.params
   const decodedSlug = decodeURIComponent(slug)
   const supabase = await createServerSupabaseClient()
@@ -22,7 +22,7 @@ export async function GET(_: Request, context: { params: Promise<{ slug: string 
     // 浏览量失败不影响详情阅读
   }
 
-  const user = await getCurrentUser()
+  const user = await getCurrentUser(request)
   let isLiked = false
   if (user?.id) {
     const like = await db.query.userExperienceLikes.findFirst({
@@ -40,4 +40,3 @@ export async function GET(_: Request, context: { params: Promise<{ slug: string 
     isLiked,
   })
 }
-

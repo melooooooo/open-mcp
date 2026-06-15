@@ -32,5 +32,6 @@
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "deepscan.ignoreConfirmWarning": true,
-  "claudeCodeChat.permissions.yoloMode": true
+  "claudeCodeChat.permissions.yoloMode": true,
+  "liveServer.settings.port": 5501
 }

@@ -58,6 +58,10 @@ Page({
       const data = await api.get("/job-listings", params)
       const mapped = (data.items || []).map((job) => ({
         ...job,
+        title: job.title || "未命名职位",
+        company: job.company || "未知公司",
+        location: job.location || "地点未明确",
+        companyType: job.companyType || "其他",
         displayTime: job.timeText || job.sourceUpdatedAt || job.createdAt || "近期",
         visibleTags: (job.tags || [job.session, job.industry]).filter(Boolean).slice(0, 3)
       }))

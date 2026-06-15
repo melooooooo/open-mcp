@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   if (!title) return fail("VALIDATION_ERROR", "标题不能为空")
   if (!description) return fail("VALIDATION_ERROR", "详细描述不能为空")
 
-  const user = await getCurrentUser()
+  const user = await getCurrentUser(request)
   await db.insert(siteFeedbacks).values({
     userId: user?.id,
     userName: user?.name,
@@ -28,4 +28,3 @@ export async function POST(request: Request) {
 
   return ok({ submitted: true })
 }
-
