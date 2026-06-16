@@ -1,20 +1,13 @@
 <view class="page home-page">
   <view class="hero">
-    <view class="hero-art">
-      <view class="bank-roof"></view>
-      <view class="bank-line"></view>
-      <view class="bank-cols">
-        <view></view><view></view><view></view>
-      </view>
-      <view class="bank-line bottom"></view>
-    </view>
-    <view class="brand">
-      <text class="brand-title">银行帮</text>
-      <text class="brand-sub">你的金融求职第一站</text>
+    <view class="hero-top-safe"></view>
+    <view class="banner-card">
+      <image class="banner-img" src="/images/home-banner.png" mode="widthFix"></image>
     </view>
     <view class="hero-search" bindtap="goSearch">
       <view class="search-icon icon-search"></view>
       <text>搜索银行、面经、内推...</text>
+      <view class="search-go">搜索</view>
     </view>
   </view>
 

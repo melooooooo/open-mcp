@@ -4,108 +4,73 @@
 
 .hero {
   position: relative;
-  overflow: hidden;
-  padding: calc(92rpx + env(safe-area-inset-top)) 40rpx 44rpx;
-  color: #ffffff;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  border-bottom-left-radius: 48rpx;
-  border-bottom-right-radius: 48rpx;
-  box-shadow: 0 10rpx 24rpx rgba(37, 99, 235, 0.16);
+  padding: 0 0 8rpx;
+  background: linear-gradient(180deg, #e6efff 0%, #eef4ff 45%, #f9fafb 100%);
+  border-bottom-left-radius: 36rpx;
+  border-bottom-right-radius: 36rpx;
 }
 
-.hero-art {
-  position: absolute;
-  top: 42rpx;
-  right: 10rpx;
-  width: 220rpx;
-  height: 220rpx;
-  opacity: 0.18;
+.hero-top-safe {
+  height: calc(env(safe-area-inset-top) + 12rpx);
 }
 
-.bank-roof {
-  width: 0;
-  height: 0;
-  margin: 20rpx auto 0;
-  border-left: 76rpx solid transparent;
-  border-right: 76rpx solid transparent;
-  border-bottom: 48rpx solid #ffffff;
-}
-
-.bank-line {
-  height: 14rpx;
-  margin: 0 28rpx;
-  border: 4rpx solid #ffffff;
-}
-
-.bank-line.bottom {
-  margin-top: 8rpx;
-}
-
-.bank-cols {
-  display: flex;
-  justify-content: space-around;
-  margin: 8rpx 46rpx;
-}
-
-.bank-cols view {
-  width: 18rpx;
-  height: 58rpx;
-  border: 4rpx solid #ffffff;
-}
-
-.brand {
+.banner-card {
   position: relative;
-  z-index: 1;
+  border-radius: 0 0 32rpx 32rpx;
+  overflow: hidden;
+  background: #eef3ff;
+  box-shadow: 0 18rpx 40rpx rgba(37, 99, 235, 0.16);
 }
 
-.brand-title {
+.banner-img {
   display: block;
-  font-size: 48rpx;
-  font-weight: 900;
-  letter-spacing: 4rpx;
-}
-
-.brand-sub {
-  display: inline-block;
-  margin-top: 12rpx;
-  padding: 6rpx 14rpx;
-  border-radius: 6rpx;
-  background: rgba(255, 255, 255, 0.2);
-  font-size: 24rpx;
-  font-weight: 700;
+  width: 100%;
 }
 
 .hero-search {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   align-items: center;
-  margin-top: 38rpx;
-  padding: 22rpx 28rpx;
+  margin: -36rpx 28rpx 0;
+  padding: 20rpx 20rpx 20rpx 30rpx;
   border-radius: 999rpx;
   background: #ffffff;
-  color: #6b7280;
+  color: #9aa3b2;
   font-size: 28rpx;
-  box-shadow: 0 10rpx 22rpx rgba(15, 23, 42, 0.08);
+  box-shadow: 0 16rpx 32rpx rgba(37, 99, 235, 0.18);
 }
 
 .search-icon {
-  margin-right: 12rpx;
-  color: #9ca3af;
+  margin-right: 14rpx;
+  color: #2563eb;
+  font-size: 32rpx;
+}
+
+.search-go {
+  margin-left: auto;
+  padding: 14rpx 30rpx;
+  border-radius: 999rpx;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #ffffff;
+  font-size: 26rpx;
+  font-weight: 700;
+  box-shadow: 0 8rpx 18rpx rgba(37, 99, 235, 0.30);
 }
 
 .quick-card {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin: 40rpx 32rpx 0;
-  padding: 28rpx 20rpx;
+  margin: 28rpx 24rpx 0;
+  padding: 32rpx 16rpx;
+  border-radius: 28rpx;
 }
 
 .quick-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14rpx;
+  gap: 16rpx;
   color: #374151;
   font-size: 24rpx;
   font-weight: 700;
@@ -115,16 +80,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 78rpx;
-  height: 78rpx;
-  border-radius: 999rpx;
-  font-size: 34rpx;
+  width: 84rpx;
+  height: 84rpx;
+  border-radius: 26rpx;
+  font-size: 36rpx;
+  font-weight: 800;
+  color: #ffffff;
 }
 
-.quick-icon.blue { background: #eff6ff; color: #2563eb; }
-.quick-icon.orange { background: #fff7ed; color: #f97316; }
-.quick-icon.green { background: #ecfdf5; color: #10b981; }
-.quick-icon.purple { background-color: #faf5ff; color: #a855f7; }
+.quick-icon.blue { background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%); box-shadow: 0 10rpx 20rpx rgba(37, 99, 235, 0.28); }
+.quick-icon.orange { background: linear-gradient(135deg, #fdba74 0%, #f97316 100%); box-shadow: 0 10rpx 20rpx rgba(249, 115, 22, 0.28); }
+.quick-icon.green { background: linear-gradient(135deg, #6ee7b7 0%, #10b981 100%); box-shadow: 0 10rpx 20rpx rgba(16, 185, 129, 0.28); }
+.quick-icon.purple { background: linear-gradient(135deg, #c4b5fd 0%, #a855f7 100%); box-shadow: 0 10rpx 20rpx rgba(168, 85, 247, 0.28); }
 
 .jobs-list {
   display: flex;
