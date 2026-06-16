@@ -27,11 +27,8 @@
     </scroll-view>
     <view class="article-actions bottom-actions">
       <button class="like-btn secondary-button {{exp.isLiked ? 'active' : ''}}" bindtap="toggleLike">
-        <block wx:if="{{isLoggedIn}}">
-          <view class="like-mark"></view>
-          <text>{{exp.likeCount || 0}}</text>
-        </block>
-        <block wx:else>登录点赞</block>
+        <view class="like-mark"></view>
+        <text>{{exp.likeCount || 0}}</text>
       </button>
       <button open-type="share" class="share-btn primary-button">分享给同学</button>
     </view>

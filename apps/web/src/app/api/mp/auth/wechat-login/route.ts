@@ -2,7 +2,7 @@ import { createHash } from "crypto"
 import { createId } from "@paralleldrive/cuid2"
 import { and, eq } from "drizzle-orm"
 
-import { createClientAuthSession } from "@/lib/client-auth"
+import { createClientAuthSession, markMiniProgramActivated } from "@/lib/client-auth"
 import { db } from "@repo/db"
 import { account, user as userTable } from "@repo/db/schema"
 import { fail, ok, toMpUser } from "../../_shared/response"
@@ -147,6 +147,7 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => null)
   const code = typeof body?.code === "string" ? body.code.trim() : ""
   const deviceId = typeof body?.deviceId === "string" ? body.deviceId.trim() : undefined
+  const loginMode = body?.loginMode === "silent" ? "silent" : "interactive"
 
   if (!code) return fail("BAD_REQUEST", "缺少微信登录 code")
 
@@ -177,9 +178,17 @@ export async function POST(request: Request) {
       deviceId,
     })
 
+    if (loginMode === "interactive") {
+      await markMiniProgramActivated(currentUser.id)
+    }
+
+    const freshUser = await db.query.user.findFirst({
+      where: eq(userTable.id, currentUser.id),
+    })
+
     return ok({
       ...session,
-      user: toMpUser(currentUser),
+      user: toMpUser(freshUser ?? currentUser),
     })
   } catch (error) {
     console.error("[mp/auth/wechat-login] login failed", error)

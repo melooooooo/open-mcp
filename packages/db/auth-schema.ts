@@ -15,6 +15,7 @@ export const user = pgTable("user", {
   address: text("address"),
   contactPhone: text("contact_phone"),
   profileCompletedAt: timestamp("profile_completed_at"),
+  miniProgramActivatedAt: timestamp("mini_program_activated_at"),
   role: varchar("role", { length: 64, enum: ["admin", "user", "member"] }).default("user"),
   banned: boolean("banned").notNull().default(false),
   bannedReason: text("ban_reason"),

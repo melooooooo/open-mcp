@@ -59,15 +59,11 @@ Page({
 
   async toggleLike() {
     if (!this.data.exp) return
-    if (!auth.isLoggedIn()) {
-      const authState = await auth.ensureLoggedIn({ reason: "点赞经验" })
-      if (!authState) return
-      this.setData({ isLoggedIn: true })
-      await this.loadDetail()
-      if (!this.data.exp || this.data.exp.isLiked) {
-        wx.showToast({ title: "已点赞", icon: "success" })
-        return
-      }
+
+    const session = await auth.ensureSilentSession()
+    if (!session) {
+      wx.showToast({ title: "网络异常，请稍后重试", icon: "none" })
+      return
     }
 
     const next = !this.data.exp.isLiked
@@ -76,8 +72,9 @@ Page({
       "exp.likeCount": Math.max((this.data.exp.likeCount || 0) + (next ? 1 : -1), 0)
     })
     try {
-      const data = await api.post(`/experiences/${encodeURIComponent(this.data.slug)}/like`)
-      this.setData({ "exp.isLiked": data.isLiked })
+      const data = await api.post(`/experiences/${encodeURIComponent(this.data.slug)}/like`, {}, { requireSession: true })
+      auth.markActivatedLocally()
+      this.setData({ "exp.isLiked": data.isLiked, isLoggedIn: auth.isLoggedIn() })
     } catch (error) {
       this.setData({
         "exp.isLiked": !next,

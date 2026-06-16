@@ -1,11 +1,17 @@
 import { db } from "@repo/db"
 import { userJobListingCollections } from "@repo/db/schema"
 import { and, eq } from "drizzle-orm"
+import { markMiniProgramActivated } from "@/lib/client-auth"
 import { fail, getCurrentUser, ok } from "../../../_shared/response"
 
 export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
   const user = await getCurrentUser(request)
   if (!user?.id) return fail("UNAUTHORIZED", "请先登录", 401)
+
+  const activatedAt = (user as { miniProgramActivatedAt?: Date | null }).miniProgramActivatedAt
+  if (!activatedAt) {
+    await markMiniProgramActivated(user.id)
+  }
 
   const { id } = await context.params
   const existing = await db.query.userJobListingCollections.findFirst({

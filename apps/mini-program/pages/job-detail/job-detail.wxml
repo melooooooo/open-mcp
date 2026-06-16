@@ -55,7 +55,7 @@
     <view class="detail-actions bottom-actions">
       <view class="collect-btn" bindtap="toggleCollect">
         <view class="collect-mark {{job.isCollected ? 'saved' : ''}}"></view>
-        <text>{{job.isCollected ? '已收藏' : (isLoggedIn ? '收藏' : '登录收藏')}}</text>
+        <text>{{job.isCollected ? '已收藏' : '收藏'}}</text>
       </view>
       <button class="apply-btn primary-button" bindtap="copyApply">一键复制申请链接</button>
     </view>

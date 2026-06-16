@@ -57,22 +57,19 @@ Page({
 
   async toggleCollect() {
     if (!this.data.job) return
-    if (!auth.isLoggedIn()) {
-      const authState = await auth.ensureLoggedIn({ reason: "收藏职位" })
-      if (!authState) return
-      this.setData({ isLoggedIn: true })
-      await this.loadDetail()
-      if (!this.data.job || this.data.job.isCollected) {
-        wx.showToast({ title: "已收藏", icon: "success" })
-        return
-      }
+
+    const session = await auth.ensureSilentSession()
+    if (!session) {
+      wx.showToast({ title: "网络异常，请稍后重试", icon: "none" })
+      return
     }
 
     const next = !this.data.job.isCollected
     this.setData({ "job.isCollected": next })
     try {
-      const data = await api.post(`/job-listings/${this.data.id}/collection`)
-      this.setData({ "job.isCollected": data.isCollected })
+      const data = await api.post(`/job-listings/${this.data.id}/collection`, {}, { requireSession: true })
+      auth.markActivatedLocally()
+      this.setData({ "job.isCollected": data.isCollected, isLoggedIn: auth.isLoggedIn() })
       wx.showToast({ title: data.isCollected ? "已收藏" : "已取消", icon: "success" })
     } catch (error) {
       this.setData({ "job.isCollected": !next })

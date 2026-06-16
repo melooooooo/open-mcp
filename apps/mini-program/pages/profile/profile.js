@@ -129,7 +129,8 @@ Page({
   async handleWechatLogin() {
     this.setData({ loading: true })
     try {
-      await auth.loginWithWechat()
+      const session = await auth.activateSession()
+      if (!session) throw new Error("登录失败，请稍后重试")
       await this.loadMe()
       wx.showToast({ title: "登录成功", icon: "success" })
     } catch (error) {

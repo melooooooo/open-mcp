@@ -19,7 +19,7 @@
     </view>
     <view class="actions bottom-actions">
       <button class="collect secondary-button {{referral.isCollected ? 'active' : ''}}" bindtap="toggleCollect">
-        {{referral.isCollected ? '已收藏' : (isLoggedIn ? '收藏' : '登录收藏')}}
+        {{referral.isCollected ? '已收藏' : '收藏'}}
       </button>
       <button class="copy primary-button" bindtap="copyLink">复制原帖链接</button>
     </view>

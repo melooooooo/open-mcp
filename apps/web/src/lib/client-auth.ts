@@ -142,6 +142,14 @@ export async function refreshClientAuthSession(refreshToken: string) {
   }
 }
 
+export async function markMiniProgramActivated(userId: string) {
+  const now = new Date()
+  await db
+    .update(userTable)
+    .set({ miniProgramActivatedAt: now, updatedAt: now })
+    .where(and(eq(userTable.id, userId), isNull(userTable.miniProgramActivatedAt)))
+}
+
 export async function revokeClientAuthSession(refreshToken: string) {
   const now = new Date()
   await db

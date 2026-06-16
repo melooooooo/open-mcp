@@ -45,22 +45,20 @@ Page({
 
   async toggleCollect() {
     if (!this.data.referral) return
-    if (!auth.isLoggedIn()) {
-      const authState = await auth.ensureLoggedIn({ reason: "收藏内推" })
-      if (!authState) return
-      this.setData({ isLoggedIn: true })
-      await this.loadDetail()
-      if (!this.data.referral || this.data.referral.isCollected) {
-        wx.showToast({ title: "已收藏", icon: "success" })
-        return
-      }
+
+    const session = await auth.ensureSilentSession()
+    if (!session) {
+      wx.showToast({ title: "网络异常，请稍后重试", icon: "none" })
+      return
     }
 
     const next = !this.data.referral.isCollected
     this.setData({ "referral.isCollected": next })
     try {
-      const data = await api.post(`/referrals/${this.data.id}/collection`)
-      this.setData({ "referral.isCollected": data.isCollected })
+      const data = await api.post(`/referrals/${this.data.id}/collection`, {}, { requireSession: true })
+      auth.markActivatedLocally()
+      this.setData({ "referral.isCollected": data.isCollected, isLoggedIn: auth.isLoggedIn() })
+      wx.showToast({ title: data.isCollected ? "已收藏" : "已取消", icon: "success" })
     } catch (error) {
       this.setData({ "referral.isCollected": !next })
       wx.showToast({ title: error.message || "操作失败", icon: "none" })

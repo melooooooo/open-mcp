@@ -49,6 +49,8 @@ export function toMpUser(user: any) {
     address: user.address,
     contactPhone: user.contactPhone,
     profileCompletedAt: user.profileCompletedAt,
+    miniProgramActivatedAt: user.miniProgramActivatedAt,
+    isMiniProgramActivated: Boolean(user.miniProgramActivatedAt),
     createdAt: user.createdAt,
   }
 }

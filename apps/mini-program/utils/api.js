@@ -14,7 +14,17 @@ function buildUrl(path, data) {
   return query ? `${url}?${query}` : url
 }
 
-async function getUsableAuthState() {
+async function getUsableAuthState(options = {}) {
+  // requireSession=true 时（强意图操作）即使没有本地会话也会静默新建。
+  if (options.requireSession) return auth.ensureUsableSession()
+
+  // 冷启动时若 onLaunch 的静默登录/续期仍在进行，等它完成再带 token（不另起 wx.login），
+  // 保证详情页首屏的 isCollected / isLiked 个性化状态准确。
+  if (!auth.hasAuthSession()) {
+    const pending = auth.getPendingSession()
+    if (pending) await pending
+  }
+
   const authState = auth.getAuthState()
   if (!authState || !authState.accessToken || !authState.refreshToken) return authState
   if (!authState.expiresAt || authState.expiresAt - Date.now() > 60000) return authState
@@ -26,7 +36,7 @@ async function request(path, options = {}) {
   const data = options.data || {}
   const url = method === "GET" ? buildUrl(path, data) : buildUrl(path)
   const retry = options.retry !== false
-  const authState = await getUsableAuthState()
+  const authState = await getUsableAuthState(options)
 
   return new Promise((resolve, reject) => {
     const header = {
@@ -48,8 +58,9 @@ async function request(path, options = {}) {
           resolve(body.data)
           return
         }
-        if (res.statusCode === 401 && retry && authState && authState.refreshToken) {
-          const nextAuth = await auth.refreshAuthState()
+        if (res.statusCode === 401 && retry) {
+          // 先尝试续期；无可续期会话时（如静默登录曾失败）再静默新建一个。
+          const nextAuth = (await auth.refreshAuthState()) || (await auth.ensureSilentSession())
           if (nextAuth && nextAuth.accessToken) {
             try {
               const data = await request(path, { ...options, retry: false })
@@ -123,8 +134,8 @@ async function uploadFile(path, filePath, options = {}) {
 
 module.exports = {
   request,
-  get: (path, data) => request(path, { data }),
-  post: (path, data) => request(path, { method: "POST", data }),
-  patch: (path, data) => request(path, { method: "PATCH", data }),
+  get: (path, data, options) => request(path, { ...options, method: "GET", data }),
+  post: (path, data, options) => request(path, { ...options, method: "POST", data }),
+  patch: (path, data, options) => request(path, { ...options, method: "PATCH", data }),
   uploadFile
 }
