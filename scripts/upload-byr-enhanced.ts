@@ -9,10 +9,15 @@ dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const SUPABASE_KEY = process.env.SUPABASE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+// 自动化入库优先使用 Service Role Key（绕过 RLS、更安全），回退到旧的 Anon Key 以兼容本地手动运行。
+const SUPABASE_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  '';
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
-  console.error('Error: SUPABASE_URL and SUPABASE_KEY must be set.');
+  console.error('Error: SUPABASE_URL and a Supabase key (SUPABASE_SERVICE_ROLE_KEY / SUPABASE_KEY) must be set.');
   process.exit(1);
 }
 
@@ -81,21 +86,27 @@ async function main() {
       .single();
 
     if (existing) {
-      // Update if job_type was missing but we have it now
-      if (jobData.job_type && !existing.job_type) {
-        const { error } = await supabase
-          .from('scraped_jobs')
-          .update({ job_type: jobData.job_type })
-          .eq('id', existing.id);
+      // 已存在的帖子：刷新会回复数 / 最后回复时间 / 正文，避免数据陈旧；
+      // job_type 仅在原记录缺失时补齐，避免覆盖已人工/历史标注的分类。
+      const updatePayload: Record<string, unknown> = {
+        reply_count: jobData.reply_count,
+        last_reply_date: jobData.last_reply_date,
+        updated_at: new Date().toISOString(),
+      };
+      if (jobData.content) updatePayload.content = jobData.content;
+      if (jobData.job_type && !existing.job_type) updatePayload.job_type = jobData.job_type;
 
-        if (!error) {
-          console.log(`Updated job type for: ${externalId}`);
-          updatedCount++;
-        } else {
-          console.error(`Failed to update job ${externalId}:`, error);
-        }
+      const { error } = await supabase
+        .from('scraped_jobs')
+        .update(updatePayload)
+        .eq('id', existing.id);
+
+      if (!error) {
+        console.log(`Refreshed job: ${externalId}`);
+        updatedCount++;
       } else {
-        skipCount++;
+        console.error(`Failed to update job ${externalId}:`, error);
+        failCount++;
       }
     } else {
       // Insert

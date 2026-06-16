@@ -10,7 +10,10 @@
     "dev:all": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "mcp:supabase": "SUPABASE_ACCESS_TOKEN=sbp_ff366281db25d755234613382246ea7afe37bd42 npx mcp-server-supabase"
+    "referrals:scrape": "tsx scripts/scrape-byr-enhanced.ts",
+    "referrals:upload": "tsx scripts/upload-byr-enhanced.ts",
+    "referrals:sync": "tsx scripts/scrape-byr-enhanced.ts && tsx scripts/upload-byr-enhanced.ts",
+    "mcp:supabase": "npx mcp-server-supabase"
   },
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.932.0",

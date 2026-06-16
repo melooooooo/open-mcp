@@ -45,7 +45,12 @@ npm-debug.log*
 # ---------------------------------
 
 # Operational Scripts & Tools
-scripts/
+# 默认忽略 scripts/ 下所有内容，但精确放行内推自动化所需的脚本（用 scripts/* 而非
+# scripts/，否则目录被整体忽略时下面的例外规则不会生效）。
+scripts/*
+!scripts/scrape-byr-enhanced.ts
+!scripts/upload-byr-enhanced.ts
+!scripts/sync-referrals.sh
 analysis/
 
 # Local Data & Webhooks
