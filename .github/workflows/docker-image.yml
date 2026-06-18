@@ -111,4 +111,4 @@ jobs:
       - name: Trigger dokploy redeploy
         # ⚠️ 使用 Dokploy deployments 的 Webhook URL
         run: |
-          curl -X GET http://72.61.71.244:3000/api/deploy/sGk2wG7BN5FFopsqKd1DB
+          curl -X GET http://2.24.116.115:3000/api/deploy/sGk2wG7BN5FFopsqKd1DB
