@@ -50,6 +50,10 @@ npm-debug.log*
 scripts/*
 !scripts/scrape-byr-enhanced.ts
 !scripts/upload-byr-enhanced.ts
+!scripts/email-byr-digest.ts
+!scripts/scrape-byr-boards.ts
+!scripts/upload-byr-board-posts.ts
+!scripts/create-byr-board-posts-table.ts
 !scripts/sync-referrals.sh
 analysis/
 
@@ -58,6 +62,7 @@ webhook-data/
 *.xlsx
 *.csv
 /byr_jobs*.json
+/byr_board_posts.json
 /imports/
 
 # Debug Outputs & Temps

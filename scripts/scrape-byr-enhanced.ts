@@ -8,6 +8,7 @@ const BOARD_URL = `${BASE_URL}/board/JobInfo`;
 const MAX_PAGES = 5; // Increased to 5 to get more data
 const OUTPUT_FILE_JSON = path.resolve(__dirname, '../byr_jobs_enhanced.json');
 const CONCURRENT_REQUESTS = 5;
+const LOOKBACK_HOURS = Number(process.env.BYR_LOOKBACK_HOURS || 24);
 
 interface JobThread {
   title: string;
@@ -18,6 +19,7 @@ interface JobThread {
   lastReplyDate: string;
   isTop: boolean;
   content?: string;
+  publishedAt?: string;
   jobType?: string; // New field
 }
 
@@ -46,6 +48,140 @@ function detectJobType(title: string): string | undefined {
   return undefined;
 }
 
+function getBeijingDateParts(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Shanghai',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(date);
+
+  const get = (type: string) => Number(parts.find(part => part.type === type)?.value);
+  return {
+    year: get('year'),
+    month: get('month'),
+    day: get('day'),
+  };
+}
+
+function formatBeijingDateTime(date: Date) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Shanghai',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  }).formatToParts(date);
+
+  const get = (type: string) => parts.find(part => part.type === type)?.value || '00';
+  return `${get('year')}-${get('month')}-${get('day')} ${get('hour')}:${get('minute')}:${get('second')}`;
+}
+
+function createDateFromBeijingTime(
+  year: number,
+  month: number,
+  day: number,
+  hour = 0,
+  minute = 0,
+  second = 0,
+  millisecond = 0
+) {
+  return new Date(Date.UTC(year, month - 1, day, hour - 8, minute, second, millisecond));
+}
+
+function getBeijingDayRange(year: number, month: number, day: number) {
+  const start = createDateFromBeijingTime(year, month, day);
+  const end = createDateFromBeijingTime(year, month, day, 23, 59, 59, 999);
+  return { start, end };
+}
+
+function parseListDateRange(value: string, now = new Date()) {
+  const date = value.trim();
+
+  const timeMatch = date.match(/^(\d{1,2}):(\d{2}):(\d{2})$/);
+  if (timeMatch) {
+    const { year, month, day } = getBeijingDateParts(now);
+    const parsed = createDateFromBeijingTime(
+      year,
+      month,
+      day,
+      Number(timeMatch[1]),
+      Number(timeMatch[2]),
+      Number(timeMatch[3])
+    );
+    return { start: parsed, end: parsed, exact: true };
+  }
+
+  const fullDateMatch = date.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if (fullDateMatch) {
+    const range = getBeijingDayRange(
+      Number(fullDateMatch[1]),
+      Number(fullDateMatch[2]),
+      Number(fullDateMatch[3])
+    );
+    return { ...range, exact: false };
+  }
+
+  const monthDateMatch = date.match(/^(\d{1,2})-(\d{1,2})$/);
+  if (monthDateMatch) {
+    const { year } = getBeijingDateParts(now);
+    const range = getBeijingDayRange(year, Number(monthDateMatch[1]), Number(monthDateMatch[2]));
+    return { ...range, exact: false };
+  }
+
+  return null;
+}
+
+function isListDateInWindow(date: string, windowStart: Date, now = new Date()) {
+  const range = parseListDateRange(date, now);
+  if (!range) return true;
+  return range.end >= windowStart && range.start <= now;
+}
+
+const MONTHS: Record<string, number> = {
+  Jan: 1,
+  Feb: 2,
+  Mar: 3,
+  Apr: 4,
+  May: 5,
+  Jun: 6,
+  Jul: 7,
+  Aug: 8,
+  Sep: 9,
+  Oct: 10,
+  Nov: 11,
+  Dec: 12,
+};
+
+function parseArticlePublishedAt(rawContent: string) {
+  const match = rawContent.match(/\(([A-Z][a-z]{2}) ([A-Z][a-z]{2})\s+(\d{1,2}) (\d{2}):(\d{2}):(\d{2}) (\d{4})\)/);
+  if (!match) return undefined;
+
+  const month = MONTHS[match[2]];
+  if (!month) return undefined;
+
+  return createDateFromBeijingTime(
+    Number(match[7]),
+    month,
+    Number(match[3]),
+    Number(match[4]),
+    Number(match[5]),
+    Number(match[6])
+  );
+}
+
+function isThreadInWindow(thread: JobThread, windowStart: Date, now = new Date()) {
+  if (thread.publishedAt) {
+    const publishedAt = new Date(thread.publishedAt);
+    return publishedAt >= windowStart && publishedAt <= now;
+  }
+
+  return isListDateInWindow(thread.date, windowStart, now);
+}
+
 async function fetchHtml(url: string): Promise<string> {
   const response = await fetch(url, { headers: HEADERS });
   if (!response.ok) {
@@ -57,7 +193,7 @@ async function fetchHtml(url: string): Promise<string> {
   return decoder.decode(arrayBuffer);
 }
 
-async function fetchThreadContent(url: string): Promise<string> {
+async function fetchThreadContent(url: string): Promise<{ content: string; publishedAt?: string }> {
   try {
     const html = await fetchHtml(url);
     const dom = new JSDOM(html);
@@ -68,6 +204,7 @@ async function fetchThreadContent(url: string): Promise<string> {
 
     if (firstPostContent) {
       let content = firstPostContent.textContent?.trim() || '';
+      const publishedAt = parseArticlePublishedAt(content);
 
       // Cleanup logic (same as original script)
       const headerEndMarker = '站内';
@@ -99,13 +236,16 @@ async function fetchThreadContent(url: string): Promise<string> {
         content = content.substring(0, footerIndex).trim();
       }
 
-      return content;
+      return {
+        content,
+        publishedAt: publishedAt?.toISOString(),
+      };
     }
 
-    return '';
+    return { content: '' };
   } catch (error) {
     console.error(`Error fetching content for ${url}:`, error);
-    return '';
+    return { content: '' };
   }
 }
 
@@ -179,7 +319,12 @@ async function processBatch(threads: JobThread[]) {
 
       const promise = (async () => {
         // console.log(`Fetching content for [${completed + 1}/${total}]: ${thread.title.substring(0, 20)}...`);
-        thread.content = await fetchThreadContent(thread.link);
+        const result = await fetchThreadContent(thread.link);
+        thread.content = result.content;
+        thread.publishedAt = result.publishedAt;
+        if (result.publishedAt) {
+          thread.date = formatBeijingDateTime(new Date(result.publishedAt));
+        }
         completed++;
       })();
 
@@ -194,6 +339,12 @@ async function processBatch(threads: JobThread[]) {
 }
 
 async function main() {
+  if (!Number.isFinite(LOOKBACK_HOURS) || LOOKBACK_HOURS <= 0) {
+    throw new Error(`Invalid BYR_LOOKBACK_HOURS: ${process.env.BYR_LOOKBACK_HOURS}`);
+  }
+
+  const now = new Date();
+  const windowStart = new Date(now.getTime() - LOOKBACK_HOURS * 60 * 60 * 1000);
   let allThreads: JobThread[] = [];
 
   // 1. Fetch lists
@@ -207,21 +358,27 @@ async function main() {
     }
   }
 
-  console.log(`Total threads found: ${allThreads.length}. Filtered for relevance...`);
+  console.log(`Total threads found: ${allThreads.length}. Filtering to posts from the last ${LOOKBACK_HOURS} hours...`);
+
+  const coarseFilteredThreads = allThreads.filter(thread => isListDateInWindow(thread.date, windowStart, now));
+  console.log(`List-date candidates: ${coarseFilteredThreads.length}/${allThreads.length}`);
 
   // Optional: Filter only those with detected job types? 
   // For now, let's keep all but maybe prioritize content fetching or logging
-  const categorizedCount = allThreads.filter(t => t.jobType).length;
-  console.log(`Categorized threads: ${categorizedCount}/${allThreads.length}`);
+  const categorizedCount = coarseFilteredThreads.filter(t => t.jobType).length;
+  console.log(`Categorized candidate threads: ${categorizedCount}/${coarseFilteredThreads.length}`);
 
   // 2. Fetch content
   console.log('Starting content fetch...');
-  await processBatch(allThreads);
+  await processBatch(coarseFilteredThreads);
 
-  console.log(`Successfully scraped ${allThreads.length} threads with content.`);
+  const filteredThreads = coarseFilteredThreads.filter(thread => isThreadInWindow(thread, windowStart, now));
+  console.log(`Precise date-filtered threads: ${filteredThreads.length}/${coarseFilteredThreads.length}`);
+
+  console.log(`Successfully scraped ${filteredThreads.length} threads with content.`);
 
   // Save to JSON
-  fs.writeFileSync(OUTPUT_FILE_JSON, JSON.stringify(allThreads, null, 2));
+  fs.writeFileSync(OUTPUT_FILE_JSON, JSON.stringify(filteredThreads, null, 2));
   console.log(`Saved to ${OUTPUT_FILE_JSON}`);
 }
 

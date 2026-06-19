@@ -13,6 +13,9 @@
     "referrals:scrape": "tsx scripts/scrape-byr-enhanced.ts",
     "referrals:upload": "tsx scripts/upload-byr-enhanced.ts",
     "referrals:sync": "tsx scripts/scrape-byr-enhanced.ts && tsx scripts/upload-byr-enhanced.ts",
+    "byr:boards:scrape": "tsx scripts/scrape-byr-boards.ts",
+    "byr:boards:upload": "tsx scripts/upload-byr-board-posts.ts",
+    "byr:boards:sync": "tsx scripts/scrape-byr-boards.ts && tsx scripts/upload-byr-board-posts.ts",
     "mcp:supabase": "npx mcp-server-supabase"
   },
   "devDependencies": {
