@@ -20,7 +20,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
   }
 
   const { data: listing } = await supabase
-    .from("job_listings")
+    .from("feishu_job_listings")
     .select("id")
     .eq("id", id)
     .maybeSingle()

@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
   const { page, pageSize, from, to } = getPaging(searchParams)
   const supabase = await createServerSupabaseClient()
 
-  let query = supabase.from("job_listings").select("*", { count: "exact" })
+  let query = supabase.from("feishu_job_listings").select("*", { count: "exact" })
 
   const keyword = searchParams.get("query")?.trim()
   const location = searchParams.get("location")?.trim()
@@ -26,7 +26,10 @@ export async function GET(request: NextRequest) {
   if (companyTypes.length > 0) query = query.in("company_type", companyTypes)
   if (session && session !== "all") query = query.ilike("session", `%${session}%`)
 
-  const { data, count, error } = await query.order("source_updated_at", { ascending: false }).range(from, to)
+  const { data, count, error } = await query
+    .order("source_updated_at", { ascending: false })
+    .order("id", { ascending: false })
+    .range(from, to)
   if (error) {
     return ok({ items: [], total: 0, page, pageSize, error: error.message })
   }

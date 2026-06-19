@@ -43,6 +43,31 @@ export const scrapedJobs = pgTable("scraped_jobs", {
   index("scraped_jobs_publish_date_idx").on(table.publishDate),
 ]);
 
+export const byrBoardPosts = pgTable("byr_board_posts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  board: varchar("board", { length: 50 }).notNull(),
+  boardName: varchar("board_name", { length: 100 }),
+  title: varchar("title", { length: 255 }).notNull(),
+  link: text("link").notNull(),
+  content: text("content"),
+  author: varchar("author", { length: 100 }),
+  replyCount: integer("reply_count").default(0),
+  publishDate: varchar("publish_date", { length: 50 }),
+  publishedAt: timestamp("published_at", { mode: "date" }),
+  lastReplyDate: varchar("last_reply_date", { length: 50 }),
+  isTop: boolean("is_top").default(false),
+  source: varchar("source", { length: 50 }).default("byr_bbs"),
+  externalId: varchar("external_id", { length: 100 }).notNull(),
+  raw: jsonb("raw"),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
+}, (table) => [
+  uniqueIndex("byr_board_posts_board_external_id_idx").on(table.board, table.externalId),
+  index("byr_board_posts_board_idx").on(table.board),
+  index("byr_board_posts_publish_date_idx").on(table.publishDate),
+  index("byr_board_posts_published_at_idx").on(table.publishedAt),
+]);
+
 // 用户收藏表
 export const userCollections = pgTable("user_collections", {
   id: text("id").primaryKey().notNull().$defaultFn(() => createId()),
@@ -73,7 +98,7 @@ export const userCollectionsRelations = relations(userCollections, ({ one }) => 
 }));
 
 
-// 招聘职位表
+// 招聘职位表（旧表，保留兼容）
 export const jobListings = pgTable("job_listings", {
   id: uuid("id").primaryKey().defaultRandom(),
   jobTitle: text("job_title"),
@@ -84,6 +109,32 @@ export const jobListings = pgTable("job_listings", {
   companyType: text("company_type"),
   industryCategory: text("industry_category"),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
+// 飞书同步招聘职位表（替代 job_listings 的数据源）
+export const feishuJobListings = pgTable("feishu_job_listings", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  source: text("source").notNull(),
+  externalId: text("external_id").notNull(),
+  serialNumber: text("serial_number"),
+  sourceUpdatedAt: text("source_updated_at"),
+  companyName: text("company_name"),
+  companyType: text("company_type"),
+  industryCategory: text("industry_category"),
+  jobTitle: text("job_title"),
+  workLocation: text("work_location"),
+  deadline: text("deadline"),
+  session: text("session"),
+  degreeRequirement: text("degree_requirement"),
+  batch: text("batch"),
+  announcementSource: text("announcement_source"),
+  applicationMethod: text("application_method"),
+  remark: text("remark"),
+  majorRequirement: text("major_requirement"),
+  hasWrittenTest: text("has_written_test"),
+  referralCode: text("referral_code"),
+  createdAt: timestamp("created_at", { mode: "date" }),
+  updatedAt: timestamp("updated_at", { mode: "date" }),
 });
 
 // 经验分享表

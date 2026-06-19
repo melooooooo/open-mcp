@@ -62,7 +62,7 @@ export async function GET(request: Request) {
 
   const [listingsResult, experiencesResult] = await Promise.all([
     listingIds.length
-      ? supabase.from("job_listings").select("*").in("id", listingIds)
+      ? supabase.from("feishu_job_listings").select("*").in("id", listingIds)
       : Promise.resolve({ data: [] as any[] }),
     experienceIds.length
       ? supabase

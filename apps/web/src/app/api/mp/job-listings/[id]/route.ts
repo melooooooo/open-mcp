@@ -8,7 +8,7 @@ import { and, eq } from "drizzle-orm"
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params
   const supabase = await createServerSupabaseClient()
-  const { data, error } = await supabase.from("job_listings").select("*").eq("id", id).maybeSingle()
+  const { data, error } = await supabase.from("feishu_job_listings").select("*").eq("id", id).maybeSingle()
 
   if (error || !data) return fail("NOT_FOUND", "职位不存在", 404)
 

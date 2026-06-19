@@ -13,10 +13,11 @@ export async function GET(request: NextRequest) {
   const escaped = query.replace(/,/g, "\\,")
   const [jobsResult, experiencesResult, sitesResult] = await Promise.all([
     supabase
-      .from("job_listings")
+      .from("feishu_job_listings")
       .select("*")
       .or(`job_title.ilike.%${escaped}%,company_name.ilike.%${escaped}%`)
       .order("source_updated_at", { ascending: false })
+      .order("id", { ascending: false })
       .limit(10),
     supabase
       .from("finance_experiences")

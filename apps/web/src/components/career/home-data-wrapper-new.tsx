@@ -33,7 +33,7 @@ export async function HomeDataWrapperNew() {
 
   // 获取招聘信息总数（job_listings 表）
   const { count: jobListingsCount } = await supabase
-    .from('job_listings')
+    .from('feishu_job_listings')
     .select('*', { count: 'exact', head: true })
 
   const stats = {

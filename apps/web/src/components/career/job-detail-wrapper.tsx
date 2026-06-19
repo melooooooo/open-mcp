@@ -12,7 +12,7 @@ export async function JobDetailWrapper({ jobId }: { jobId: string }) {
     // 尝试从 job_listings 表获取（服务端查询）
     const supabase = await createServerSupabaseClient()
     const { data } = await supabase
-      .from("job_listings")
+      .from("feishu_job_listings")
       .select("*")
       .eq("id", jobId)
       .maybeSingle()

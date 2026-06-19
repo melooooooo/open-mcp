@@ -1,4 +1,4 @@
-import { jobListings, financeExperiences, scrapedJobs } from "@repo/db/schema";
+import { feishuJobListings, financeExperiences, scrapedJobs } from "@repo/db/schema";
 import { or, like, desc } from "drizzle-orm";
 import { db } from "../../index";
 
@@ -13,14 +13,14 @@ export const searchDataAccess = {
       console.time("jobListings");
       const jobs = await db
         .select()
-        .from(jobListings)
+        .from(feishuJobListings)
         .where(
           or(
-            like(jobListings.jobTitle, searchPattern),
-            like(jobListings.companyName, searchPattern)
+            like(feishuJobListings.jobTitle, searchPattern),
+            like(feishuJobListings.companyName, searchPattern)
           )
         )
-        .orderBy(desc(jobListings.sourceUpdatedAt))
+        .orderBy(desc(feishuJobListings.sourceUpdatedAt))
         .limit(20);
       console.timeEnd("jobListings");
 

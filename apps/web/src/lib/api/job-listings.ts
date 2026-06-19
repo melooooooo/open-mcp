@@ -88,7 +88,7 @@ export async function getJobListings(params: JobListingParams) {
   const { page = 1, pageSize = 20, query, location, industry, companyType, session } = params
 
   let dbQuery = supabase
-    .from('job_listings')
+    .from('feishu_job_listings')
     .select('*', { count: 'exact' })
 
   // Search (Job Title or Company Name)
@@ -128,6 +128,7 @@ export async function getJobListings(params: JobListingParams) {
 
   const { data, count, error } = await dbQuery
     .order('source_updated_at', { ascending: false })
+    .order('id', { ascending: false })
     .range(from, to)
   return { data: data as JobListing[], count: count || 0, error: null }
 }
@@ -137,9 +138,10 @@ export async function getLatestJobListings(limit = 6) {
   const supabase = createClient()
 
   const { data, error } = await supabase
-    .from('job_listings')
+    .from('feishu_job_listings')
     .select('*')
     .order('source_updated_at', { ascending: false })
+    .order('id', { ascending: false })
     .limit(limit)
 
   if (error) {
@@ -155,7 +157,7 @@ export async function getJobListingById(id: string) {
   const supabase = createClient()
 
   const { data, error } = await supabase
-    .from('job_listings')
+    .from('feishu_job_listings')
     .select('*')
     .eq('id', id)
     .single()

@@ -21,7 +21,7 @@ export async function GET() {
       .order("is_hot", { ascending: false })
       .order("publish_time", { ascending: false })
       .limit(5),
-    supabase.from("job_listings").select("*").order("source_updated_at", { ascending: false }).limit(5),
+    supabase.from("feishu_job_listings").select("*").order("source_updated_at", { ascending: false }).order("id", { ascending: false }).limit(5),
     supabase
       .from("scraped_jobs")
       .select("id, title, link, publish_date, reply_count, source, company_name")
