@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
   const location = searchParams.get("location")?.trim()
   const companyTypes = splitParam(searchParams.get("companyType"))
   const session = searchParams.get("session")?.trim()
+  const jobType = searchParams.get("jobType")?.trim()
 
   if (keyword) {
     const escaped = keyword.replace(/,/g, "\\,")
@@ -25,6 +26,8 @@ export async function GET(request: NextRequest) {
   if (location) query = query.ilike("work_location", `%${location}%`)
   if (companyTypes.length > 0) query = query.in("company_type", companyTypes)
   if (session && session !== "all") query = query.ilike("session", `%${session}%`)
+  if (jobType === "campus") query = query.or("batch.ilike.%春招%,batch.ilike.%秋招%")
+  if (jobType === "intern") query = query.ilike("batch", "%实习%")
 
   const { data, count, error } = await query
     .order("source_updated_at", { ascending: false })
