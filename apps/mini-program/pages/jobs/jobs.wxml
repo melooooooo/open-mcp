@@ -5,31 +5,53 @@
       <view class="search-symbol icon-search"></view>
       <input value="{{query}}" bindinput="onInput" confirm-type="search" bindconfirm="submitSearch" placeholder="搜索职位、公司" />
     </view>
-    <view class="filter-tabs">
-      <view wx:for="{{filters}}" wx:key="*this" class="filter-tab {{activeType === item ? 'active' : ''}}" data-value="{{item}}" bindtap="changeFilter">
-        <text>{{item}}</text>
+    <view class="filter-block">
+      <view class="filter-row">
+        <text class="filter-label">类型</text>
+        <scroll-view scroll-x class="filter-scroll" show-scrollbar="{{false}}">
+          <view class="filter-tabs">
+            <view wx:for="{{filters}}" wx:key="*this" class="filter-tab {{activeType === item ? 'active' : ''}}" data-value="{{item}}" bindtap="changeFilter">
+              <text>{{item}}</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+      <view class="filter-row">
+        <text class="filter-label">行业</text>
+        <scroll-view scroll-x class="filter-scroll" show-scrollbar="{{false}}">
+          <view class="filter-tabs">
+            <view wx:for="{{industryFilters}}" wx:key="*this" class="filter-tab {{activeIndustry === item ? 'active' : ''}}" data-value="{{item}}" bindtap="changeIndustryFilter">
+              <text>{{item}}</text>
+            </view>
+          </view>
+        </scroll-view>
       </view>
     </view>
   </view>
 
-  <view class="result-count">共找到 {{total}} 个职位</view>
+  <view class="result-count">共 {{total}} 个职位 · {{groups.length}} 家单位</view>
 
-  <view wx:if="{{loading}}" class="loading">正在加载职位...</view>
+  <view wx:if="{{loading}}" class="loading">正在加载...</view>
   <view wx:elif="{{error}}" class="error">{{error}}</view>
-  <view wx:elif="{{jobs.length === 0}}" class="empty">没有找到相关职位</view>
-  <view wx:else class="job-list">
-    <view wx:for="{{jobs}}" wx:key="id" wx:for-item="job" class="job-card card" bindtap="openJob" data-id="{{job.id}}">
-      <view class="job-top">
-        <text class="job-title line-2">{{job.title}}</text>
-        <text class="type-chip">{{job.companyType}}</text>
-      </view>
-      <text class="company">{{job.company}}</text>
-      <view class="tag-row">
-        <text wx:for="{{job.visibleTags}}" wx:key="*this" class="tag">{{item}}</text>
-      </view>
-      <view class="meta-row">
-        <text>地点 {{job.location}}</text>
-        <text>时间 {{job.displayTime}}</text>
+  <view wx:elif="{{groups.length === 0}}" class="empty">没有找到相关单位</view>
+  <view wx:else class="company-list">
+    <view wx:for="{{groups}}" wx:key="company" wx:for-item="group" class="company-card type-{{group.typeColor}}" bindtap="openJob" data-id="{{group.firstJobId}}">
+      <view class="company-card-bar"></view>
+      <view class="company-card-body">
+        <view class="company-card-top">
+          <text class="company-card-name line-1">{{group.company}}</text>
+          <text class="company-card-type">{{group.companyType}}</text>
+        </view>
+        <view class="company-card-tags">
+          <text wx:for="{{group.batches}}" wx:key="*this" class="ct-tag batch-tag">{{item}}</text>
+          <text wx:if="{{group.industry}}" class="ct-tag">{{group.industry}}</text>
+          <text class="ct-tag loc-tag">{{group.locationSummary}}</text>
+        </view>
+        <text class="company-card-preview line-1">{{group.previewPositions}}</text>
+        <view class="company-card-footer">
+          <text>最新 {{group.latestTime}}</text>
+          <text class="enter-text">查看全部 ›</text>
+        </view>
       </view>
     </view>
     <view wx:if="{{loadingMore}}" class="loading more">继续加载...</view>

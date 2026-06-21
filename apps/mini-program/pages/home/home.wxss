@@ -96,52 +96,133 @@
 .jobs-list {
   display: flex;
   flex-direction: column;
-  gap: 22rpx;
+  gap: 20rpx;
 }
 
-.job-card,
-.exp-card {
-  padding: 28rpx;
+.job-card {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1rpx solid #f3f4f6;
+  border-radius: 20rpx;
+  background: #ffffff;
+  box-shadow: 0 4rpx 16rpx rgba(15, 23, 42, 0.04);
+  transition: transform 120ms ease, box-shadow 120ms ease;
 }
 
-.job-top {
+.job-card-pressed {
+  transform: scale(0.985);
+  box-shadow: 0 2rpx 8rpx rgba(15, 23, 42, 0.06);
+}
+
+.job-card-bar {
+  flex-shrink: 0;
+  width: 8rpx;
+}
+
+.job-card-body {
+  flex: 1;
+  min-width: 0;
+  padding: 26rpx;
+}
+
+.job-card-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 20rpx;
+  gap: 16rpx;
   margin-bottom: 14rpx;
 }
 
-.job-title,
-.exp-title {
+.job-company {
   flex: 1;
+  min-width: 0;
   color: #111827;
-  font-size: 30rpx;
+  font-size: 32rpx;
   font-weight: 900;
-  line-height: 1.45;
+  line-height: 1.3;
 }
 
 .type-chip {
   flex-shrink: 0;
-  max-width: 150rpx;
-  padding: 8rpx 14rpx;
-  border-radius: 8rpx;
-  background: #eff6ff;
-  color: #2563eb;
-  font-size: 22rpx;
-  font-weight: 800;
-}
-
-.company {
-  display: block;
-  margin-bottom: 16rpx;
-  color: #1f2937;
-  font-size: 27rpx;
+  max-width: 180rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 999rpx;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-size: 21rpx;
   font-weight: 700;
 }
 
-.job-card .tag-row {
-  margin-bottom: 18rpx;
+.job-title {
+  display: block;
+  margin-bottom: 14rpx;
+  color: #9ca3af;
+  font-size: 24rpx;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.job-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-bottom: 14rpx;
+}
+
+.job-tag {
+  max-width: 100%;
+  padding: 6rpx 16rpx;
+  overflow: hidden;
+  border-radius: 8rpx;
+  background: #f9fafb;
+  color: #6b7280;
+  font-size: 22rpx;
+  font-weight: 600;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.job-tag.batch-tag {
+  background: #eff4ff;
+  color: #2563eb;
+}
+
+.location-tag {
+  max-width: 320rpx;
+}
+
+.job-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  color: #9ca3af;
+  font-size: 23rpx;
+}
+
+.job-enter {
+  flex-shrink: 0;
+  color: #2563eb;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.type-blue .job-card-bar { background: #3b82f6; }
+.type-green .job-card-bar { background: #10b981; }
+.type-orange .job-card-bar { background: #f97316; }
+.type-cyan .job-card-bar { background: #06b6d4; }
+
+.exp-card {
+  padding: 28rpx;
+}
+
+.exp-title {
+  color: #111827;
+  font-size: 30rpx;
+  font-weight: 900;
+  line-height: 1.45;
 }
 
 .exp-card {

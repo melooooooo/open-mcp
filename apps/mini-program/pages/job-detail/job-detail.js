@@ -9,7 +9,9 @@ Page({
     isLoggedIn: false,
     job: null,
     tags: [],
-    detailLines: []
+    detailLines: [],
+    companyInitial: "",
+    displayTime: ""
   },
 
   onLoad(options) {
@@ -38,17 +40,30 @@ Page({
         industry: job.industry || "行业未明确",
         applicationMethod: job.applicationMethod || job.announcementSource || ""
       }
-      const detailText = [safeJob.remark, safeJob.majorRequirement, safeJob.announcementSource].filter(Boolean).join("\n")
-      safeJob.companyInitial = (safeJob.company || "企").slice(0, 1)
+      const detailLines = this.buildDetailLines(safeJob)
       this.setData({
         job: safeJob,
         tags: (safeJob.tags || []).filter(Boolean).slice(0, 5),
-        detailLines: detailText ? detailText.split(/\n+/).filter(Boolean) : [],
+        detailLines,
+        companyInitial: (safeJob.company || "企").slice(0, 1).toUpperCase(),
+        displayTime: job.timeText || job.sourceUpdatedAt || job.createdAt || "",
         loading: false
       })
     } catch (error) {
       this.setData({ error: error.message || "加载失败", loading: false })
     }
+  },
+
+  buildDetailLines(job) {
+    const lines = []
+    if (job.remark) {
+      job.remark
+        .split(/\n+/)
+        .map((l) => l.trim())
+        .filter(Boolean)
+        .forEach((l) => lines.push(l))
+    }
+    return lines
   },
 
   goBack() {

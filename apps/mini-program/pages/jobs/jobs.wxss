@@ -19,14 +19,15 @@
 .search-box {
   display: flex;
   align-items: center;
-  height: 72rpx;
-  padding: 0 22rpx;
+  height: 76rpx;
+  padding: 0 24rpx;
   border-radius: 16rpx;
-  background: #f3f4f6;
+  background: #f9fafb;
+  border: 1rpx solid #e5e7eb;
 }
 
 .search-symbol {
-  margin-right: 10rpx;
+  margin-right: 12rpx;
   color: #9ca3af;
 }
 
@@ -36,109 +37,186 @@
   font-size: 27rpx;
 }
 
-.filter-tabs {
+.filter-block {
+  margin-top: 20rpx;
+  padding: 18rpx 0 20rpx;
+  border-top: 1rpx solid #f1f5f9;
+}
+
+.filter-row {
   display: flex;
-  gap: 44rpx;
-  margin-top: 24rpx;
-  border-bottom: 1rpx solid #f3f4f6;
+  align-items: center;
+  min-width: 0;
+  height: 72rpx;
+}
+
+.filter-row + .filter-row {
+  margin-top: 12rpx;
+}
+
+.filter-label {
+  flex-shrink: 0;
+  width: 60rpx;
+  margin-right: 16rpx;
+  color: #94a3b8;
+  font-size: 23rpx;
+  font-weight: 700;
+  line-height: 72rpx;
+}
+
+.filter-scroll {
+  flex: 1;
+  width: 0;
+  height: 72rpx;
+  white-space: nowrap;
+}
+
+.filter-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 12rpx;
+  height: 72rpx;
+  padding-right: 24rpx;
+  box-sizing: border-box;
 }
 
 .filter-tab {
-  position: relative;
-  padding-bottom: 20rpx;
-  color: #6b7280;
-  font-size: 27rpx;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  height: 60rpx;
+  padding: 0 24rpx;
+  border: 1rpx solid transparent;
+  border-radius: 999rpx;
+  box-sizing: border-box;
+  background: #f4f6f8;
+  color: #64748b;
+  font-size: 24rpx;
   font-weight: 700;
+  line-height: 1;
 }
 
 .filter-tab.active {
-  color: #2563eb;
+  border-color: #2563eb;
+  background: #2563eb;
+  color: #ffffff;
 }
 
-.filter-tab.active::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: 32rpx;
-  height: 4rpx;
-  margin-left: -16rpx;
-  border-radius: 999rpx;
-  background: #2563eb;
+.filter-tab text {
+  line-height: 1;
 }
 
 .result-count {
-  padding: 24rpx 32rpx 0;
-  color: #6b7280;
+  padding: 18rpx 32rpx;
+  background: #f8fafc;
+  color: #64748b;
   font-size: 24rpx;
 }
 
-.job-list {
-  padding: 24rpx 32rpx 0;
+.company-list {
+  padding: 20rpx 32rpx 0;
 }
 
-.job-card {
-  padding: 28rpx;
-  margin-bottom: 22rpx;
-}
-
-.job-top {
+.company-card {
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
+  margin-bottom: 20rpx;
+  background: #ffffff;
+  border: 1rpx solid #f3f4f6;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(15, 23, 42, 0.04);
+}
+
+.company-card-bar {
+  flex-shrink: 0;
+  width: 8rpx;
+}
+
+.company-card-body {
+  flex: 1;
+  min-width: 0;
+  padding: 26rpx 26rpx;
+}
+
+.company-card-top {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-  gap: 20rpx;
+  gap: 16rpx;
   margin-bottom: 14rpx;
 }
 
-.job-title {
+.company-card-name {
   flex: 1;
+  min-width: 0;
   color: #111827;
-  font-size: 30rpx;
+  font-size: 32rpx;
   font-weight: 900;
-  line-height: 1.45;
+  line-height: 1.3;
 }
 
-.type-chip {
+.company-card-type {
   flex-shrink: 0;
-  max-width: 150rpx;
-  padding: 8rpx 14rpx;
-  border-radius: 8rpx;
-  background: #eff6ff;
-  color: #2563eb;
-  font-size: 22rpx;
-  font-weight: 800;
-}
-
-.company {
-  display: block;
-  margin-bottom: 16rpx;
-  color: #1f2937;
-  font-size: 27rpx;
+  max-width: 180rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 999rpx;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-size: 21rpx;
   font-weight: 700;
 }
 
-.tag-row {
+.company-card-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 12rpx;
-  margin-bottom: 18rpx;
+  margin-bottom: 14rpx;
 }
 
-.tag {
-  padding: 6rpx 14rpx;
+.ct-tag {
+  padding: 6rpx 16rpx;
   border-radius: 8rpx;
-  background: #f3f4f6;
+  background: #f9fafb;
   color: #6b7280;
   font-size: 22rpx;
+  font-weight: 600;
 }
 
-.meta-row {
+.batch-tag {
+  background: #eff4ff;
+  color: #2563eb;
+}
+
+.company-card-preview {
+  display: block;
+  margin-bottom: 14rpx;
+  color: #9ca3af;
+  font-size: 24rpx;
+  line-height: 1.5;
+}
+
+.company-card-footer {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 16rpx;
   color: #9ca3af;
   font-size: 23rpx;
 }
+
+.enter-text {
+  color: #2563eb;
+  font-weight: 700;
+  font-size: 24rpx;
+}
+
+/* 竖条配色 - 仅4种克制颜色 */
+.type-blue .company-card-bar { background: #3b82f6; }
+.type-green .company-card-bar { background: #10b981; }
+.type-orange .company-card-bar { background: #f97316; }
+.type-cyan .company-card-bar { background: #06b6d4; }
 
 .loading.more {
   padding-top: 24rpx;

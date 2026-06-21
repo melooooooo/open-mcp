@@ -41,18 +41,23 @@
       </view>
       <view wx:if="{{latestJobs.length === 0}}" class="empty compact">暂无最新职位</view>
       <view wx:else class="jobs-list">
-        <view wx:for="{{latestJobs}}" wx:key="id" wx:for-item="job" class="job-card card" bindtap="openJob" data-id="{{job.id}}">
-          <view class="job-top">
-            <text class="job-title line-2">{{job.title}}</text>
-            <text class="type-chip">{{job.companyType || '其他'}}</text>
-          </view>
-          <text class="company line-1">{{job.company}}</text>
-          <view class="tag-row">
-            <text wx:for="{{job.visibleTags}}" wx:key="*this" class="tag">{{item}}</text>
-          </view>
-          <view class="meta-row">
-            <text class="line-1">地点 {{job.location}}</text>
-            <text>时间 {{job.displayTime}}</text>
+        <view wx:for="{{latestJobs}}" wx:key="id" wx:for-item="job" class="job-card type-{{job.typeColor}}" hover-class="job-card-pressed" bindtap="openJob" data-id="{{job.id}}">
+          <view class="job-card-bar"></view>
+          <view class="job-card-body">
+            <view class="job-card-top">
+              <text class="job-company line-1">{{job.company}}</text>
+              <text class="type-chip">{{job.companyType}}</text>
+            </view>
+            <view class="job-card-tags">
+              <text wx:if="{{job.sessionTag}}" class="job-tag batch-tag">{{job.sessionTag}}</text>
+              <text wx:if="{{job.industry}}" class="job-tag">{{job.industry}}</text>
+              <text class="job-tag location-tag">{{job.locationSummary}}</text>
+            </view>
+            <text class="job-title line-1">{{job.title}}</text>
+            <view class="job-card-footer">
+              <text>最新 {{job.displayTime}}</text>
+              <text class="job-enter">查看详情 ›</text>
+            </view>
           </view>
         </view>
       </view> 

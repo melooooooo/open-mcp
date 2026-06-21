@@ -1,6 +1,21 @@
 const api = require("../../utils/api")
 const router = require("../../utils/router")
 
+const TYPE_COLORS = ["blue", "green", "orange", "cyan"]
+
+function pickColor(company) {
+  let hash = 0
+  for (let i = 0; i < company.length; i++) hash = (hash * 31 + company.charCodeAt(i)) | 0
+  return TYPE_COLORS[Math.abs(hash) % TYPE_COLORS.length]
+}
+
+function summarizeLocation(location) {
+  const locations = String(location || "")
+    .split(/\s*[、/,，]\s*/)
+    .filter(Boolean)
+  return locations.slice(0, 3).join(" · ") || "多地"
+}
+
 Page({
   data: {
     loading: true,
@@ -36,8 +51,11 @@ Page({
         company: item.company || "未知公司",
         location: item.location || "地点未明确",
         companyType: item.companyType || "其他",
-        displayTime: item.timeText || item.sourceUpdatedAt || item.createdAt || "近期",
-        visibleTags: (item.tags || [item.session, item.industry]).filter(Boolean).slice(0, 3)
+        industry: item.industry || "",
+        sessionTag: item.session || item.batch || "",
+        locationSummary: summarizeLocation(item.location),
+        typeColor: pickColor(item.company || "未知公司"),
+        displayTime: item.timeText || item.sourceUpdatedAt || item.createdAt || "近期"
       }))
       const referrals = (data.referrals || []).map((item) => ({
         ...item,

@@ -1,63 +1,112 @@
 <view class="detail-page">
   <view class="detail-nav">
     <view class="back-btn icon-back" bindtap="goBack"></view>
-    <text>职位详情</text>
+    <text class="nav-text line-1">职位详情</text>
     <view class="nav-space"></view>
   </view>
 
-  <view wx:if="{{loading}}" class="loading">正在加载职位详情...</view>
+  <view wx:if="{{loading}}" class="loading">正在加载...</view>
   <view wx:elif="{{error}}" class="error">{{error}}</view>
   <block wx:elif="{{job}}">
     <scroll-view scroll-y class="detail-scroll">
-      <view class="summary">
-        <view class="summary-title-row">
-          <text class="summary-title">{{job.title}}</text>
-        </view>
-        <view class="company-row">
-          <view class="company-logo">{{job.companyInitial}}</view>
-          <view>
-            <text class="company-name">{{job.company}}</text>
-            <text class="company-sub">{{job.companyType}} · {{job.industry}}</text>
+      <!-- 公司头部 - 最突出位置 -->
+      <view class="company-hero">
+        <view class="hero-glow"></view>
+        <view class="hero-main">
+          <view class="hero-logo">{{companyInitial}}</view>
+          <view class="hero-info">
+            <view class="company-hero-name line-2">{{job.company}}</view>
+            <view class="company-hero-tags">
+              <text class="hero-tag">{{job.companyType}}</text>
+              <text wx:if="{{job.industry}}" class="hero-tag">{{job.industry}}</text>
+            </view>
           </view>
         </view>
-        <view class="tag-row">
-          <text class="tag">地点 {{job.location}}</text>
-          <text wx:for="{{tags}}" wx:key="*this" class="tag">{{item}}</text>
-          <text wx:if="{{job.deadline}}" class="tag danger">截止: {{job.deadline}}</text>
+      </view>
+
+      <!-- 岗位卡片 - 次级 -->
+      <view class="position-card">
+        <view class="position-head">
+          <view class="position-badge">招聘岗位</view>
+          <text wx:if="{{displayTime}}" class="position-time">{{displayTime}}</text>
+        </view>
+        <text class="position-name">{{job.title}}</text>
+
+        <view class="info-grid">
+          <view class="info-cell">
+            <view class="info-cell-icon icon-loc"></view>
+            <view class="info-cell-body">
+              <text class="info-cell-label">工作地点</text>
+              <text class="info-cell-value">{{job.location}}</text>
+            </view>
+          </view>
+          <view class="info-cell">
+            <view class="info-cell-icon icon-cap"></view>
+            <view class="info-cell-body">
+              <text class="info-cell-label">学历要求</text>
+              <text class="info-cell-value">{{job.degreeRequirement || '不限'}}</text>
+            </view>
+          </view>
+          <view class="info-cell">
+            <view class="info-cell-icon icon-cal"></view>
+            <view class="info-cell-body">
+              <text class="info-cell-label">招聘届次</text>
+              <text class="info-cell-value">{{job.session || '不限'}}</text>
+            </view>
+          </view>
+          <view class="info-cell">
+            <view class="info-cell-icon icon-clock"></view>
+            <view class="info-cell-body">
+              <text class="info-cell-label">截止时间</text>
+              <text class="info-cell-value">{{job.deadline || '以公告为准'}}</text>
+            </view>
+          </view>
         </view>
       </view>
 
-      <view class="content-card">
+      <!-- 职位描述 -->
+      <view wx:if="{{detailLines.length > 0}}" class="content-card">
         <view class="block-title">职位描述</view>
         <view class="paragraphs">
-          <text wx:if="{{detailLines.length === 0}}" class="paragraph">暂无详细描述，请查看投递方式或公告来源。</text>
-          <text wx:for="{{detailLines}}" wx:key="*this" class="paragraph">{{item}}</text>
+          <view wx:for="{{detailLines}}" wx:key="*this" class="paragraph-item">
+            <view class="paragraph-dot"></view>
+            <text class="paragraph">{{item}}</text>
+          </view>
         </view>
       </view>
 
+      <!-- 申请信息 -->
       <view class="content-card">
         <view class="block-title">申请信息</view>
-        <view class="info-row">
-          <text class="info-label">学历要求</text>
-          <text class="info-value">{{job.degreeRequirement || '不限'}}</text>
-        </view>
-        <view class="info-row">
-          <text class="info-label">届次</text>
-          <text class="info-value">{{job.session || '不限'}}</text>
+        <view wx:if="{{job.batch}}" class="info-row">
+          <text class="info-label">招聘批次</text>
+          <text class="info-value">{{job.batch}}</text>
         </view>
         <view class="info-row">
           <text class="info-label">投递方式</text>
-          <text class="info-value">{{job.applicationMethod || '见公告'}}</text>
+          <text class="info-value line-2">{{job.applicationMethod || '见公告'}}</text>
+        </view>
+        <view wx:if="{{job.majorRequirement}}" class="info-row">
+          <text class="info-label">专业要求</text>
+          <text class="info-value">{{job.majorRequirement}}</text>
+        </view>
+        <view wx:if="{{job.announcementSource}}" class="info-row">
+          <text class="info-label">公告来源</text>
+          <text class="info-value line-1">{{job.announcementSource}}</text>
         </view>
       </view>
+
+      <view class="scroll-bottom-pad"></view>
     </scroll-view>
 
     <view class="detail-actions bottom-actions">
-      <view class="collect-btn" bindtap="toggleCollect">
-        <view class="collect-mark {{job.isCollected ? 'saved' : ''}}"></view>
-        <text>{{job.isCollected ? '已收藏' : '收藏'}}</text>
+      <view class="collect-btn {{job.isCollected ? 'active' : ''}}" bindtap="toggleCollect">
+        <view class="collect-heart {{job.isCollected ? 'filled' : ''}}"></view>
       </view>
-      <button class="apply-btn primary-button" bindtap="copyApply">一键复制申请链接</button>
+      <button class="apply-btn" bindtap="copyApply">
+        <view class="apply-icon"></view>
+        <text>获取申请链接</text>
+      </button>
     </view>
   </block>
 </view>
