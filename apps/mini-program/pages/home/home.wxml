@@ -11,22 +11,23 @@
     </view>
   </view>
 
-  <view class="quick-card card">
+  <!-- 金刚区 -->
+  <view class="quick-card">
     <view class="quick-item" bindtap="switchTab" data-page="jobs">
-      <view class="quick-icon blue">职</view>
-      <text>求职导航</text>
+      <image class="quick-icon" src="/images/quick-nav/job-navigation.png" mode="aspectFit"></image>
+      <text class="quick-label">求职导航</text>
     </view>
     <view class="quick-item" bindtap="switchTab" data-page="experiences">
-      <view class="quick-icon orange">经</view>
-      <text>经验面经</text>
+      <image class="quick-icon" src="/images/quick-nav/interview-experience.png" mode="aspectFit"></image>
+      <text class="quick-label">经验面经</text>
     </view>
     <view class="quick-item" bindtap="switchTab" data-page="referrals">
-      <view class="quick-icon green">推</view>
-      <text>内推专区</text>
+      <image class="quick-icon" src="/images/quick-nav/referral.png" mode="aspectFit"></image>
+      <text class="quick-label">内推专区</text>
     </view>
     <view class="quick-item" bindtap="switchTab" data-page="jobs">
-      <view class="quick-icon purple">新</view>
-      <text>最新动态</text>
+      <image class="quick-icon" src="/images/quick-nav/latest-updates.png" mode="aspectFit"></image>
+      <text class="quick-label">最新动态</text>
     </view>
   </view>
 
@@ -34,70 +35,104 @@
   <view wx:elif="{{error}}" class="error">{{error}}</view>
 
   <block wx:else>
+    <!-- 最新招聘职位 -->
     <view class="section">
       <view class="section-head">
-        <text class="section-title">最新招聘职位</text>
+        <view class="section-title-group">
+          <view class="section-indicator job-indicator"></view>
+          <text class="section-title">最新招聘职位</text>
+        </view>
         <view class="section-more" bindtap="switchTab" data-page="jobs">全部职位</view>
       </view>
       <view wx:if="{{latestJobs.length === 0}}" class="empty compact">暂无最新职位</view>
       <view wx:else class="jobs-list">
-        <view wx:for="{{latestJobs}}" wx:key="id" wx:for-item="job" class="job-card type-{{job.typeColor}}" hover-class="job-card-pressed" bindtap="openJob" data-id="{{job.id}}">
-          <view class="job-card-bar"></view>
-          <view class="job-card-body">
-            <view class="job-card-top">
-              <text class="job-company line-1">{{job.company}}</text>
-              <text class="type-chip">{{job.companyType}}</text>
-            </view>
-            <view class="job-card-tags">
-              <text wx:if="{{job.sessionTag}}" class="job-tag batch-tag">{{job.sessionTag}}</text>
-              <text wx:if="{{job.industry}}" class="job-tag">{{job.industry}}</text>
-              <text class="job-tag location-tag">{{job.locationSummary}}</text>
-            </view>
-            <text class="job-title line-1">{{job.title}}</text>
-            <view class="job-card-footer">
-              <text>最新 {{job.displayTime}}</text>
-              <text class="job-enter">查看详情 ›</text>
-            </view>
+        <view wx:for="{{latestJobs}}" wx:key="id" wx:for-item="job" class="job-card" hover-class="job-card-pressed" bindtap="openJob" data-id="{{job.id}}">
+          <view class="job-card-top">
+            <text class="job-company line-1">{{job.company}}</text>
+            <text class="type-chip">{{job.companyType}}</text>
+          </view>
+          <view class="job-card-tags">
+            <text wx:if="{{job.sessionTag}}" class="job-tag batch-tag">{{job.sessionTag}}</text>
+            <text wx:if="{{job.industry}}" class="job-tag">{{job.industry}}</text>
+            <text class="job-tag location-tag">{{job.locationSummary}}</text>
+          </view>
+          <text class="job-title line-1">{{job.title}}</text>
+          <view class="job-card-footer">
+            <text class="job-time">最新 {{job.displayTime}}</text>
+            <text class="job-enter">查看详情 ›</text>
           </view>
         </view>
-      </view> 
+      </view>
     </view>
 
+    <!-- 经验分享 -->
     <view class="section">
       <view class="section-head">
-        <text class="section-title">经验分享</text>
+        <view class="section-title-group">
+          <view class="section-indicator experience-indicator"></view>
+          <text class="section-title">经验分享</text>
+        </view>
         <view class="section-more" bindtap="switchTab" data-page="experiences">查看更多</view>
       </view>
       <view wx:if="{{experiences.length === 0}}" class="empty compact">暂无经验分享</view>
-      <block wx:else>
-        <view wx:for="{{experiences}}" wx:key="id" wx:for-item="exp" class="exp-card card" bindtap="openExperience" data-slug="{{exp.slug}}">
-          <text class="exp-title line-2">{{exp.title}}</text>
-          <view class="exp-meta">
-            <text class="avatar">{{exp.authorInitial}}</text>
-            <text class="line-1">{{exp.authorName}}</text>
-            <text class="spacer"></text>
-            <text>浏览 {{exp.viewCount}}</text>
-          </view>
-          <view class="tag-row">
-            <text wx:for="{{exp.visibleTags}}" wx:key="*this" class="tag blue-tag">{{item}}</text>
+      <view wx:else class="experience-list">
+        <view wx:for="{{experiences}}" wx:key="id" wx:for-item="exp" class="experience-card" hover-class="content-card-pressed" bindtap="openExperience" data-slug="{{exp.slug}}">
+          <view class="experience-body">
+            <view class="experience-head">
+              <text wx:if="{{exp.typeLabel}}" class="experience-kind">{{exp.typeLabel}}</text>
+              <text wx:if="{{exp.isHot}}" class="experience-hot">热门</text>
+              <text class="exp-title line-2">{{exp.title}}</text>
+            </view>
+            <text wx:if="{{exp.summary}}" class="experience-summary line-2">{{exp.summary}}</text>
+            <view wx:if="{{exp.visibleTags.length}}" class="experience-tags">
+              <text wx:for="{{exp.visibleTags}}" wx:key="*this" wx:for-item="tag" class="experience-tag"># {{tag}}</text>
+            </view>
+            <view class="experience-footer">
+              <view class="experience-author">
+                <text class="experience-avatar">{{exp.authorInitial}}</text>
+                <view class="experience-author-copy">
+                  <text class="experience-author-name line-1">{{exp.authorName}}</text>
+                  <text wx:if="{{exp.organizationName}}" class="experience-org line-1">{{exp.organizationName}}</text>
+                </view>
+              </view>
+              <view class="experience-read">
+                <text>浏览 {{exp.viewCount}}</text>
+                <text class="round-arrow">›</text>
+              </view>
+            </view>
           </view>
         </view>
-      </block>
+      </view>
     </view>
 
+    <!-- 内推信息 -->
     <view class="section">
       <view class="section-head">
-        <text class="section-title">内推信息</text>
+        <view class="section-title-group">
+          <view class="section-indicator referral-indicator"></view>
+          <text class="section-title">内推信息</text>
+        </view>
         <view class="section-more" bindtap="switchTab" data-page="referrals">更多内推</view>
       </view>
       <view wx:if="{{referrals.length === 0}}" class="empty compact">暂无内推信息</view>
-      <view wx:else class="referral-grid">
-        <view wx:for="{{referrals}}" wx:key="id" wx:for-item="ref" class="ref-card card" bindtap="openReferral" data-id="{{ref.id}}">
-          <text class="ref-badge">内推</text>
-          <text class="ref-title line-2">{{ref.title}}</text>
-          <view class="meta-row compact">
-            <text>{{ref.publishDate || '近期'}}</text>
-            <text wx:if="{{ref.replyCount !== null}}">回复 {{ref.replyCount}}</text>
+      <view wx:else class="referral-list">
+        <view wx:for="{{referrals}}" wx:key="id" wx:for-item="ref" class="ref-card" hover-class="content-card-pressed" bindtap="openReferral" data-id="{{ref.id}}">
+          <view class="ref-accent"></view>
+          <view class="ref-card-body">
+            <view class="ref-card-head">
+              <text class="ref-badge">内推</text>
+              <text wx:if="{{ref.replyCount}}" class="ref-replies">{{ref.replyCount}} 回复</text>
+            </view>
+            <text class="ref-title line-3">{{ref.title}}</text>
+            <view wx:if="{{ref.visibleTags.length}}" class="ref-tags">
+              <text wx:for="{{ref.visibleTags}}" wx:key="*this" wx:for-item="tag" class="ref-tag line-1">{{tag}}</text>
+            </view>
+            <view class="ref-card-footer">
+              <view class="ref-footer-left">
+                <text class="ref-source">{{ref.publishDate}}</text>
+              </view>
+              <view class="ref-arrow-circle">›</view>
+            </view>
           </view>
         </view>
       </view>

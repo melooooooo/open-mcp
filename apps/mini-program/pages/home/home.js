@@ -2,6 +2,11 @@ const api = require("../../utils/api")
 const router = require("../../utils/router")
 
 const TYPE_COLORS = ["blue", "green", "orange", "cyan"]
+const EXPERIENCE_TYPE_LABELS = {
+  interview: "面经",
+  guide: "攻略",
+  review: "点评"
+}
 
 function pickColor(company) {
   let hash = 0
@@ -14,6 +19,10 @@ function summarizeLocation(location) {
     .split(/\s*[、/,，]\s*/)
     .filter(Boolean)
   return locations.slice(0, 3).join(" · ") || "多地"
+}
+
+function uniqueTags(values, limit = 3) {
+  return [...new Set(values.filter(Boolean))].slice(0, limit)
 }
 
 Page({
@@ -43,7 +52,9 @@ Page({
         title: item.title || "未命名经验",
         authorName: item.authorName || "匿名",
         authorInitial: (item.authorName || "匿").slice(0, 1),
-        visibleTags: (item.tags || []).filter(Boolean).slice(0, 4)
+        typeLabel: EXPERIENCE_TYPE_LABELS[item.articleType] || "经验",
+        typeColor: pickColor(item.organizationName || item.title || "经验"),
+        visibleTags: uniqueTags([...(item.tags || []), item.industry], 3)
       }))
       const latestJobs = (data.latestJobs || []).map((item) => ({
         ...item,
@@ -57,10 +68,12 @@ Page({
         typeColor: pickColor(item.company || "未知公司"),
         displayTime: item.timeText || item.sourceUpdatedAt || item.createdAt || "近期"
       }))
-      const referrals = (data.referrals || []).map((item) => ({
+      const referrals = (data.referrals || []).slice(0, 4).map((item) => ({
         ...item,
         title: item.title || "未命名内推",
-        publishDate: item.publishDate || "近期"
+        publishDate: item.publishDate || "近期",
+        typeColor: pickColor(item.companyName || item.title || "内推"),
+        visibleTags: uniqueTags([item.companyName, item.source], 2)
       }))
       this.setData({
         jobSites: data.jobSites || [],
