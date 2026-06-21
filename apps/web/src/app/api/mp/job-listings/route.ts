@@ -6,6 +6,13 @@ import { userJobListingCollections } from "@repo/db/schema"
 import { and, eq, inArray } from "drizzle-orm"
 import type { NextRequest } from "next/server"
 
+const FEATURED_INDUSTRIES = [
+  "金融业",
+  "IT/互联网/游戏",
+  "通信/电子/半导体",
+  "教育/培训/科研",
+]
+
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const { page, pageSize, from, to } = getPaging(searchParams)
@@ -17,6 +24,8 @@ export async function GET(request: NextRequest) {
   const location = searchParams.get("location")?.trim()
   const companyTypes = splitParam(searchParams.get("companyType"))
   const session = searchParams.get("session")?.trim()
+  const jobType = searchParams.get("jobType")?.trim()
+  const industry = searchParams.get("industry")?.trim()
 
   if (keyword) {
     const escaped = keyword.replace(/,/g, "\\,")
@@ -25,6 +34,15 @@ export async function GET(request: NextRequest) {
   if (location) query = query.ilike("work_location", `%${location}%`)
   if (companyTypes.length > 0) query = query.in("company_type", companyTypes)
   if (session && session !== "all") query = query.ilike("session", `%${session}%`)
+  if (jobType === "campus") query = query.or("batch.ilike.%春招%,batch.ilike.%秋招%")
+  if (jobType === "intern") query = query.ilike("batch", "%实习%")
+  if (industry === "other") {
+    FEATURED_INDUSTRIES.forEach((featuredIndustry) => {
+      query = query.neq("industry_category", featuredIndustry)
+    })
+  } else if (industry && FEATURED_INDUSTRIES.includes(industry)) {
+    query = query.eq("industry_category", industry)
+  }
 
   const { data, count, error } = await query
     .order("source_updated_at", { ascending: false })
