@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import Link from "next/link"
-import sanitizeHtml from "sanitize-html"
 import { getExperienceBySlug, getExperienceMetadata } from "@/lib/api/experiences"
 import { Container } from "@/components/web/container"
 import { Badge } from "@repo/ui/components/ui/badge"
@@ -13,6 +12,7 @@ import { ExperienceLikeButton } from "@/components/career/experience-like-button
 import { ExperienceEditButton } from "@/components/career/experience-edit-button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@repo/ui/components/ui/accordion"
 import { MarkdownReadonly } from "@repo/ui/components/markdown/markdown-readonly"
+import { sanitizeCanonicalHtml } from "@repo/trpc/common/experience-content"
 
 const ARTICLE_TYPE_LABELS: Record<string, string> = {
   guide: "攻略",
@@ -20,29 +20,10 @@ const ARTICLE_TYPE_LABELS: Record<string, string> = {
   review: "点评",
 }
 
-// Configure sanitize-html options
-const sanitizeOptions: any = {
-  allowedTags: [
-    "p", "span", "strong", "em", "ul", "ol", "li", "br",
-    "blockquote", "code", "pre", "h1", "h2", "h3", "h4", "h5", "h6",
-    "table", "thead", "tbody", "tr", "th", "td",
-    "img", "a", "hr", "figure", "figcaption", "div",
-  ],
-  allowedAttributes: {
-    a: ["href", "title", "target", "rel"],
-    img: ["src", "alt", "title"],
-    // Removed style attributes to ensure consistent typography
-  },
-  allowedSchemes: ["http", "https", "mailto"],
-  allowedSchemesByTag: {
-    img: ["http", "https", "data"],
-  },
-}
-
 // Helper function to sanitize HTML content
 function sanitize(html?: string | null): string {
   if (!html) return ""
-  return sanitizeHtml(html, sanitizeOptions)
+  return sanitizeCanonicalHtml(html)
 }
 
 // Helper function to clean specific unwanted content (WeChat artifacts)
@@ -429,12 +410,7 @@ export default async function ExperienceDetailPage({ params }: ExperienceDetailP
                              break-words whitespace-pre-line
                              [&_section]:mb-8 [&_section]:space-y-4"
                   dangerouslySetInnerHTML={{
-                    __html: sanitizeHtml(experience.content_html, {
-                      ...sanitizeOptions,
-                      allowedTags: sanitizeOptions.allowedTags.filter(
-                        (tag: string) => tag !== "style"
-                      ),
-                    }),
+                    __html: sanitizeCanonicalHtml(experience.content_html || ""),
                   }}
                 />
               </div>

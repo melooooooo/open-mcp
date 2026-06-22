@@ -2,56 +2,9 @@ import { db } from "@repo/db";
 import { financeExperiences } from "@repo/db/schema";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
-import { marked } from "marked";
-import sanitizeHtml from "sanitize-html";
 import { z } from "zod";
+import { markdownToCanonicalHtml } from "../../common/experience-content";
 import { protectedProcedure, publicProcedure, router } from "../../trpc";
-
-// Sanitize HTML 配置
-const sanitizeOptions = {
-  allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-    "img",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "details",
-    "summary",
-    "input",
-    "del",
-    "ins",
-    "mark",
-  ]),
-  allowedAttributes: {
-    ...sanitizeHtml.defaults.allowedAttributes,
-    "*": ["class", "id", "style"],
-    img: ["src", "alt", "title", "width", "height"],
-    a: ["href", "title", "target", "rel"],
-    input: ["type", "checked", "disabled"],
-    div: ["align"],
-    p: ["align"],
-    td: ["align"],
-    th: ["align"],
-    span: ["style"],
-  },
-  allowedStyles: {
-    "*": {
-      color: [/^#(0x)?[0-9a-f]+$/i, /^rgb\(/],
-      "text-align": [/^left$/, /^right$/, /^center$/],
-      "background-color": [/^#(0x)?[0-9a-f]+$/i, /^rgb\(/],
-    },
-  },
-};
-
-/**
- * 将 Markdown 转换为安全的 HTML
- */
-async function markdownToSafeHtml(markdown: string): Promise<string> {
-  const html = await marked(markdown);
-  return sanitizeHtml(html, sanitizeOptions);
-}
 
 /**
  * 检查用户是否有权限编辑经验分享
@@ -246,7 +199,7 @@ export const experiencesRouter = router({
       }
 
       // 将 Markdown 转换为 HTML
-      const contentHtml = await markdownToSafeHtml(input.markdownContent);
+      const contentHtml = await markdownToCanonicalHtml(input.markdownContent);
 
       // 更新数据库
       await db

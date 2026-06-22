@@ -1,15 +1,11 @@
 const api = require("../../utils/api")
 const auth = require("../../utils/auth")
 
-function stripMarkdown(value) {
-  return (value || "")
-    .replace(/!\[[^\]]*\]\([^)]+\)/g, "")
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-    .replace(/^#{1,6}\s+/gm, "")
-    .replace(/[`*_>#-]/g, "")
-    .split(/\n+/)
-    .map((line) => line.trim())
-    .filter(Boolean)
+function formatDate(value) {
+  if (!value) return ""
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return ""
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
 }
 
 Page({
@@ -20,7 +16,8 @@ Page({
     isLoggedIn: false,
     exp: null,
     tags: [],
-    contentLines: []
+    relatedLinks: [],
+    coverFailed: false
   },
 
   onLoad(options) {
@@ -40,17 +37,42 @@ Page({
         ...exp,
         title: exp.title || "未命名经验",
         authorName: exp.authorName || "匿名",
-        summary: exp.summary || "暂无摘要"
+        summary: exp.summary || "",
+        contentHtml: exp.contentHtml || "",
+        publishDate: formatDate(exp.publishTime)
       }
       this.setData({
         exp: safeExp,
         tags: (safeExp.tags || []).slice(0, 6),
-        contentLines: stripMarkdown(safeExp.content || safeExp.summary),
+        relatedLinks: Array.isArray(exp.relatedLinks) ? exp.relatedLinks : [],
+        coverFailed: false,
         loading: false
       })
     } catch (error) {
       this.setData({ error: error.message || "加载失败", loading: false })
     }
+  },
+
+  retryLoad() {
+    this.loadDetail()
+  },
+
+  handleCoverError() {
+    this.setData({ coverFailed: true })
+  },
+
+  copyRelatedLink(event) {
+    const url = event.currentTarget.dataset.url
+    if (!url) return
+    wx.setClipboardData({
+      data: url,
+      success() {
+        wx.showToast({ title: "链接已复制", icon: "success" })
+      },
+      fail() {
+        wx.showToast({ title: "复制失败，请稍后重试", icon: "none" })
+      }
+    })
   },
 
   goBack() {

@@ -2,6 +2,7 @@
   "extends": "@repo/typescript-config/base.json",
   "compilerOptions": {
     "outDir": "dist",
+    "rootDir": ".",
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
     "module": "esnext",
     "moduleResolution": "bundler"

@@ -5,24 +5,63 @@
     <view class="nav-space"></view>
   </view>
 
-  <view wx:if="{{loading}}" class="loading">正在加载经验...</view>
-  <view wx:elif="{{error}}" class="error">{{error}}</view>
+  <view wx:if="{{loading}}" class="article-skeleton">
+    <view class="skeleton-block skeleton-cover"></view>
+    <view class="skeleton-block skeleton-title"></view>
+    <view class="skeleton-block skeleton-meta"></view>
+    <view class="skeleton-block skeleton-line"></view>
+    <view class="skeleton-block skeleton-line short"></view>
+    <view class="skeleton-block skeleton-line"></view>
+  </view>
+  <view wx:elif="{{error}}" class="error-state">
+    <text class="error-title">正文加载失败</text>
+    <text class="error-message">{{error}}</text>
+    <button class="retry-button" bindtap="retryLoad">重新加载</button>
+  </view>
   <block wx:elif="{{exp}}">
     <scroll-view scroll-y class="article-scroll">
+      <image
+        wx:if="{{exp.coverAssetPath && !coverFailed}}"
+        class="article-cover"
+        src="{{exp.coverAssetPath}}"
+        mode="aspectFill"
+        binderror="handleCoverError"
+      ></image>
+      <view wx:if="{{exp.coverAssetPath && coverFailed}}" class="cover-fallback">封面加载失败</view>
       <view class="article-header">
         <text class="article-title">{{exp.title}}</text>
         <view class="article-meta">
           <text>{{exp.authorName}}</text>
           <text wx:if="{{exp.organizationName}}">· {{exp.organizationName}}</text>
+          <text wx:if="{{exp.publishDate}}">· {{exp.publishDate}}</text>
+          <text wx:if="{{exp.readTimeMinutes}}">· {{exp.readTimeMinutes}} 分钟</text>
           <text>· 浏览 {{exp.viewCount}}</text>
         </view>
         <view class="tag-row">
           <text wx:for="{{tags}}" wx:key="*this" class="tag">{{item}}</text>
         </view>
+        <view wx:if="{{exp.summary}}" class="article-summary">{{exp.summary}}</view>
       </view>
       <view class="article-body">
-        <text wx:if="{{contentLines.length === 0}}" class="paragraph">暂无正文内容。</text>
-        <text wx:for="{{contentLines}}" wx:key="*this" class="paragraph">{{item}}</text>
+        <text wx:if="{{!exp.contentHtml}}" class="empty-content">暂无正文内容。</text>
+        <rich-text wx:else class="article-content" nodes="{{exp.contentHtml}}" user-select></rich-text>
+        <view wx:if="{{relatedLinks.length}}" class="related-links">
+          <view class="related-heading">
+            <text class="related-title">相关链接</text>
+            <text class="related-hint">点击复制后打开</text>
+          </view>
+          <view
+            wx:for="{{relatedLinks}}"
+            wx:key="url"
+            class="related-link"
+            data-url="{{item.url}}"
+            bindtap="copyRelatedLink"
+          >
+            <view class="related-index">{{index + 1}}</view>
+            <text class="related-label">{{item.label}}</text>
+            <text class="related-copy">复制</text>
+          </view>
+        </view>
       </view>
     </scroll-view>
     <view class="article-actions bottom-actions">

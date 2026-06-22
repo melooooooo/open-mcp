@@ -3,6 +3,12 @@ import { mapExperience } from "../../_shared/mappers"
 import { fail, getCurrentUser, ok } from "../../_shared/response"
 import { db } from "@repo/db"
 import { financeExperiences, userExperienceLikes } from "@repo/db/schema"
+import {
+  markdownToCanonicalHtml,
+  renderMiniProgramHtml,
+  resolveExperienceSource,
+  sanitizeCanonicalHtml,
+} from "@repo/trpc/common/experience-content"
 import { and, eq, sql } from "drizzle-orm"
 
 export async function GET(request: Request, context: { params: Promise<{ slug: string }> }) {
@@ -32,11 +38,23 @@ export async function GET(request: Request, context: { params: Promise<{ slug: s
     isLiked = Boolean(like)
   }
 
-  const content = data.markdown_content || data.content_html || data.metadata?.markdown_source?.content || ""
+  const resolvedContent = resolveExperienceSource(data)
+  const canonicalHtml =
+    resolvedContent.format === "markdown"
+      ? await markdownToCanonicalHtml(resolvedContent.value)
+      : sanitizeCanonicalHtml(resolvedContent.value)
+  const renderedContent = renderMiniProgramHtml(canonicalHtml, {
+    title: data.title,
+    coverAssetPath: data.cover_asset_path,
+  })
+
   return ok({
     ...mapExperience(data),
-    content,
-    contentType: data.markdown_content || data.metadata?.markdown_source?.content ? "markdown" : "html",
+    // 兼容旧版小程序；新版统一使用 contentHtml。
+    content: resolvedContent.value,
+    contentType: resolvedContent.format,
+    contentHtml: renderedContent.html,
+    relatedLinks: renderedContent.relatedLinks,
     isLiked,
   })
 }

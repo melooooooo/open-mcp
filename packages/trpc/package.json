@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "test:experience-content": "tsx --test common/experience-content.test.ts",
+    "migrate:experience-content": "tsx migrations/backfill-experience-content.ts"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",

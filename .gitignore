@@ -71,6 +71,7 @@ webhook-data/
 /*.txt
 /*.png
 *.log
+apps/web/e2e/artifacts/
 
 # Specific Root Files
 /run-mcp-supabase.sh
