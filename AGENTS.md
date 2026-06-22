@@ -1,3 +1,8 @@
+---
+description: 
+alwaysApply: true
+---
+
 # AGENTS.md
 
 High-signal context for OpenCode sessions working in this repo. The codebase is bilingual (Chinese comments/docs, English code).

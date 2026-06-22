@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>求职小程序 - 首页优化版</title>
+    <!-- 引入 Tailwind CSS 进行极速样式构建 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Lucide 图标库 -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* 隐藏滚动条，保持页面整洁 */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            background-color: #f8fafc; /* bg-slate-50 */
+        }
+        /* 增加对多行文本截断的额外支持（Tailwind的 line-clamp 需要插件，原生手写更稳） */
+        .line-clamp-1 {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        /* 底部安全区适配 */
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 16px);
+        }
+    </style>
+</head>
+<body class="flex justify-center font-sans text-gray-800 antialiased selection:bg-blue-100">
+
+    <!-- 模拟手机容器 -->
+    <div class="w-full max-w-md bg-slate-50 relative pb-20 shadow-2xl min-h-screen flex flex-col overflow-hidden">
+        
+        <!-- 顶部搜索 / Header (吸顶) -->
+        <div class="bg-white px-4 pt-12 pb-4 sticky top-0 z-40 shadow-sm shadow-slate-100/50">
+            <div class="bg-gray-100 rounded-full px-4 py-2.5 flex items-center text-gray-400 text-sm">
+                <i data-lucide="search" class="w-4 h-4 mr-2"></i>
+                搜索公司、职位或面经
+            </div>
+        </div>
+
+        <!-- 主体滚动内容区 -->
+        <div class="flex-1 overflow-y-auto pb-6">
+            
+            <!-- 金刚区导航 -->
+            <div class="bg-white px-4 py-6 rounded-b-3xl shadow-sm mb-4">
+                <div class="flex justify-between items-center px-2">
+                    <!-- 导航项 1 -->
+                    <div class="flex flex-col items-center gap-2 cursor-pointer active:scale-95 transition-transform">
+                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
+                            <i data-lucide="briefcase" class="text-blue-600"></i>
+                        </div>
+                        <span class="text-xs font-medium text-gray-700">求职导航</span>
+                    </div>
+                    <!-- 导航项 2 -->
+                    <div class="flex flex-col items-center gap-2 cursor-pointer active:scale-95 transition-transform">
+                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-indigo-50 to-indigo-100">
+                            <i data-lucide="book-open" class="text-indigo-600"></i>
+                        </div>
+                        <span class="text-xs font-medium text-gray-700">经验面经</span>
+                    </div>
+                    <!-- 导航项 3 -->
+                    <div class="flex flex-col items-center gap-2 cursor-pointer active:scale-95 transition-transform">
+                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-emerald-50 to-emerald-100">
+                            <i data-lucide="send" class="text-emerald-600"></i>
+                        </div>
+                        <span class="text-xs font-medium text-gray-700">内推专区</span>
+                    </div>
+                    <!-- 导航项 4 -->
+                    <div class="flex flex-col items-center gap-2 cursor-pointer active:scale-95 transition-transform">
+                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-orange-50 to-orange-100">
+                            <i data-lucide="zap" class="text-orange-500 fill-orange-100"></i>
+                        </div>
+                        <span class="text-xs font-medium text-gray-700">最新动态</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 最新招聘职位 -->
+            <section class="px-4 mb-6">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-lg font-bold flex items-center text-gray-900">
+                        <div class="w-1.5 h-4 bg-blue-600 rounded-full mr-2"></div>
+                        最新招聘职位
+                    </h2>
+                    <span class="text-sm text-gray-500 flex items-center cursor-pointer hover:text-blue-600 transition-colors">
+                        全部职位 <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </span>
+                </div>
+                
+                <div class="flex flex-col gap-3">
+                    <!-- 卡片 1 -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50 hover:shadow-md transition-shadow cursor-pointer">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-base font-bold text-gray-900">长江保荐</h3>
+                            <span class="text-xs px-2 py-1 rounded-md font-medium text-emerald-700 bg-emerald-50">民企</span>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="text-xs text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md font-medium">2027届</span>
+                            <span class="text-xs text-gray-600 bg-gray-100 px-2.5 py-1 rounded-md">金融业</span>
+                            <span class="text-xs text-gray-600 bg-gray-100 px-2.5 py-1 rounded-md">上海 · 成都 · 武汉</span>
+                        </div>
+                        <p class="text-sm text-gray-500 line-clamp-1 mb-3">投行业务岗(股权方向)、股票承销岗(含分析与投教)暑期实习...</p>
+                        <div class="flex justify-between items-center pt-3 border-t border-gray-50">
+                            <span class="text-xs text-gray-400 flex items-center"><i data-lucide="clock" class="w-3 h-3 mr-1"></i> 最新 3天前</span>
+                            <span class="text-sm text-blue-600 font-medium flex items-center group">
+                                查看详情 <i data-lucide="chevron-right" class="w-3 h-3 ml-0.5 group-hover:translate-x-1 transition-transform"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- 卡片 2 -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50 hover:shadow-md transition-shadow cursor-pointer">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-base font-bold text-gray-900">国投证券</h3>
+                            <span class="text-xs px-2 py-1 rounded-md font-medium text-orange-700 bg-orange-50">央国企</span>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="text-xs text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md font-medium">2027届</span>
+                            <span class="text-xs text-gray-600 bg-gray-100 px-2.5 py-1 rounded-md">金融业</span>
+                            <span class="text-xs text-gray-600 bg-gray-100 px-2.5 py-1 rounded-md">全国多地</span>
+                        </div>
+                        <p class="text-sm text-gray-500 line-clamp-1 mb-3">投资银行类 研究分析类 投资交易类 机构业务类 财富管理类...</p>
+                        <div class="flex justify-between items-center pt-3 border-t border-gray-50">
+                            <span class="text-xs text-gray-400 flex items-center"><i data-lucide="clock" class="w-3 h-3 mr-1"></i> 最新 3天前</span>
+                            <span class="text-sm text-blue-600 font-medium flex items-center group">
+                                查看详情 <i data-lucide="chevron-right" class="w-3 h-3 ml-0.5 group-hover:translate-x-1 transition-transform"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 经验分享 -->
+            <section class="px-4 mb-6">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-lg font-bold flex items-center text-gray-900">
+                        <div class="w-1.5 h-4 bg-indigo-600 rounded-full mr-2"></div>
+                        经验分享
+                    </h2>
+                    <span class="text-sm text-gray-500 flex items-center cursor-pointer hover:text-indigo-600 transition-colors">
+                        查看更多 <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </span>
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <!-- 经验卡片 1 -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50 cursor-pointer">
+                        <div class="mb-2">
+                            <span class="inline-block text-[10px] text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded mr-2 align-middle font-medium">攻略</span>
+                            <h3 class="inline text-base font-bold text-gray-900 align-middle leading-tight">工行北分待遇大曝光！</h3>
+                        </div>
+                        <p class="text-sm text-gray-500 line-clamp-2 mb-3 leading-relaxed">工行北分待遇大曝光！原创 职场江湖指北 中国工商银行北京分行是工商银行系统内的旗舰分行，多年来...</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs text-indigo-400 font-medium"># bank</span>
+                            <span class="text-xs text-indigo-400 font-medium"># 薪资待遇</span>
+                            <span class="text-xs text-indigo-400 font-medium"># 国央企</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-gray-50/50 p-2 rounded-xl">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-100 to-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-sm">
+                                    职
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-800">职场江湖指北</div>
+                                    <div class="text-xs text-gray-400">工行北分</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center text-xs text-gray-400 bg-white px-2 py-1 rounded-full shadow-sm">
+                                <i data-lucide="eye" class="w-3 h-3 mr-1"></i> 137
+                                <i data-lucide="chevron-right" class="w-3 h-3 ml-1"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 经验卡片 2 -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50 cursor-pointer">
+                        <div class="mb-2">
+                            <span class="inline-block text-[10px] text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded mr-2 align-middle font-medium">攻略</span>
+                            <h3 class="inline text-base font-bold text-gray-900 align-middle leading-tight">网联清算待遇大曝光</h3>
+                        </div>
+                        <p class="text-sm text-gray-500 line-clamp-2 mb-3 leading-relaxed">网联清算有限公司是经中国人民银行批准成立的非银行支付机构网络支付清算平台的运营机构...</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs text-indigo-400 font-medium"># other</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-gray-50/50 p-2 rounded-xl">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-100 to-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-sm">
+                                    职
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-800">职场江湖指北</div>
+                                    <div class="text-xs text-gray-400">网联清算</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center text-xs text-gray-400 bg-white px-2 py-1 rounded-full shadow-sm">
+                                <i data-lucide="eye" class="w-3 h-3 mr-1"></i> 89
+                                <i data-lucide="chevron-right" class="w-3 h-3 ml-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 内推信息 -->
+            <section class="px-4 mb-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-lg font-bold flex items-center text-gray-900">
+                        <div class="w-1.5 h-4 bg-emerald-500 rounded-full mr-2"></div>
+                        内推信息
+                    </h2>
+                    <span class="text-sm text-gray-500 flex items-center cursor-pointer hover:text-emerald-600 transition-colors">
+                        更多内推 <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <!-- 内推卡片 1 -->
+                    <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-gray-50 flex flex-col cursor-pointer relative overflow-hidden group">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-emerald-400 opacity-80"></div>
+                        <span class="self-start text-[10px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded font-medium mb-2 mt-1">内推</span>
+                        <h3 class="text-sm font-bold text-gray-900 line-clamp-3 mb-3 flex-1 leading-snug group-hover:text-blue-600 transition-colors">
+                            AI Startup | 30-45k/月算法工程师招募(Founder 直聘)
+                        </h3>
+                        <div class="flex justify-between items-end mt-auto pt-2 border-t border-gray-50">
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs text-gray-500">byr_bbs</span>
+                                <span class="text-[10px] text-gray-400">2026-06-20</span>
+                            </div>
+                            <div class="w-5 h-5 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-blue-50 transition-colors">
+                                <i data-lucide="chevron-right" class="w-3 h-3 text-gray-400 group-hover:text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 内推卡片 2 -->
+                    <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-gray-50 flex flex-col cursor-pointer relative overflow-hidden group">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-emerald-400 opacity-80"></div>
+                        <span class="self-start text-[10px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded font-medium mb-2 mt-1">实习</span>
+                        <h3 class="text-sm font-bold text-gray-900 line-clamp-3 mb-3 flex-1 leading-snug group-hover:text-blue-600 transition-colors">
+                            【内推】阿里巴巴安全部门大模型应用算法工程师2027届
+                        </h3>
+                        <div class="flex justify-between items-end mt-auto pt-2 border-t border-gray-50">
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs text-gray-500">byr_bbs</span>
+                                <span class="text-[10px] text-gray-400">2026-06-20</span>
+                            </div>
+                            <div class="w-5 h-5 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-blue-50 transition-colors">
+                                <i data-lucide="chevron-right" class="w-3 h-3 text-gray-400 group-hover:text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 底部导航栏 -->
+        <div class="absolute bottom-0 w-full bg-white border-t border-gray-100 flex justify-around py-2 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.02)] z-50">
+            <div class="tab-item flex flex-col items-center p-2 text-blue-600 cursor-pointer" data-target="home">
+                <i data-lucide="home" class="mb-1 w-6 h-6 stroke-[2.5]"></i>
+                <span class="text-[10px] font-medium">首页</span>
+            </div>
+            <div class="tab-item flex flex-col items-center p-2 text-gray-400 cursor-pointer" data-target="jobs">
+                <i data-lucide="briefcase" class="mb-1 w-6 h-6 stroke-2"></i>
+                <span class="text-[10px] font-medium">职位</span>
+            </div>
+            <div class="tab-item flex flex-col items-center p-2 text-gray-400 cursor-pointer" data-target="exp">
+                <i data-lucide="file-text" class="mb-1 w-6 h-6 stroke-2"></i>
+                <span class="text-[10px] font-medium">经验</span>
+            </div>
+            <div class="tab-item flex flex-col items-center p-2 text-gray-400 cursor-pointer" data-target="me">
+                <i data-lucide="user" class="mb-1 w-6 h-6 stroke-2"></i>
+                <span class="text-[10px] font-medium">我的</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 初始化图标与简单交互 -->
+    <script>
+        // 渲染 Lucide 图标
+        lucide.createIcons();
+
+        // 底部 Tab 切换简易逻辑
+        const tabItems = document.querySelectorAll('.tab-item');
+        tabItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // 重置所有 tab 状态
+                tabItems.forEach(tab => {
+                    tab.classList.remove('text-blue-600');
+                    tab.classList.add('text-gray-400');
+                    const icon = tab.querySelector('svg');
+                    if(icon) {
+                        icon.style.strokeWidth = "2";
+                    }
+                });
+                // 激活当前 tab
+                item.classList.remove('text-gray-400');
+                item.classList.add('text-blue-600');
+                const activeIcon = item.querySelector('svg');
+                if(activeIcon) {
+                    activeIcon.style.strokeWidth = "2.5";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

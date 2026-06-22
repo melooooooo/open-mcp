@@ -40,7 +40,6 @@
         <view class="tag-row">
           <text wx:for="{{tags}}" wx:key="*this" class="tag">{{item}}</text>
         </view>
-        <view wx:if="{{exp.summary}}" class="article-summary">{{exp.summary}}</view>
       </view>
       <view class="article-body">
         <text wx:if="{{!exp.contentHtml}}" class="empty-content">暂无正文内容。</text>
