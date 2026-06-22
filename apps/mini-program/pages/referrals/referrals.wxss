@@ -16,7 +16,6 @@
 
 .ref-top {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 18rpx;
 }
@@ -30,11 +29,6 @@
   font-weight: 900;
 }
 
-.source {
-  color: #9ca3af;
-  font-size: 22rpx;
-}
-
 .ref-title {
   color: #111827;
   font-size: 30rpx;
@@ -44,7 +38,6 @@
 
 .meta-row {
   display: flex;
-  justify-content: space-between;
   margin-top: 24rpx;
   color: #9ca3af;
   font-size: 23rpx;

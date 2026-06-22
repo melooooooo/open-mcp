@@ -9,12 +9,10 @@
     <view wx:for="{{referrals}}" wx:key="id" wx:for-item="ref" class="ref-card card" bindtap="openReferral" data-id="{{ref.id}}">
       <view class="ref-top">
         <text class="ref-badge">内推</text>
-        <text class="source">{{ref.source || '来源'}}</text>
       </view>
       <text class="ref-title line-2">{{ref.title}}</text>
       <view class="meta-row">
         <text>{{ref.publishDate || '近期'}}</text>
-        <text>回复 {{ref.replyCount || 0}}</text>
       </view>
     </view>
     <view wx:if="{{loadingMore}}" class="loading more">继续加载...</view>
