@@ -438,6 +438,7 @@
   font-size: 26rpx;
   font-weight: 700;
   line-height: 1.48;
+  height: 116rpx;
   margin-bottom: 24rpx;
 }
 
