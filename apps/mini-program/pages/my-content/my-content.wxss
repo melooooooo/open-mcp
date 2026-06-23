@@ -1,0 +1,262 @@
+.content-page {
+  min-height: 100vh;
+  padding-bottom: calc(48rpx + env(safe-area-inset-bottom));
+  background: #f4f6fb;
+  box-sizing: border-box;
+}
+
+.content-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(68rpx + env(safe-area-inset-top)) 28rpx 20rpx;
+  border-bottom: 1rpx solid #eef1f6;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20rpx);
+}
+
+.back-btn,
+.nav-space {
+  width: 48rpx;
+  height: 48rpx;
+  color: #111827;
+}
+
+.nav-title-text {
+  color: #111827;
+  font-size: 32rpx;
+  font-weight: 800;
+}
+
+.content-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12rpx;
+  margin: 24rpx 28rpx 0;
+  padding: 8rpx;
+  border: 1rpx solid #eef1f6;
+  border-radius: 20rpx;
+  background: #ffffff;
+}
+
+.content-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  height: 76rpx;
+  border-radius: 16rpx;
+  color: #6b7280;
+  font-size: 27rpx;
+  font-weight: 700;
+}
+
+.content-tab.active {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 8rpx 18rpx rgba(37, 99, 235, 0.2);
+}
+
+.tab-count {
+  min-width: 34rpx;
+  padding: 2rpx 8rpx;
+  border-radius: 999rpx;
+  background: #eef2f7;
+  color: #64748b;
+  font-size: 20rpx;
+  line-height: 30rpx;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.content-tab.active .tab-count {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.content-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  padding: 24rpx 28rpx;
+}
+
+.content-card {
+  position: relative;
+  padding: 28rpx;
+  overflow: hidden;
+}
+
+.content-card:active {
+  transform: scale(0.985);
+  background: #fbfdff;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+  margin-bottom: 18rpx;
+}
+
+.type-badge {
+  padding: 6rpx 16rpx;
+  border-radius: 999rpx;
+  font-size: 21rpx;
+  font-weight: 800;
+}
+
+.type-badge.job {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.type-badge.referral {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.type-badge.experience {
+  background: #f5f3ff;
+  color: #7c3aed;
+}
+
+.action-time {
+  color: #9ca3af;
+  font-size: 22rpx;
+}
+
+.card-title {
+  display: block;
+  padding-right: 28rpx;
+  color: #111827;
+  font-size: 31rpx;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.card-summary {
+  display: block;
+  margin-top: 12rpx;
+  color: #6b7280;
+  font-size: 24rpx;
+  line-height: 1.6;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin-top: 16rpx;
+  color: #6b7280;
+  font-size: 24rpx;
+}
+
+.meta-divider {
+  flex-shrink: 0;
+  margin: 0 10rpx;
+  color: #cbd5e1;
+}
+
+.content-card .tag-row {
+  margin-top: 18rpx;
+}
+
+.purple-tag {
+  border-radius: 999rpx;
+  background: #f5f3ff;
+  color: #7c3aed;
+}
+
+.card-enter {
+  position: absolute;
+  right: 28rpx;
+  bottom: 26rpx;
+  color: #2563eb;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.card-enter::after {
+  content: "";
+  display: inline-block;
+  width: 10rpx;
+  height: 10rpx;
+  margin-left: 8rpx;
+  border-top: 2rpx solid currentColor;
+  border-right: 2rpx solid currentColor;
+  transform: rotate(45deg);
+}
+
+.state-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 460rpx;
+  padding: 60rpx 48rpx;
+  color: #9ca3af;
+  font-size: 25rpx;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.state-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100rpx;
+  height: 100rpx;
+  margin-bottom: 26rpx;
+  border-radius: 999rpx;
+  background: #eef2ff;
+  color: #2563eb;
+  font-size: 44rpx;
+  font-weight: 800;
+}
+
+.state-title {
+  color: #1f2937;
+  font-size: 30rpx;
+  font-weight: 800;
+}
+
+.state-desc {
+  margin-top: 12rpx;
+  color: #9ca3af;
+  font-size: 24rpx;
+  line-height: 1.6;
+}
+
+.state-button {
+  min-width: 220rpx;
+  height: 72rpx;
+  margin-top: 28rpx;
+  padding: 0 30rpx;
+  border-radius: 999rpx;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 25rpx;
+  font-weight: 800;
+  line-height: 72rpx;
+}
+
+.loading-dot {
+  width: 22rpx;
+  height: 22rpx;
+  margin-bottom: 22rpx;
+  border: 5rpx solid #bfdbfe;
+  border-top-color: #2563eb;
+  border-radius: 999rpx;
+  animation: spin 800ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

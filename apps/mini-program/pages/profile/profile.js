@@ -18,10 +18,7 @@ function createProfileForm(user) {
   return {
     name: (user && user.name) || "",
     image: (user && user.image) || "",
-    avatarLocalPath: "",
-    gender: (user && user.gender) || "",
-    address: (user && user.address) || "",
-    contactPhone: (user && user.contactPhone) || ""
+    avatarLocalPath: ""
   }
 }
 
@@ -122,8 +119,12 @@ Page({
     router.switchMain("experiences")
   },
 
-  showResumeTodo() {
-    wx.showToast({ title: "简历功能建设中", icon: "none" })
+  openMyContent(event) {
+    router.openMyContent(event.currentTarget.dataset.tab)
+  },
+
+  showHistoryTodo() {
+    wx.showToast({ title: "浏览历史功能建设中", icon: "none" })
   },
 
   async handleWechatLogin() {
@@ -139,9 +140,26 @@ Page({
     }
   },
 
-  showProfileEditor() {
-    this.setData({ showProfileEditor: true })
+  toggleProfileEditor() {
+    const next = !this.data.showProfileEditor
+    this.setData({
+      showProfileEditor: next,
+      profileForm: next ? createProfileForm(this.data.user) : this.data.profileForm
+    })
   },
+
+  cancelEdit() {
+    if (this.data.isProfileIncomplete) {
+      this.skipProfile()
+      return
+    }
+    this.setData({
+      showProfileEditor: false,
+      profileForm: createProfileForm(this.data.user)
+    })
+  },
+
+  noop() {},
 
   handleChooseAvatar(event) {
     const avatarUrl = event.detail && event.detail.avatarUrl
@@ -154,18 +172,6 @@ Page({
 
   handleNameInput(event) {
     this.setData({ "profileForm.name": event.detail.value })
-  },
-
-  handleGenderInput(event) {
-    this.setData({ "profileForm.gender": event.detail.value })
-  },
-
-  handleAddressInput(event) {
-    this.setData({ "profileForm.address": event.detail.value })
-  },
-
-  handleContactPhoneInput(event) {
-    this.setData({ "profileForm.contactPhone": event.detail.value })
   },
 
   syncAuthUser(user) {
@@ -201,9 +207,6 @@ Page({
       const data = await api.patch("/me", {
         name,
         image,
-        gender: form.gender,
-        address: form.address,
-        contactPhone: form.contactPhone,
         completeProfile: true
       })
       const user = data.user || { ...this.data.user, name, image }

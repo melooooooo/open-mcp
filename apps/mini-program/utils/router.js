@@ -14,10 +14,15 @@ function openReferral(id) {
   wx.navigateTo({ url: `/pages/referral-detail/referral-detail?id=${id}` })
 }
 
+function openMyContent(tab) {
+  const activeTab = tab === "likes" ? "likes" : "collections"
+  wx.navigateTo({ url: `/pages/my-content/my-content?tab=${activeTab}` })
+}
+
 module.exports = {
   switchMain,
   openJob,
   openExperience,
-  openReferral
+  openReferral,
+  openMyContent
 }
-

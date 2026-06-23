@@ -6,6 +6,7 @@
     "pages/experiences/experiences",
     "pages/experience-detail/experience-detail",
     "pages/profile/profile",
+    "pages/my-content/my-content",
     "pages/search/search",
     "pages/referrals/referrals",
     "pages/referral-detail/referral-detail"
@@ -18,4 +19,3 @@
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }
-

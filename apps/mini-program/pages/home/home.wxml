@@ -14,8 +14,8 @@
   <!-- 金刚区 -->
   <view class="quick-card">
     <view class="quick-item" bindtap="switchTab" data-page="jobs">
-      <image class="quick-icon" src="/images/quick-nav/job-navigation.png" mode="aspectFit"></image>
-      <text class="quick-label">求职导航</text>
+      <image class="quick-icon" src="/images/quick-nav/latest-updates.png" mode="aspectFit"></image>
+      <text class="quick-label">最新动态</text>
     </view>
     <view class="quick-item" bindtap="switchTab" data-page="experiences">
       <image class="quick-icon" src="/images/quick-nav/interview-experience.png" mode="aspectFit"></image>
@@ -25,9 +25,9 @@
       <image class="quick-icon" src="/images/quick-nav/referral.png" mode="aspectFit"></image>
       <text class="quick-label">内推专区</text>
     </view>
-    <view class="quick-item" bindtap="switchTab" data-page="jobs">
-      <image class="quick-icon" src="/images/quick-nav/latest-updates.png" mode="aspectFit"></image>
-      <text class="quick-label">最新动态</text>
+    <view class="quick-item" bindtap="switchTab" data-page="profile">
+      <image class="quick-icon" src="/images/quick-nav/personal-center.png" mode="aspectFit"></image>
+      <text class="quick-label">个人中心</text>
     </view>
   </view>
 

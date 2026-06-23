@@ -1,0 +1,100 @@
+<view class="content-page">
+  <view class="content-nav">
+    <view class="back-btn icon-back" bindtap="goBack"></view>
+    <text class="nav-title-text">我的内容</text>
+    <view class="nav-space"></view>
+  </view>
+
+  <view class="content-tabs">
+    <view class="content-tab {{activeTab === 'collections' ? 'active' : ''}}" data-tab="collections" bindtap="changeTab">
+      <text>我的收藏</text>
+      <text class="tab-count">{{collections.length}}</text>
+    </view>
+    <view class="content-tab {{activeTab === 'likes' ? 'active' : ''}}" data-tab="likes" bindtap="changeTab">
+      <text>我的点赞</text>
+      <text class="tab-count">{{likes.length}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="state-wrap">
+    <view class="loading-dot"></view>
+    <text>正在加载...</text>
+  </view>
+
+  <view wx:elif="{{error}}" class="state-wrap error-state">
+    <view class="state-icon">!</view>
+    <text class="state-title">加载失败</text>
+    <text class="state-desc">{{error}}</text>
+    <button class="state-button" bindtap="retry">重新加载</button>
+  </view>
+
+  <block wx:elif="{{activeTab === 'collections'}}">
+    <view wx:if="{{collections.length === 0}}" class="state-wrap empty-state">
+      <view class="state-icon">收</view>
+      <text class="state-title">暂无收藏内容</text>
+      <text class="state-desc">收藏的职位和内推信息会显示在这里</text>
+      <button class="state-button" bindtap="goBrowse">去看看职位</button>
+    </view>
+
+    <view wx:else class="content-list">
+      <view wx:for="{{collections}}" wx:key="key" wx:for-item="entry" class="content-card card" bindtap="openCollection" data-type="{{entry.type}}" data-id="{{entry.item.id}}">
+        <view class="card-head">
+          <text class="type-badge {{entry.type === 'referral' ? 'referral' : 'job'}}">{{entry.type === 'referral' ? '内推' : '职位'}}</text>
+          <text wx:if="{{entry.actionTime}}" class="action-time">收藏于 {{entry.actionTime}}</text>
+        </view>
+        <text class="card-title line-2">{{entry.item.title}}</text>
+
+        <block wx:if="{{entry.type === 'job'}}">
+          <view class="card-meta">
+            <text class="line-1">{{entry.item.company}}</text>
+            <text class="meta-divider">·</text>
+            <text class="line-1">{{entry.item.location}}</text>
+          </view>
+          <view wx:if="{{entry.item.visibleTags.length}}" class="tag-row">
+            <text wx:for="{{entry.item.visibleTags}}" wx:key="*this" class="tag blue-tag">{{item}}</text>
+          </view>
+        </block>
+
+        <block wx:else>
+          <view class="card-meta">
+            <text wx:if="{{entry.item.companyName}}" class="line-1">{{entry.item.companyName}}</text>
+            <text wx:if="{{entry.item.companyName && entry.item.location}}" class="meta-divider">·</text>
+            <text wx:if="{{entry.item.location}}" class="line-1">{{entry.item.location}}</text>
+            <text wx:if="{{!entry.item.companyName && !entry.item.location}}">点击查看内推详情</text>
+          </view>
+        </block>
+
+        <view class="card-enter">查看详情</view>
+      </view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view wx:if="{{likes.length === 0}}" class="state-wrap empty-state">
+      <view class="state-icon">赞</view>
+      <text class="state-title">暂无点赞内容</text>
+      <text class="state-desc">点赞过的经验分享会显示在这里</text>
+      <button class="state-button" bindtap="goBrowse">去看看经验</button>
+    </view>
+
+    <view wx:else class="content-list">
+      <view wx:for="{{likes}}" wx:key="key" wx:for-item="entry" class="content-card card" bindtap="openLike" data-slug="{{entry.item.slug}}">
+        <view class="card-head">
+          <text class="type-badge experience">经验</text>
+          <text wx:if="{{entry.actionTime}}" class="action-time">点赞于 {{entry.actionTime}}</text>
+        </view>
+        <text class="card-title line-2">{{entry.item.title}}</text>
+        <text wx:if="{{entry.item.summary}}" class="card-summary line-2">{{entry.item.summary}}</text>
+        <view class="card-meta">
+          <text>{{entry.item.authorName}}</text>
+          <text wx:if="{{entry.item.organizationName}}" class="meta-divider">·</text>
+          <text wx:if="{{entry.item.organizationName}}" class="line-1">{{entry.item.organizationName}}</text>
+        </view>
+        <view wx:if="{{entry.item.visibleTags.length}}" class="tag-row">
+          <text wx:for="{{entry.item.visibleTags}}" wx:key="*this" class="tag purple-tag">{{item}}</text>
+        </view>
+        <view class="card-enter">查看详情</view>
+      </view>
+    </view>
+  </block>
+</view>
