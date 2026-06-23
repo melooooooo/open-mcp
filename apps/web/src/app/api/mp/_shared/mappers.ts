@@ -1,4 +1,28 @@
-import { normalizeDate, stripHtml } from "./response"
+import { normalizeDate } from "./response"
+
+// 将 Markdown / HTML 片段转成纯文本摘要：剥离图片、链接、标题、强调等标记，
+// 仅用于列表卡片的 summary 展示；详情页正文走独立的 md→html 渲染管线，不受影响。
+export function markdownToPlainText(value?: string | null, maxLength = 120) {
+  if (!value) return ""
+  const text = String(value)
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`([^`]*)`/g, "$1")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/!?\[[^\]]*\]\[[^\]]*\]/g, " ")
+    .replace(/<https?:\/\/[^>]*>/g, " ")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/^\s{0,3}#{1,6}\s+/gm, "")
+    .replace(/^\s{0,3}>\s?/gm, "")
+    .replace(/^\s{0,3}[-*+]\s+/gm, "")
+    .replace(/^\s{0,3}\d+\.\s+/gm, "")
+    .replace(/^\s{0,3}([-*_])\s*(?:\1\s*){2,}$/gm, " ")
+    .replace(/(\*\*|__)(.*?)\1/g, "$2")
+    .replace(/(\*|_)(.*?)\1/g, "$2")
+    .replace(/~~(.*?)~~/g, "$1")
+    .replace(/https?:\/\/\S+/g, " ")
+  return text.replace(/\s+/g, " ").trim().slice(0, maxLength)
+}
 
 export function mapJobListing(row: any) {
   return {
@@ -62,9 +86,10 @@ export function mapExperience(row: any) {
     isHot: Boolean(row.is_hot || row.isHot),
     publishTime: row.publish_time || row.publishTime || null,
     coverAssetPath: row.cover_asset_path || row.coverAssetPath || "",
-    summary:
-      row.summary ||
-      stripHtml(row.content_html || row.contentHtml || row.markdown_content || row.markdownContent || "", 120),
+    summary: markdownToPlainText(
+      row.summary || row.content_html || row.contentHtml || row.markdown_content || row.markdownContent || "",
+      120
+    ),
     industry: row.industry || "",
   }
 }
