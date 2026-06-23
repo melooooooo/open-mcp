@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  buildExperienceExcerpt,
   markdownToCanonicalHtml,
   renderMiniProgramHtml,
   resolveExperienceSource,
@@ -84,6 +85,33 @@ test("mini renderer removes duplicate title and cover and extracts HTTPS links",
     label: "原文",
     url: "https://mp.weixin.qq.com/s?a=1&b=2",
   });
+});
+
+test("excerpt strips leading cover/title, links and markup into plain text", async () => {
+  const excerpt = await buildExperienceExcerpt(
+    {
+      markdown_content:
+        "![cover_image](https://img.test/cover.png)\n\n# 工行北分待遇大曝光\n\n中国工商银行北京分行是工商银行系统内的旗舰分行，多年来稳居[第一](https://x.test)资产大行。",
+    },
+    { title: "工行北分待遇大曝光", coverAssetPath: "https://img.test/cover.png" },
+    120
+  );
+
+  assert.doesNotMatch(excerpt, /cover_image|!\[|\]\(|https?:\/\/|#|<\/?\w+>/);
+  assert.match(excerpt, /^中国工商银行北京分行是工商银行系统内的旗舰分行/);
+  assert.match(excerpt, /第一资产大行/);
+});
+
+test("excerpt truncates long content and falls back to empty", async () => {
+  const long = await buildExperienceExcerpt(
+    { markdown_content: "正".repeat(400) },
+    {},
+    120
+  );
+  assert.equal(long.length, 121); // 120 chars + 省略号
+  assert.ok(long.endsWith("…"));
+
+  assert.equal(await buildExperienceExcerpt({}, {}, 120), "");
 });
 
 test("mini renderer injects controlled article styles", () => {

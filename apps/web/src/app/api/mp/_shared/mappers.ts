@@ -1,3 +1,4 @@
+import { buildExperienceExcerpt } from "@repo/trpc/common/experience-content"
 import { normalizeDate } from "./response"
 
 // 将 Markdown / HTML 片段转成纯文本摘要：剥离图片、链接、标题、强调等标记，
@@ -92,6 +93,18 @@ export function mapExperience(row: any) {
     ),
     industry: row.industry || "",
   }
+}
+
+// 列表/首页/搜索统一使用：在 mapExperience 基础上，用正文源生成干净纯文本摘要覆盖 summary。
+// 正文为空时回落到 mapExperience 已清洗的 summary，保证不劣化。
+export async function mapExperienceWithExcerpt(row: any) {
+  const base = mapExperience(row)
+  const excerpt = await buildExperienceExcerpt(
+    row,
+    { title: row.title, coverAssetPath: row.cover_asset_path || row.coverAssetPath || "" },
+    120
+  )
+  return { ...base, summary: excerpt || base.summary }
 }
 
 export function mapReferral(row: any) {

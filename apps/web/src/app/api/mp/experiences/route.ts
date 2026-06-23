@@ -1,5 +1,5 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server"
-import { mapExperience } from "../_shared/mappers"
+import { mapExperienceWithExcerpt } from "../_shared/mappers"
 import { getCurrentUser, getPaging, ok } from "../_shared/response"
 import { db } from "@repo/db"
 import { userExperienceLikes } from "@repo/db/schema"
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   let query = supabase
     .from("finance_experiences")
     .select(
-      "id, slug, title, author_name, organization_name, article_type, job_title, tags, difficulty, read_time_minutes, view_count, like_count, comment_count, is_pinned, is_hot, publish_time, cover_asset_path, summary, industry",
+      "id, slug, title, author_name, organization_name, article_type, job_title, tags, difficulty, read_time_minutes, view_count, like_count, comment_count, is_pinned, is_hot, publish_time, cover_asset_path, summary, industry, markdown_content, content_html, metadata",
       { count: "estimated" }
     )
 
@@ -48,7 +48,9 @@ export async function GET(request: NextRequest) {
   }
 
   return ok({
-    items: (data || []).map((row) => ({ ...mapExperience(row), isLiked: liked.has(row.id) })),
+    items: await Promise.all(
+      (data || []).map(async (row) => ({ ...(await mapExperienceWithExcerpt(row)), isLiked: liked.has(row.id) }))
+    ),
     total: count || 0,
     page,
     pageSize,

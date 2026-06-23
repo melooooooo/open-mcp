@@ -1,5 +1,5 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server"
-import { mapExperience, mapJobListing, mapJobSite } from "../_shared/mappers"
+import { mapExperienceWithExcerpt, mapJobListing, mapJobSite } from "../_shared/mappers"
 import { ok } from "../_shared/response"
 import type { NextRequest } from "next/server"
 
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
       .limit(10),
     supabase
       .from("finance_experiences")
-      .select("id, slug, title, author_name, organization_name, article_type, job_title, tags, view_count, like_count, publish_time, summary, industry")
+      .select("id, slug, title, author_name, organization_name, article_type, job_title, tags, view_count, like_count, publish_time, summary, industry, markdown_content, content_html, metadata")
       .or(`tags.cs.{${escaped}},title.ilike.%${escaped}%,organization_name.ilike.%${escaped}%,job_title.ilike.%${escaped}%`)
       .order("publish_time", { ascending: false })
       .limit(10),
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
 
   return ok({
     jobListings: (jobsResult.data || []).map(mapJobListing),
-    experiences: (experiencesResult.data || []).map(mapExperience),
+    experiences: await Promise.all((experiencesResult.data || []).map(mapExperienceWithExcerpt)),
     jobSites: (sitesResult.data || []).map(mapJobSite),
   })
 }

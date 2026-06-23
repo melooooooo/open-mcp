@@ -1,6 +1,6 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { ok } from "../_shared/response"
-import { mapExperience, mapJobListing, mapJobSite, mapReferral, relativeTime } from "../_shared/mappers"
+import { mapExperienceWithExcerpt, mapJobListing, mapJobSite, mapReferral, relativeTime } from "../_shared/mappers"
 
 const preferredSites = ["BOSS直聘", "智联招聘", "拉勾招聘", "前程无忧", "猎聘", "牛客网招聘", "实习僧", "国聘网"]
 
@@ -16,7 +16,7 @@ export async function GET() {
     supabase.from("cp_job_sites").select("*").order("created_at", { ascending: false }).limit(30),
     supabase
       .from("finance_experiences")
-      .select("id, slug, title, author_name, organization_name, article_type, job_title, tags, view_count, like_count, is_pinned, is_hot, publish_time, cover_asset_path, summary, industry")
+      .select("id, slug, title, author_name, organization_name, article_type, job_title, tags, view_count, like_count, is_pinned, is_hot, publish_time, cover_asset_path, summary, industry, markdown_content, content_html, metadata")
       .order("is_pinned", { ascending: false })
       .order("is_hot", { ascending: false })
       .order("publish_time", { ascending: false })
@@ -47,7 +47,7 @@ export async function GET() {
   return ok({
     hotSearches: ["工商银行", "建设银行", "管培生", "金融科技", "数据分析", "客户经理", "风控", "产品经理"],
     jobSites,
-    experiences: (experiencesResult.data || []).map(mapExperience),
+    experiences: await Promise.all((experiencesResult.data || []).map(mapExperienceWithExcerpt)),
     latestJobs,
     referrals: (referralsResult.data || []).map(mapReferral),
     stats: {

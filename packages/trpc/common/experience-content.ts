@@ -329,3 +329,27 @@ export function renderMiniProgramHtml(
   const styledHtml = sanitizeHtml(normalizedHtml, miniProgramSanitizeOptions);
   return extractRelatedLinks(styledHtml);
 }
+
+// 列表/首页卡片用的纯文本摘要：从正文源（markdown_content 优先）提取一段干净文字，
+// 复用详情正文的归一化逻辑剥掉开头封面图与重复标题，去除所有标记/超链接，仅保留纯文本。
+// 解析前对 markdown 做长度上限截断，避免对超长文章做无谓的全量解析。
+const EXCERPT_MARKDOWN_SCAN_LIMIT = 800;
+
+export async function buildExperienceExcerpt(
+  row: ExperienceContentRow,
+  options: MiniProgramRenderOptions = {},
+  maxLength = 120
+): Promise<string> {
+  const resolved = resolveExperienceSource(row);
+  if (!isNonEmpty(resolved.value)) return "";
+
+  const canonicalHtml =
+    resolved.format === "markdown"
+      ? await markdownToCanonicalHtml(resolved.value.slice(0, EXCERPT_MARKDOWN_SCAN_LIMIT))
+      : sanitizeCanonicalHtml(resolved.value);
+
+  const normalizedHtml = normalizeLeadingContent(canonicalHtml, options);
+  const text = plainText(normalizedHtml);
+  if (!text) return "";
+  return text.length > maxLength ? `${text.slice(0, maxLength)}…` : text;
+}
