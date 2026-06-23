@@ -124,9 +124,6 @@
               <text wx:if="{{ref.replyCount}}" class="ref-replies">{{ref.replyCount}} 回复</text>
             </view>
             <text class="ref-title line-3">{{ref.title}}</text>
-            <view wx:if="{{ref.visibleTags.length}}" class="ref-tags">
-              <text wx:for="{{ref.visibleTags}}" wx:key="*this" wx:for-item="tag" class="ref-tag line-1">{{tag}}</text>
-            </view>
             <view class="ref-card-footer">
               <view class="ref-footer-left">
                 <text class="ref-source">{{ref.publishDate}}</text>

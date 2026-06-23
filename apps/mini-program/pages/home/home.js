@@ -72,8 +72,7 @@ Page({
         ...item,
         title: item.title || "未命名内推",
         publishDate: item.publishDate || "近期",
-        typeColor: pickColor(item.companyName || item.title || "内推"),
-        visibleTags: uniqueTags([item.companyName], 2)
+        typeColor: pickColor(item.companyName || item.title || "内推")
       }))
       this.setData({
         jobSites: data.jobSites || [],

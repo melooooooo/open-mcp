@@ -442,19 +442,6 @@
   margin-bottom: 24rpx;
 }
 
-.ref-tags {
-  display: flex;
-  flex-direction: column;
-  gap: 6rpx;
-  margin-bottom: 24rpx;
-}
-
-.ref-tag {
-  max-width: 100%;
-  color: #6b7280;
-  font-size: 20rpx;
-}
-
 .ref-card-footer {
   display: flex;
   align-items: flex-end;
