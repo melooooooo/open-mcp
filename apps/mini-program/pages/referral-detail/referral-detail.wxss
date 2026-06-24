@@ -50,13 +50,67 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: 22rpx;
+  gap: 18rpx;
 }
 
-.paragraph {
+.jd-header {
+  margin-top: 14rpx;
+  padding-left: 18rpx;
+  border-left: 6rpx solid #3b82f6;
+  color: #111827;
+  font-size: 30rpx;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.jd-header:first-child {
+  margin-top: 0;
+}
+
+.jd-subheader {
+  margin-top: 6rpx;
+  color: #111827;
+  font-size: 28rpx;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.jd-list {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.jd-marker {
+  flex-shrink: 0;
+  min-width: 40rpx;
+  margin-right: 8rpx;
+  color: #6b7280;
+  font-size: 28rpx;
+  font-weight: 600;
+  line-height: 1.72;
+}
+
+.jd-list-body {
+  flex: 1;
   color: #374151;
   font-size: 28rpx;
   line-height: 1.72;
+  word-break: break-word;
+}
+
+.jd-paragraph {
+  display: block;
+  color: #374151;
+  font-size: 28rpx;
+  line-height: 1.72;
+  word-break: break-word;
+}
+
+.jd-link {
+  color: #2563eb;
+  text-decoration: underline;
+  word-break: break-all;
 }
 
 .actions {

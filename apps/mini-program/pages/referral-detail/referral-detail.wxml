@@ -15,7 +15,25 @@
       </view>
     </view>
     <view class="content">
-      <text wx:for="{{contentLines}}" wx:key="*this" class="paragraph">{{item}}</text>
+      <block wx:for="{{contentBlocks}}" wx:key="id" wx:for-item="block">
+        <view wx:if="{{block.type === 'header'}}" class="jd-header">{{block.text}}</view>
+        <view wx:elif="{{block.type === 'subheader'}}" class="jd-subheader">{{block.text}}</view>
+        <view wx:elif="{{block.type === 'list'}}" class="jd-list">
+          <text class="jd-marker">{{block.marker}}</text>
+          <text class="jd-list-body" user-select="{{true}}">
+            <block wx:for="{{block.segments}}" wx:key="id" wx:for-item="seg">
+              <text wx:if="{{seg.kind === 'text'}}">{{seg.text}}</text>
+              <text wx:else class="jd-link" data-text="{{seg.text}}" catchtap="copySegment">{{seg.text}}</text>
+            </block>
+          </text>
+        </view>
+        <text wx:else class="jd-paragraph" user-select="{{true}}">
+          <block wx:for="{{block.segments}}" wx:key="id" wx:for-item="seg">
+            <text wx:if="{{seg.kind === 'text'}}">{{seg.text}}</text>
+            <text wx:else class="jd-link" data-text="{{seg.text}}" catchtap="copySegment">{{seg.text}}</text>
+          </block>
+        </text>
+      </block>
     </view>
     <view class="actions bottom-actions">
       <button class="collect secondary-button {{referral.isCollected ? 'active' : ''}}" bindtap="toggleCollect">
