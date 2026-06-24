@@ -66,9 +66,11 @@
     <view class="article-actions bottom-actions">
       <button class="like-btn secondary-button {{exp.isLiked ? 'active' : ''}}" bindtap="toggleLike">
         <view class="like-mark"></view>
-        <text>{{exp.likeCount || 0}}</text>
+        <text class="action-label">{{exp.likeCount || 0}}</text>
       </button>
-      <button open-type="share" class="share-btn primary-button">分享给同学</button>
+      <button open-type="share" class="share-btn primary-button">
+        <text class="action-label">分享给同学</text>
+      </button>
     </view>
   </block>
 </view>
