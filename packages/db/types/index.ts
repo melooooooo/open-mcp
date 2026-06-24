@@ -21,3 +21,6 @@ export * from "./zod/rankings";
 export * from "./zod/rankings-records";
 export * from "./zod/snapshots";
 export * from "./zod/site-feedbacks";
+export * from "./zod/scraped-jobs";
+export * from "./zod/referrals";
+export * from "./zod/experiences";

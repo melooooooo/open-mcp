@@ -6,10 +6,13 @@ import {
 } from "@repo/ui/components/ui/sidebar";
 import {
   BarChart,
+  BookOpen,
+  Briefcase,
   ChartBar,
   CreditCard,
   FolderTree,
   Home,
+  Megaphone,
   ShieldCheckIcon,
   Spline,
   Tags,
@@ -82,6 +85,16 @@ const defaultAppSidebarProps: IAppSidebarProps = {
       url: "/admin/users",
       icon: <Users />,
     },
+    {
+      title: "内推管理",
+      url: "/admin/referrals",
+      icon: <Megaphone />,
+    },
+    {
+      title: "经验分享",
+      url: "/admin/experiences",
+      icon: <BookOpen />,
+    },
   ],
   itemList: [
     {
@@ -110,6 +123,11 @@ const defaultAppSidebarProps: IAppSidebarProps = {
       title: "建议管理",
       url: "/admin/suggestions",
       icon: <Lightbulb />,
+    },
+    {
+      title: "内推文章",
+      url: "/admin/referrals",
+      icon: <Briefcase />,
     },
   ],
 };

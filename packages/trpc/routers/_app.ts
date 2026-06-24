@@ -30,12 +30,15 @@ import { appSubmissionsRouter } from "./admin/app-submissions";
 import { emailSubscriptionsRouter } from "./admin/email-subscriptions";
 import { invoicesRouter } from "./admin/invoices";
 import { usersRouter } from "./admin/users";
+import { referralsRouter } from "./admin/referrals";
 import { categoriesRouter } from "./admin/categories";
 import { mcpSubscriptionsRouter } from "./web/mcp-subscriptions";
 import { mcpRankingsRouter } from "./web/mcp-rankings";
 import { mcpSnapshotsRouter } from "./web/mcp-snapshots";
 import { siteFeedbacksRouter } from "./web/site-feedbacks";
 import { experiencesRouter } from "./web/experiences";
+import { scrapedJobsRouter } from "./admin/scraped-jobs";
+import { adminExperiencesRouter } from "./admin/experiences";
 
 export const appRouter = router({
   apiKeys: apiKeysAppRouter,
@@ -58,8 +61,11 @@ export const appRouter = router({
   rssItems: rssItemsRouter,
   appSubmissions: appSubmissionsRouter,
   users: usersRouter,
+  referrals: referralsRouter,
   rankings: rankingsRouter,
   rankingRecords: rankingRecordsRouter,
+  scrapedJobs: scrapedJobsRouter,
+  adminExperiences: adminExperiencesRouter,
 
   // web trpc routers
   mcpApps: mcpappRouter,
