@@ -12,10 +12,8 @@ const INDUSTRY_OPTIONS = [
   { label: "全部行业", value: "" },
   { label: "银行", value: "bank" },
   { label: "券商", value: "securities" },
-  { label: "保险", value: "insurance" },
-  { label: "运营商", value: "operator" },
-  { label: "科技/研发", value: "technology" },
-  { label: "其他行业", value: "other" },
+  { label: "基金", value: "fund" },
+  { label: "其他金融机构", value: "other-financial" },
 ]
 
 const PAGE_SIZE = 12
@@ -48,11 +46,13 @@ export default async function ExperiencesPage({ searchParams }: ExperiencesPageP
   const tagFilter = getParamValue(resolvedParams.tag)
   const industryFilter = getParamValue(resolvedParams.industry)
 
+  const isIndustryGroup = industryFilter === "other-financial"
   const { items: experiences, total } = await getExperiencesList({
     limit: PAGE_SIZE,
     page: currentPage,
     tag: tagFilter || undefined,
-    industry: industryFilter || undefined,
+    industry: isIndustryGroup ? undefined : industryFilter || undefined,
+    industryGroup: isIndustryGroup ? "other-financial" : undefined,
   })
 
   const totalPages = Math.ceil(total / PAGE_SIZE) || 1

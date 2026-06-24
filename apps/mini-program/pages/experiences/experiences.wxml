@@ -1,11 +1,11 @@
 <view class="page exp-page">
   <view class="exp-head">
     <text class="exp-page-title">经验分享</text>
-    <scroll-view scroll-x class="category-scroll" show-scrollbar="{{false}}">
+    <view class="category-scroll">
       <view class="category-row">
-        <button wx:for="{{categories}}" wx:key="*this" class="category-btn {{activeCategory === item ? 'active' : ''}}" data-value="{{item}}" bindtap="changeCategory">{{item}}</button>
+        <button wx:for="{{categories}}" wx:key="value" class="category-btn {{item.value === 'other-financial' ? 'other-financial' : ''}} {{activeCategory === item.value ? 'active' : ''}}" data-value="{{item.value}}" bindtap="changeCategory">{{item.label}}</button>
       </view>
-    </scroll-view>
+    </view>
   </view>
 
   <view wx:if="{{loading}}" class="loading">正在加载经验...</view>

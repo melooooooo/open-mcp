@@ -7,6 +7,15 @@ const EXPERIENCE_TYPE_LABELS = {
   guide: "攻略",
   review: "点评"
 }
+const INDUSTRY_LABELS = {
+  bank: "银行",
+  securities: "券商",
+  fund: "基金",
+  insurance: "保险",
+  technology: "金融科技",
+  operator: "运营商",
+  other: "其他金融机构"
+}
 
 function pickColor(company) {
   let hash = 0
@@ -54,7 +63,7 @@ Page({
         authorInitial: (item.authorName || "匿").slice(0, 1),
         typeLabel: EXPERIENCE_TYPE_LABELS[item.articleType] || "经验",
         typeColor: pickColor(item.organizationName || item.title || "经验"),
-        visibleTags: uniqueTags([...(item.tags || []), item.industry], 3)
+        visibleTags: uniqueTags([...(item.tags || []), INDUSTRY_LABELS[item.industry] || item.industry], 3)
       }))
       const latestJobs = (data.latestJobs || []).map((item) => ({
         ...item,

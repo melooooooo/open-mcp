@@ -20,7 +20,12 @@ export async function GET(request: NextRequest) {
 
   const keyword = searchParams.get("tag")?.trim() || searchParams.get("query")?.trim()
   const industry = searchParams.get("industry")?.trim()
+  const industryGroup = searchParams.get("industryGroup")?.trim()
   if (industry) query = query.eq("industry", industry)
+  if (industryGroup === "other-financial") {
+    // 其他金融机构 = 除 银行/券商/基金 外的全部行业（含 industry 为空的记录）
+    query = query.or("industry.is.null,industry.not.in.(bank,securities,fund)")
+  }
   if (keyword) {
     const escaped = keyword.replace(/,/g, "\\,")
     query = query.or(
