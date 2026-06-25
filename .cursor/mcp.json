@@ -131,6 +131,17 @@
         "QINGTIAN_QUEUE_ROOT": "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/messages",
         "QINGTIAN_RUNTIME_STAMP": "3dbd82af4fe1"
       }
+    },
+    "qtwx-mcp-13": {
+      "command": "node",
+      "args": [
+        "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/mcp-server/index.mjs"
+      ],
+      "env": {
+        "QINGTIAN_SESSION": "13",
+        "QINGTIAN_QUEUE_ROOT": "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/messages",
+        "QINGTIAN_RUNTIME_STAMP": "3dbd82af4fe1"
+      }
     }
   }
 }
