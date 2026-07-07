@@ -142,6 +142,116 @@
         "QINGTIAN_QUEUE_ROOT": "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/messages",
         "QINGTIAN_RUNTIME_STAMP": "3dbd82af4fe1"
       }
+    },
+    "qtwx-mcp-14": {
+      "command": "node",
+      "args": [
+        "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/mcp-server/index.mjs"
+      ],
+      "env": {
+        "QINGTIAN_SESSION": "14",
+        "QINGTIAN_QUEUE_ROOT": "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/messages",
+        "QINGTIAN_RUNTIME_STAMP": "3dbd82af4fe1"
+      }
+    },
+    "qtwx-mcp-15": {
+      "command": "node",
+      "args": [
+        "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/mcp-server/index.mjs"
+      ],
+      "env": {
+        "QINGTIAN_SESSION": "15",
+        "QINGTIAN_QUEUE_ROOT": "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/messages",
+        "QINGTIAN_RUNTIME_STAMP": "3dbd82af4fe1"
+      }
+    },
+    "qtwx-mcp-16": {
+      "command": "node",
+      "args": [
+        "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/mcp-server/index.mjs"
+      ],
+      "env": {
+        "QINGTIAN_SESSION": "16",
+        "QINGTIAN_QUEUE_ROOT": "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/messages",
+        "QINGTIAN_RUNTIME_STAMP": "3dbd82af4fe1"
+      }
+    },
+    "qtwx-mcp-17": {
+      "command": "node",
+      "args": [
+        "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/mcp-server/index.mjs"
+      ],
+      "env": {
+        "QINGTIAN_SESSION": "17",
+        "QINGTIAN_QUEUE_ROOT": "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/messages",
+        "QINGTIAN_RUNTIME_STAMP": "3dbd82af4fe1"
+      }
+    },
+    "qtwx-mcp-18": {
+      "command": "node",
+      "args": [
+        "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/mcp-server/index.mjs"
+      ],
+      "env": {
+        "QINGTIAN_SESSION": "18",
+        "QINGTIAN_QUEUE_ROOT": "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/messages",
+        "QINGTIAN_RUNTIME_STAMP": "3dbd82af4fe1"
+      }
+    },
+    "qtwx-mcp-19": {
+      "command": "node",
+      "args": [
+        "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/mcp-server/index.mjs"
+      ],
+      "env": {
+        "QINGTIAN_SESSION": "19",
+        "QINGTIAN_QUEUE_ROOT": "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/messages",
+        "QINGTIAN_RUNTIME_STAMP": "3dbd82af4fe1"
+      }
+    },
+    "qtwx-mcp-20": {
+      "command": "node",
+      "args": [
+        "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/mcp-server/index.mjs"
+      ],
+      "env": {
+        "QINGTIAN_SESSION": "20",
+        "QINGTIAN_QUEUE_ROOT": "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/messages",
+        "QINGTIAN_RUNTIME_STAMP": "3dbd82af4fe1"
+      }
+    },
+    "qtwx-mcp-21": {
+      "command": "node",
+      "args": [
+        "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/mcp-server/index.mjs"
+      ],
+      "env": {
+        "QINGTIAN_SESSION": "21",
+        "QINGTIAN_QUEUE_ROOT": "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/messages",
+        "QINGTIAN_RUNTIME_STAMP": "3dbd82af4fe1"
+      }
+    },
+    "qtwx-mcp-22": {
+      "command": "node",
+      "args": [
+        "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/mcp-server/index.mjs"
+      ],
+      "env": {
+        "QINGTIAN_SESSION": "22",
+        "QINGTIAN_QUEUE_ROOT": "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/messages",
+        "QINGTIAN_RUNTIME_STAMP": "3dbd82af4fe1"
+      }
+    },
+    "qtwx-mcp-23": {
+      "command": "node",
+      "args": [
+        "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/mcp-server/index.mjs"
+      ],
+      "env": {
+        "QINGTIAN_SESSION": "23",
+        "QINGTIAN_QUEUE_ROOT": "/Users/jiang/Library/Application Support/Cursor/User/workspaceStorage/5d2cbc3b5df275a4338be5918dc4d3c0/ShuangWaiWai.shuangwaiwai/runtime/messages",
+        "QINGTIAN_RUNTIME_STAMP": "3dbd82af4fe1"
+      }
     }
   }
 }
