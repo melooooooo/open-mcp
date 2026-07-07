@@ -22,7 +22,7 @@ export function WechatQRCodeDialog({ open, onOpenChange }: WechatQRCodeDialogPro
         <div className="flex flex-col items-center justify-center p-4">
           <div className="rounded-lg mb-4">
             <Image
-              src="https://zenly.oss-cn-hangzhou.aliyuncs.com/zenlink/img/assets/pm.png?width=256"
+              src="/images/wechat-cr.jpeg"
               alt="微信二维码"
               width={240}
               height={240}

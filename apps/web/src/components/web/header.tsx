@@ -52,11 +52,12 @@ export function Header() {
     //   label: "薪酬",
     //   active: pathname?.startsWith("/salary"),
     // },
-    {
-      href: "/help",
-      label: "帮助中心",
-      active: pathname?.startsWith("/help"),
-    },
+    // TODO: 帮助中心功能暂未完善，暂时隐藏
+    // {
+    //   href: "/help",
+    //   label: "帮助中心",
+    //   active: pathname?.startsWith("/help"),
+    // },
   ]
 
   return (

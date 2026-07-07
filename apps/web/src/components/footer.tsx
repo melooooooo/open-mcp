@@ -56,11 +56,12 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="font-medium text-slate-100">服务支持</h3>
             <ul className="space-y-2.5 text-sm">
+              {/* TODO: 帮助中心功能暂未完善，暂时隐藏
               <li>
                 <Link href="/help" className="hover:text-blue-400 transition-colors">
                   帮助中心
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link href="/about" className="hover:text-blue-400 transition-colors">
                   关于我们
