@@ -23,12 +23,13 @@ function pickColor(company) {
   return TYPE_COLORS[Math.abs(hash) % TYPE_COLORS.length]
 }
 
-function summarizeLocation(location) {
-  const locations = String(location || "")
-    .split(/\s*[、/,，]\s*/)
-    .filter(Boolean)
-  return locations.slice(0, 3).join(" · ") || "多地"
-}
+// [个人主体] 隐藏招聘职位相关功能，不再需要 summarizeLocation
+// function summarizeLocation(location) {
+//   const locations = String(location || "")
+//     .split(/\s*[、/,，]\s*/)
+//     .filter(Boolean)
+//   return locations.slice(0, 3).join(" · ") || "多地"
+// }
 
 function uniqueTags(values, limit = 3) {
   return [...new Set(values.filter(Boolean))].slice(0, limit)
@@ -38,10 +39,12 @@ Page({
   data: {
     loading: true,
     error: "",
+    /* [个人主体] 隐藏招聘数据
     jobSites: [],
-    experiences: [],
     latestJobs: [],
-    referrals: []
+    */
+    referrals: [],
+    experiences: []
   },
 
   onLoad() {
@@ -65,6 +68,7 @@ Page({
         typeColor: pickColor(item.organizationName || item.title || "经验"),
         visibleTags: uniqueTags([...(item.tags || []), INDUSTRY_LABELS[item.industry] || item.industry], 3)
       }))
+      /* [个人主体] 隐藏招聘职位数据处理
       const latestJobs = (data.latestJobs || []).map((item) => ({
         ...item,
         title: item.title || "未命名职位",
@@ -77,6 +81,7 @@ Page({
         typeColor: pickColor(item.company || "未知公司"),
         displayTime: item.timeText || item.sourceUpdatedAt || item.createdAt || "近期"
       }))
+      */
       const referrals = (data.referrals || []).slice(0, 4).map((item) => ({
         ...item,
         title: item.title || "未命名内推",
@@ -84,10 +89,12 @@ Page({
         typeColor: pickColor(item.companyName || item.title || "内推")
       }))
       this.setData({
+        /* [个人主体] 隐藏招聘数据赋值
         jobSites: data.jobSites || [],
-        experiences,
         latestJobs,
+        */
         referrals,
+        experiences,
         loading: false
       })
     } catch (error) {
@@ -104,9 +111,11 @@ Page({
     router.switchMain(event.currentTarget.dataset.page)
   },
 
+  /* [个人主体] 隐藏招聘详情跳转
   openJob(event) {
     router.openJob(event.currentTarget.dataset.id)
   },
+  */
 
   openExperience(event) {
     router.openExperience(event.currentTarget.dataset.slug)

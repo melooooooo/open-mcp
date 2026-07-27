@@ -1,8 +1,8 @@
 import { and, asc, desc, eq, inArray, like, or, sql } from "drizzle-orm";
 
-import { db } from "../../index";
+import { db, slugifyText, generateUniqueString } from "../../index";
 import { financeExperiences } from "../../schema";
-import type { zSearchExperiencesSchema } from "../../types";
+import type { zCreateExperienceSchema, zSearchExperiencesSchema } from "../../types";
 
 export const experiencesDataAccess = {
   search: async (params: typeof zSearchExperiencesSchema._type) => {
@@ -100,5 +100,41 @@ export const experiencesDataAccess = {
   deleteMany: async (ids: string[]) => {
     if (ids.length === 0) return [];
     return db.delete(financeExperiences).where(inArray(financeExperiences.id, ids)).returning();
+  },
+
+  create: async (
+    data: typeof zCreateExperienceSchema._type,
+    opts: { userId: string; contentHtml: string }
+  ) => {
+    const baseSlug = slugifyText(data.title);
+    const slug = baseSlug
+      ? `${baseSlug}-${generateUniqueString(6).toLowerCase()}`
+      : generateUniqueString(12).toLowerCase();
+
+    const now = new Date();
+    const [result] = await db
+      .insert(financeExperiences)
+      .values({
+        slug,
+        title: data.title,
+        authorName: data.authorName || null,
+        organizationName: data.organizationName || null,
+        articleType: data.articleType || null,
+        jobTitle: data.jobTitle || null,
+        industry: data.industry || null,
+        tags: data.tags?.length ? data.tags : null,
+        summary: data.summary || null,
+        markdownContent: data.markdownContent || null,
+        contentHtml: opts.contentHtml || null,
+        isPinned: data.isPinned ?? false,
+        isHot: data.isHot ?? false,
+        publishTime: now,
+        authorUserId: opts.userId,
+        lastEditedBy: opts.userId,
+        lastEditedAt: now,
+      })
+      .returning();
+
+    return result;
   },
 };

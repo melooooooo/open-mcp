@@ -32,18 +32,24 @@
     <view wx:if="{{collections.length === 0}}" class="state-wrap empty-state">
       <view class="state-icon">收</view>
       <text class="state-title">暂无收藏内容</text>
-      <text class="state-desc">收藏的职位和内推信息会显示在这里</text>
-      <button class="state-button" bindtap="goBrowse">去看看职位</button>
+      <!-- [个人主体] 原文: 收藏的职位和内推信息会显示在这里 -->
+      <text class="state-desc">收藏的内容会显示在这里</text>
+      <!-- [个人主体] 原文: 去看看职位 -->
+      <button class="state-button" bindtap="goBrowse">去看看经验</button>
     </view>
 
     <view wx:else class="content-list">
       <view wx:for="{{collections}}" wx:key="key" wx:for-item="entry" class="content-card card" bindtap="openCollection" data-type="{{entry.type}}" data-id="{{entry.item.id}}">
         <view class="card-head">
+          <!-- [个人主体] 原: type-badge 区分 job/referral 类型显示
           <text class="type-badge {{entry.type === 'referral' ? 'referral' : 'job'}}">{{entry.type === 'referral' ? '内推' : '职位'}}</text>
+          -->
+          <text class="type-badge">收藏</text>
           <text wx:if="{{entry.actionTime}}" class="action-time">收藏于 {{entry.actionTime}}</text>
         </view>
         <text class="card-title line-2">{{entry.item.title}}</text>
 
+        <!-- [个人主体] 原: 根据 entry.type 分 job/referral 两种卡片样式
         <block wx:if="{{entry.type === 'job'}}">
           <view class="card-meta">
             <text class="line-1">{{entry.item.company}}</text>
@@ -54,7 +60,6 @@
             <text wx:for="{{entry.item.visibleTags}}" wx:key="*this" class="tag blue-tag">{{item}}</text>
           </view>
         </block>
-
         <block wx:else>
           <view class="card-meta">
             <text wx:if="{{entry.item.companyName}}" class="line-1">{{entry.item.companyName}}</text>
@@ -63,8 +68,17 @@
             <text wx:if="{{!entry.item.companyName && !entry.item.location}}">点击查看内推详情</text>
           </view>
         </block>
+        -->
+        <view class="card-meta">
+          <text wx:if="{{entry.item.company || entry.item.companyName}}" class="line-1">{{entry.item.company || entry.item.companyName}}</text>
+          <text wx:if="{{(entry.item.company || entry.item.companyName) && entry.item.location}}" class="meta-divider">·</text>
+          <text wx:if="{{entry.item.location}}" class="line-1">{{entry.item.location}}</text>
+        </view>
+        <view wx:if="{{entry.item.visibleTags.length}}" class="tag-row">
+          <text wx:for="{{entry.item.visibleTags}}" wx:key="*this" class="tag blue-tag">{{item}}</text>
+        </view>
 
-        <view class="card-enter">查看详情</view>
+        <!-- [个人主体] 移除「查看详情」因为 job/referral 详情页已不可用 -->
       </view>
     </view>
   </block>

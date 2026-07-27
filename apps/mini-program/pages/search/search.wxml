@@ -3,7 +3,8 @@
     <view class="back icon-back" bindtap="goBack"></view>
     <view class="search-input">
       <view class="search-icon icon-search"></view>
-      <input value="{{q}}" bindinput="onInput" confirm-type="search" bindconfirm="search" placeholder="搜索银行、岗位或关键词" focus />
+      <!-- [个人主体] 原 placeholder: 搜索银行、岗位或关键词 -->
+      <input value="{{q}}" bindinput="onInput" confirm-type="search" bindconfirm="search" placeholder="搜索面经、经验分享" focus />
     </view>
     <view class="search-btn" bindtap="search">搜索</view>
   </view>
@@ -17,8 +18,10 @@
 
   <view wx:elif="{{loading}}" class="loading">正在搜索...</view>
   <view wx:else class="results">
-    <view wx:if="{{jobListings.length === 0 && experiences.length === 0 && jobSites.length === 0}}" class="empty">没有找到相关结果</view>
+    <!-- [个人主体] 原判断条件: jobListings.length === 0 && experiences.length === 0 && jobSites.length === 0 -->
+    <view wx:if="{{experiences.length === 0}}" class="empty">没有找到相关结果</view>
 
+    <!-- [个人主体] 隐藏「招聘职位」搜索结果
     <view wx:if="{{jobListings.length}}" class="result-section">
       <text class="title">招聘职位</text>
       <view wx:for="{{jobListings}}" wx:key="id" wx:for-item="job" class="result-card card" data-id="{{job.id}}" bindtap="openJob">
@@ -26,6 +29,7 @@
         <text class="result-sub">{{job.company}} · {{job.location}}</text>
       </view>
     </view>
+    -->
 
     <view wx:if="{{experiences.length}}" class="result-section">
       <text class="title">经验分享</text>
@@ -35,6 +39,7 @@
       </view>
     </view>
 
+    <!-- [个人主体] 隐藏「求职导航」搜索结果
     <view wx:if="{{jobSites.length}}" class="result-section">
       <text class="title">求职导航</text>
       <view wx:for="{{jobSites}}" wx:key="id" wx:for-item="site" class="result-card card" data-url="{{site.websiteUrl}}" bindtap="copySite">
@@ -42,5 +47,6 @@
         <text class="result-sub">{{site.description}}</text>
       </view>
     </view>
+    -->
   </view>
 </view>

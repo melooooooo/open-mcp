@@ -59,7 +59,7 @@ export async function sendAwsVerificationEmail(params: SendAwsVerificationEmailP
   }
 
   const emailHtml = await render(AWSVerifyEmail({ verificationCode }));
-  const emailText = `您的 OpenMCP 验证码是：${verificationCode}。此验证码将在 10 分钟后过期。`;
+  const emailText = `您的银行帮验证码是：${verificationCode}。此验证码将在 10 分钟后过期。`;
 
   const transporter = isDevelopment ? devTransporter : prodTransporter;
 

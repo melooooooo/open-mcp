@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/ui/popover"
 import { Checkbox } from "@repo/ui/components/ui/checkbox"
 import { Search, Loader2, X, ChevronDown } from "lucide-react"
-import { getJobListings, getFilterOptions, type JobListing, COMPANY_TYPES, SESSION_OPTIONS } from "@/lib/api/job-listings"
+import { getJobListings, getFilterOptions, type JobListing, COMPANY_TYPES, INDUSTRY_CATEGORIES, SESSION_OPTIONS } from "@/lib/api/job-listings"
 import { JobItem } from "./job-item"
 import { Container } from "@/components/web/container"
 import { getJobCollectionStatus } from "@/app/actions/interactions"
@@ -22,12 +22,14 @@ export function JobList() {
   const [query, setQuery] = useState("")
   const [location, setLocation] = useState("")
   const [companyTypes, setCompanyTypes] = useState<string[]>([])
+  const [industries, setIndustries] = useState<string[]>([])
   const [session, setSession] = useState("all")
 
   // Applied filters (only fetch when用户点击“查询”)
   const [appliedQuery, setAppliedQuery] = useState("")
   const [appliedLocation, setAppliedLocation] = useState("")
   const [appliedCompanyTypes, setAppliedCompanyTypes] = useState<string[]>([])
+  const [appliedIndustries, setAppliedIndustries] = useState<string[]>([])
   const [appliedSession, setAppliedSession] = useState("all")
 
   // Options
@@ -60,6 +62,7 @@ export function JobList() {
           query: appliedQuery || undefined,
           location: appliedLocation || undefined,
           companyType: appliedCompanyTypes.length > 0 ? appliedCompanyTypes : undefined,
+          industry: appliedIndustries.length > 0 ? appliedIndustries : undefined,
           session: appliedSession === "all" ? undefined : appliedSession,
         })
 
@@ -86,7 +89,7 @@ export function JobList() {
     }
 
     fetchData()
-  }, [page, appliedQuery, appliedLocation, appliedCompanyTypes, appliedSession])
+  }, [page, appliedQuery, appliedLocation, appliedCompanyTypes, appliedIndustries, appliedSession])
 
   const totalPages = Math.ceil(total / pageSize)
 
@@ -95,6 +98,7 @@ export function JobList() {
     setAppliedQuery(query.trim())
     setAppliedLocation(location.trim())
     setAppliedCompanyTypes(companyTypes)
+    setAppliedIndustries(industries)
     setAppliedSession(session)
   }
 
@@ -102,10 +106,12 @@ export function JobList() {
     setQuery("")
     setLocation("")
     setCompanyTypes([])
+    setIndustries([])
     setSession("all")
     setAppliedQuery("")
     setAppliedLocation("")
     setAppliedCompanyTypes([])
+    setAppliedIndustries([])
     setAppliedSession("all")
     setPage(1)
   }
@@ -139,28 +145,6 @@ export function JobList() {
           </div>
 
           <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 no-scrollbar items-center">
-            <div className="w-[140px] shrink-0 relative">
-              <Input
-                placeholder="工作地点"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleApply()
-                }}
-              />
-              {location && (
-                <button
-                  onClick={() => {
-                    setLocation("")
-                    // setAppliedLocation("") // Keep manual for text? Or auto? Let's keep manual consistency for text inputs.
-                  }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
-            </div>
-
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="w-[140px] shrink-0 justify-between">
@@ -214,7 +198,58 @@ export function JobList() {
               </PopoverContent>
             </Popover>
 
-
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="w-[140px] shrink-0 justify-between">
+                  <span className="truncate">
+                    {industries.length === 0
+                      ? "所有行业"
+                      : industries.length === 1
+                        ? industries[0]
+                        : `已选${industries.length}项`}
+                  </span>
+                  <ChevronDown className="w-4 h-4 ml-2 text-muted-foreground" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-64 p-3">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-muted-foreground">选择行业类别</span>
+                  <Button variant="ghost" size="sm" onClick={() => {
+                    setIndustries([])
+                    setAppliedIndustries([])
+                    setPage(1)
+                  }}>
+                    清空
+                  </Button>
+                </div>
+                <div className="max-h-64 overflow-y-auto space-y-1">
+                  {INDUSTRY_CATEGORIES.map((opt) => {
+                    const checked = industries.includes(opt)
+                    return (
+                      <label
+                        key={opt}
+                        className="flex items-center space-x-2 rounded px-2 py-1 hover:bg-muted cursor-pointer text-sm"
+                      >
+                        <Checkbox
+                          checked={checked}
+                          onCheckedChange={(isChecked) => {
+                            setIndustries((prev) => {
+                              const next = isChecked
+                                ? [...prev, opt]
+                                : prev.filter((item) => item !== opt)
+                              setAppliedIndustries(next)
+                              setPage(1)
+                              return next
+                            })
+                          }}
+                        />
+                        <span className="truncate">{opt}</span>
+                      </label>
+                    )
+                  })}
+                </div>
+              </PopoverContent>
+            </Popover>
 
             <Select value={session} onValueChange={(val) => {
               setSession(val)
@@ -231,6 +266,27 @@ export function JobList() {
                 ))}
               </SelectContent>
             </Select>
+
+            <div className="w-[140px] shrink-0 relative">
+              <Input
+                placeholder="工作地点"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleApply()
+                }}
+              />
+              {location && (
+                <button
+                  onClick={() => {
+                    setLocation("")
+                  }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
 
             <Button
               onClick={handleApply}
@@ -281,10 +337,12 @@ export function JobList() {
             setQuery("")
             setLocation("")
             setCompanyTypes([])
+            setIndustries([])
             setSession("all")
             setAppliedQuery("")
             setAppliedLocation("")
             setAppliedCompanyTypes([])
+            setAppliedIndustries([])
             setAppliedSession("all")
             setPage(1)
           }}>

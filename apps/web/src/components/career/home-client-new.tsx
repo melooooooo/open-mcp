@@ -465,14 +465,25 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
 
           {/* 最新招聘动态 Section */}
           <section>
-            <div className="flex items-center gap-4 mb-6 dark:mb-10">
-              <div className="bg-blue-100 dark:bg-gradient-to-br dark:from-orange-600/20 dark:to-amber-600/20 p-2 dark:p-3 rounded-lg dark:rounded-2xl dark:border dark:border-orange-500/20">
-                <Newspaper className="w-6 h-6 text-blue-600 dark:text-orange-400" />
+            <div className="flex items-center justify-between mb-6 dark:mb-10">
+              <div className="flex items-center gap-4">
+                <div className="bg-blue-100 dark:bg-gradient-to-br dark:from-orange-600/20 dark:to-amber-600/20 p-2 dark:p-3 rounded-lg dark:rounded-2xl dark:border dark:border-orange-500/20">
+                  <Newspaper className="w-6 h-6 text-blue-600 dark:text-orange-400" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-slate-800 dark:text-white">最新招聘动态</h2>
+                  <p className="text-slate-500 text-sm mt-0.5">实时更新各行招聘信息，掌握第一手资讯</p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-2xl font-bold text-slate-800 dark:text-white">最新招聘动态</h2>
-                <p className="text-slate-500 text-sm mt-0.5">实时更新各行招聘信息，掌握第一手资讯</p>
-              </div>
+              <Button
+                variant="ghost"
+                className="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-xl dark:border dark:border-transparent dark:hover:border-blue-500/20"
+                asChild
+              >
+                <Link href="/recruitment">
+                  查看更多 <ChevronRight className="w-4 h-4 ml-1" />
+                </Link>
+              </Button>
             </div>
 
             <div className="bg-white dark:bg-slate-900/30 rounded-2xl shadow-sm dark:shadow-none border border-slate-100 dark:border-slate-800/50 divide-y divide-slate-50 dark:divide-slate-800/50 overflow-hidden dark:backdrop-blur-sm">
@@ -496,7 +507,7 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-start">
                         <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
-                          {job.job_title}
+                          {job.company_name}
                         </h3>
                         {isNew && (
                           <span className="bg-orange-50 dark:bg-gradient-to-r dark:from-orange-500/20 dark:to-amber-500/20 text-orange-600 dark:text-orange-400 px-2 py-0.5 rounded text-xs font-bold border border-orange-100 dark:border-orange-500/30 flex-shrink-0 ml-2">
@@ -505,11 +516,19 @@ export function HomeClientNew({ jobSites, experiences, latestJobListings, referr
                         )}
                       </div>
                       <p className="text-slate-500 text-sm mb-3 line-clamp-1 leading-relaxed">
-                        {job.company_name}
-                        {job.work_location && ` · ${job.work_location}`}
-                        {job.industry_category && ` · ${job.industry_category}`}
+                        {job.job_title}
                       </p>
                       <div className="flex items-center gap-4 text-xs text-slate-400 dark:text-slate-600">
+                        {job.work_location && (
+                          <span className="flex items-center gap-1">
+                            {job.work_location}
+                          </span>
+                        )}
+                        {job.industry_category && (
+                          <span className="flex items-center gap-1">
+                            {job.industry_category}
+                          </span>
+                        )}
                         <span className="flex items-center gap-1">
                           <Clock className="w-3 h-3" /> {formatTimeAgo(job.source_updated_at || job.created_at)}
                         </span>

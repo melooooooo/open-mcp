@@ -60,7 +60,8 @@
 
 .quick-card {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* [个人主体] 原 repeat(4, 1fr)，金刚区从4项改为2项 */
+  grid-template-columns: repeat(2, 1fr);
   gap: 16rpx;
   padding: 48rpx 32rpx;
   background: #ffffff;

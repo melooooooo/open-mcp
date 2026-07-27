@@ -6,12 +6,13 @@
     </view>
     <view class="hero-search" bindtap="goSearch">
       <view class="search-icon icon-search"></view>
-      <text>搜索银行、面经、内推...</text>
+      <!-- [个人主体] 原文: 搜索银行、面经、内推... -->
+      <text>搜索面经、经验分享...</text>
       <view class="search-go">搜索</view>
     </view>
   </view>
 
-  <!-- 金刚区 -->
+  <!-- [个人主体] 隐藏金刚区（经验面经、个人中心入口）
   <view class="quick-card">
     <view class="quick-item" bindtap="switchTab" data-page="jobs">
       <image class="quick-icon" src="/images/quick-nav/latest-updates.png" mode="aspectFit"></image>
@@ -30,12 +31,14 @@
       <text class="quick-label">个人中心</text>
     </view>
   </view>
+  -->
 
-  <view wx:if="{{loading}}" class="loading">正在加载最新求职信息...</view>
+  <!-- [个人主体] 原文: 正在加载最新求职信息... -->
+  <view wx:if="{{loading}}" class="loading">正在加载最新内容...</view>
   <view wx:elif="{{error}}" class="error">{{error}}</view>
 
   <block wx:else>
-    <!-- 最新招聘职位 -->
+    <!-- [个人主体] 隐藏「最新招聘职位」section —— 招聘类目需企业资质
     <view class="section">
       <view class="section-head">
         <view class="section-title-group">
@@ -64,13 +67,14 @@
         </view>
       </view>
     </view>
+    -->
 
-    <!-- 经验分享 -->
+    <!-- 热门经验分享 -->
     <view class="section">
       <view class="section-head">
         <view class="section-title-group">
           <view class="section-indicator experience-indicator"></view>
-          <text class="section-title">经验分享</text>
+          <text class="section-title">热门经验分享</text>
         </view>
         <view class="section-more" bindtap="switchTab" data-page="experiences">查看更多</view>
       </view>
@@ -138,7 +142,9 @@
 
   <view class="bottom-tabs">
     <view class="tab-item active"><view class="tab-icon icon-home"></view><text>首页</text></view>
+    <!-- [个人主体] 隐藏「职位」Tab
     <view class="tab-item" bindtap="switchTab" data-page="jobs"><view class="tab-icon icon-jobs"></view><text>职位</text></view>
+    -->
     <view class="tab-item" bindtap="switchTab" data-page="experiences"><view class="tab-icon icon-exp"></view><text>经验</text></view>
     <view class="tab-item" bindtap="switchTab" data-page="profile"><view class="tab-icon icon-profile"></view><text>我的</text></view>
   </view>

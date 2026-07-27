@@ -111,9 +111,11 @@ Page({
     router.switchMain(event.currentTarget.dataset.page)
   },
 
+  /* [个人主体] 隐藏职位页跳转
   goJobs() {
     router.switchMain("jobs")
   },
+  */
 
   goExperiences() {
     router.switchMain("experiences")
@@ -280,7 +282,8 @@ Page({
   showAbout() {
     wx.showModal({
       title: "关于银行帮",
-      content: "银行帮开放求职信息、经验分享、内推浏览、收藏点赞和反馈能力。登录后可同步个人收藏与点赞。",
+      /* [个人主体] 原文: "银行帮开放求职信息、经验分享、内推浏览、收藏点赞和反馈能力。登录后可同步个人收藏与点赞。" */
+      content: "银行帮是金融行业求职经验分享社区，提供面经、攻略、点评等内容。登录后可同步个人收藏与点赞。",
       showCancel: false
     })
   },

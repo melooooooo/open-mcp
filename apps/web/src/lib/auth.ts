@@ -84,7 +84,7 @@ export const auth = betterAuth({
         console.info(`发送验证码 ${otp} 到邮箱 ${email}`);
         await sendMagicCodeEmail({
           to: email,
-          subject: "OpenMCP 登录验证码",
+          subject: "银行帮登录验证码",
           code: otp,
         })
       },

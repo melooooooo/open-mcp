@@ -30,7 +30,8 @@ import {
   TableHeader,
   TableRow,
 } from "@repo/ui/components/ui/table"
-import { BookOpen, ExternalLink, MoreHorizontal, Pencil, Search } from "lucide-react"
+import { BookOpen, ExternalLink, MoreHorizontal, Pencil, Plus, Search } from "lucide-react"
+import Link from "next/link"
 import { useState } from "react"
 import { toast } from "sonner"
 
@@ -97,6 +98,14 @@ export default function AdminExperiencesPage() {
       <AdminPageHeader
         title="经验分享管理"
         description="管理经验分享广场的文章，可跳转到前台编辑页修改正文与封面"
+        actions={
+          <Button asChild>
+            <Link href="/admin/experiences/create">
+              <Plus className="mr-2 h-4 w-4" />
+              新建文章
+            </Link>
+          </Button>
+        }
       />
 
       <div className="flex items-center gap-4">

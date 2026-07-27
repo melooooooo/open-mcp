@@ -23,6 +23,7 @@ coverage
 
 # WeChat Mini Program local developer settings
 apps/mini-program/project.private.config.json
+apps/mini-program/.cursor/
 
 # Build Outputs
 .next/

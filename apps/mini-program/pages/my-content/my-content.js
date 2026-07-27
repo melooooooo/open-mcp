@@ -15,17 +15,20 @@ function formatActionTime(value) {
 
 function mapCollection(entry) {
   const item = entry.item || {}
+  /* [个人主体] 原: 区分 job/referral 类型
   const type = entry.type === "referral" ? "referral" : "job"
+  */
   return {
     ...entry,
-    type,
-    key: `${type}-${item.id || "unknown"}`,
+    /* [个人主体] 原: type, key: `${type}-${item.id || "unknown"}` */
+    key: `${entry.type || "item"}-${item.id || "unknown"}`,
     actionTime: formatActionTime(entry.collectedAt),
     item: {
       ...item,
-      title: item.title || (type === "referral" ? "未命名内推" : "未命名职位"),
-      company: item.company || item.companyName || "未知公司",
-      location: item.location || "地点未明确",
+      /* [个人主体] 原: title: item.title || (type === "referral" ? "未命名内推" : "未命名职位") */
+      title: item.title || "未命名内容",
+      company: item.company || item.companyName || "",
+      location: item.location || "",
       visibleTags: (item.tags || [item.session, item.companyType, item.jobType]).filter(Boolean).slice(0, 3)
     }
   }
@@ -97,6 +100,7 @@ Page({
     this.setData({ activeTab: event.currentTarget.dataset.tab })
   },
 
+  /* [个人主体] 原: 根据 type 跳转 job/referral 详情页
   openCollection(event) {
     const { id, type } = event.currentTarget.dataset
     if (type === "referral") {
@@ -104,6 +108,10 @@ Page({
       return
     }
     router.openJob(id)
+  },
+  */
+  openCollection() {
+    wx.showToast({ title: "详情功能建设中", icon: "none" })
   },
 
   openLike(event) {
@@ -115,7 +123,8 @@ Page({
   },
 
   goBrowse() {
-    router.switchMain(this.data.activeTab === "likes" ? "experiences" : "jobs")
+    /* [个人主体] 原: router.switchMain(this.data.activeTab === "likes" ? "experiences" : "jobs") */
+    router.switchMain("experiences")
   },
 
   goBack() {
